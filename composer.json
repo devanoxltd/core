@@ -22,7 +22,10 @@
     "autoload": {
         "psr-4": {
             "Devanox\\Core\\": "src/"
-        }
+        },
+        "files": [
+            "src/Helpers/core.php"
+        ]
     },
     "extra": {
         "laravel": {
