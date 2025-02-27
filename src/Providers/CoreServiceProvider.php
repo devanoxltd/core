@@ -24,6 +24,7 @@ class CoreServiceProvider extends ServiceProvider
     {
         $this->checkModulesCapabilities();
         $this->registerCommands();
+        $this->loadRoutesFrom(__DIR__ . '/../Routes/console.php');
     }
 
     private function checkModulesCapabilities(): void
