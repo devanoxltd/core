@@ -61,23 +61,16 @@ trait Provider
 
     private function registerDatabase(): void
     {
-        $migrationPath = Module::path(self::name(), true) . DIRECTORY_SEPARATOR . 'Database' . DIRECTORY_SEPARATOR . 'Migrations';
+        $migrationPath = Module::pathFor(self::name(), 'migrations');
+
         if (file_exists($migrationPath)) {
             $this->loadMigrationsFrom($migrationPath);
         }
     }
 
-    private function registerSeeder(): void
-    {
-        $seederPath = Module::path(self::name(), true) . DIRECTORY_SEPARATOR . 'Database' . DIRECTORY_SEPARATOR . 'Seeders';
-        if (file_exists($seederPath)) {
-            $this->loadMigrationsFrom($seederPath);
-        }
-    }
-
     private function registerConfig(): void
     {
-        $configPath = Module::path(self::name(), true) . DIRECTORY_SEPARATOR . 'Config' . DIRECTORY_SEPARATOR . 'config.php';
+        $configPath = Module::pathFor(self::name(), 'config') . DIRECTORY_SEPARATOR . 'config.php';
 
         if (file_exists($configPath)) {
             $this->mergeConfigFrom($configPath, self::nameLower());
@@ -97,7 +90,7 @@ trait Provider
 
     private function registerViews(): void
     {
-        $viewPath = Module::path(self::name(), true) . DIRECTORY_SEPARATOR . 'Resources' . DIRECTORY_SEPARATOR . 'views';
+        $viewPath = Module::pathFor(self::name(), 'views');
 
         if (file_exists($viewPath)) {
             $this->loadViewsFrom($viewPath, self::nameLower());
@@ -106,7 +99,7 @@ trait Provider
 
     private function registerTranslations(): void
     {
-        $translationPath = Module::path(self::name(), true) . DIRECTORY_SEPARATOR . 'Lang';
+        $translationPath = Module::pathFor(self::name(), 'lang');
 
         if (file_exists($translationPath)) {
             $this->loadTranslationsFrom($translationPath, self::nameLower());
@@ -116,13 +109,13 @@ trait Provider
 
     private function registerComponents(): void
     {
-        $componentPath = Module::path(self::name(), true) . DIRECTORY_SEPARATOR . 'App' . DIRECTORY_SEPARATOR . 'View' . DIRECTORY_SEPARATOR . 'Components';
+        $componentPath = Module::pathFor(self::name(), 'components');
 
         if (file_exists($componentPath)) {
             Blade::componentNamespace('Modules\\' . self::name() . '\\App\\View\\Components', self::nameLower());
         }
 
-        $anonymousComponentPath = Module::path(self::name(), true) . DIRECTORY_SEPARATOR . 'Resources' . DIRECTORY_SEPARATOR . 'views' . DIRECTORY_SEPARATOR . 'components';
+        $anonymousComponentPath = Module::pathFor(self::name(), 'components-view');
 
         if (file_exists($anonymousComponentPath)) {
             Blade::anonymousComponentPath($anonymousComponentPath, self::nameLower());
@@ -147,7 +140,7 @@ trait Provider
 
     private function registerLivewireComponents(): void
     {
-        $directory = Module::path(self::name(), true) . DIRECTORY_SEPARATOR . 'App' . DIRECTORY_SEPARATOR . 'Livewire';
+        $directory = Module::pathFor(self::name(), 'livewire');
 
         if (file_exists($directory)) {
             $namespace = 'Modules\\' . self::name() . '\\App\\Livewire';
@@ -180,7 +173,6 @@ trait Provider
         $this->booting(function () {
             $this->registerConfig();
             $this->registerDatabase();
-            $this->registerSeeder();
             $this->registerViews();
             $this->registerTranslations();
             $this->registerComponents();

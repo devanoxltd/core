@@ -2,6 +2,9 @@
 
 namespace Devanox\Core\Support;
 
+use Devanox\Core\Events\ModuleDisabled;
+use Devanox\Core\Events\ModuleEnabled;
+
 class Module
 {
     const MODULES_PATH = 'modules';
@@ -39,7 +42,7 @@ class Module
 
             foreach ($providerFiles as $providerFile) {
                 $provider = basename($providerFile, '.php');
-                $providers[] = "Modules\\{$module}\\App\\Providers\\{$provider}";
+                $providers[] = self::namespace($module) . "\\App\\Providers\\{$provider}";
             }
         }
 
@@ -98,6 +101,8 @@ class Module
         if (! file_exists($path)) {
             touch($path);
         }
+
+        event(new ModuleEnabled($module));
     }
 
     public static function disable(string $module): void
@@ -107,6 +112,8 @@ class Module
         if (file_exists($path)) {
             unlink($path);
         }
+
+        event(new ModuleDisabled($module));
     }
 
     /**
@@ -124,7 +131,7 @@ class Module
             $seederFile = $seederPath . DIRECTORY_SEPARATOR . 'DatabaseSeeder.php';
 
             if (file_exists($seederFile)) {
-                $seeders[] = "Modules\\{$module}\\Database\\Seeders\\DatabaseSeeder";
+                $seeders[] = self::namespace($module) . '\\Database\\Seeders\\DatabaseSeeder';
             }
         }
 
@@ -134,5 +141,43 @@ class Module
     public static function prefix(string $module): string
     {
         return str($module)->kebab()->__toString();
+    }
+
+    public static function namespace(string $module): string
+    {
+        return "Modules\\{$module}";
+    }
+
+    public static function pathFor(string $module, string $for): string
+    {
+        $path = self::path($module, true);
+
+        $forPath = self::forPath($for);
+
+        if ($forPath === '') {
+            return $path;
+        }
+
+        return $path . DIRECTORY_SEPARATOR . $forPath;
+    }
+
+    public static function forPath(string $for): string
+    {
+        return match ($for) {
+            'app' => 'App',
+            'livewire' => self::forPath('app') . DIRECTORY_SEPARATOR . 'Livewire',
+            'components' => self::forPath('app') . DIRECTORY_SEPARATOR . 'View' . DIRECTORY_SEPARATOR . 'Components',
+            'components-view' => self::forPath('views') . DIRECTORY_SEPARATOR . 'components',
+            'config' => 'Config',
+            'database' => 'Database',
+            'migrations' => self::forPath('database') . DIRECTORY_SEPARATOR . 'Migrations',
+            'factories' => self::forPath('database') . DIRECTORY_SEPARATOR . 'Factories',
+            'seeders' => self::forPath('database') . DIRECTORY_SEPARATOR . 'Seeders',
+            'lang' => 'Lang',
+            'resources' => 'Resources',
+            'routes' => 'Routes',
+            'views' => self::forPath('resources') . DIRECTORY_SEPARATOR . 'views',
+            default => '',
+        };
     }
 }
