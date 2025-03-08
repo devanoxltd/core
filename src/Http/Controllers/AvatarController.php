@@ -1,6 +1,6 @@
 <?php
 
-namespace Devanox\Core\Enum;
+namespace Devanox\Core\Http\Controllers;
 
 use App\Http\Controllers\Controller;
 use Devanox\Core\Enum\AvatarProvider;
