@@ -23,47 +23,47 @@ use Devanox\Core\Support\AvatarProvider\YouTube;
 
 enum AvatarProvider: string
 {
-    case deviantart = 'deviantart';
-    case dribbble = 'dribbble';
-    case duckduckgo = 'duckduckgo';
-    case github = 'github';
-    case gitlab = 'gitlab';
-    case google = 'google';
-    case gravatar = 'gravatar';
-    // case instagram = 'instagram';
-    // case onlyfans = 'onlyfans';
-    case readcv = 'readcv';
-    case reddit = 'reddit';
-    case soundcloud = 'soundcloud';
-    case substack = 'substack';
-    case telegram = 'telegram';
-    // case tiktok = 'tiktok';
-    case twitch = 'twitch';
-    case x = 'x';
-    case youtube = 'youtube';
+    case DeviantArt = 'deviantart';
+    case Dribbble = 'dribbble';
+    case DuckDuckGo = 'duckduckgo';
+    case GitHub = 'github';
+    case GitLab = 'gitlab';
+    case Google = 'google';
+    case Gravatar = 'gravatar';
+    // case Instagram = 'instagram';
+    // case OnlyFans = 'onlyfans';
+    case ReadCV = 'readcv';
+    case Reddit = 'reddit';
+    case SoundCloud = 'soundcloud';
+    case Substack = 'substack';
+    case Telegram = 'telegram';
+    // case TikTok = 'tiktok';
+    case Twitch = 'twitch';
+    case X = 'x';
+    case YouTube = 'youtube';
 
     // phpcs:ignore
     public function class(): string
     {
         return match ($this) {
-            self::deviantart => DeviantArt::class,
-            self::dribbble => Dribbble::class,
-            self::duckduckgo => DuckDuckGo::class,
-            self::github => GitHub::class,
-            self::gitlab => GitLab::class,
-            self::google => Google::class,
-            self::gravatar => Gravatar::class,
-            // self::instagram => Instagram::class,
-            // self::onlyfans => OnlyFans::class,
-            self::readcv => ReadCV::class,
-            self::reddit => Reddit::class,
-            self::soundcloud => SoundCloud::class,
-            self::substack => Substack::class,
-            self::telegram => Telegram::class,
-            // self::tiktok => TikTok::class,
-            self::twitch => Twitch::class,
-            self::x => X::class,
-            self::youtube => YouTube::class,
+            self::DeviantArt => DeviantArt::class,
+            self::Dribbble => Dribbble::class,
+            self::DuckDuckGo => DuckDuckGo::class,
+            self::GitHub => GitHub::class,
+            self::GitLab => GitLab::class,
+            self::Google => Google::class,
+            self::Gravatar => Gravatar::class,
+            // self::Instagram => Instagram::class,
+            // self::OnlyFans => OnlyFans::class,
+            self::ReadCV => ReadCV::class,
+            self::Reddit => Reddit::class,
+            self::SoundCloud => SoundCloud::class,
+            self::Substack => Substack::class,
+            self::Telegram => Telegram::class,
+            // self::TikTok => TikTok::class,
+            self::Twitch => Twitch::class,
+            self::X => X::class,
+            self::YouTube => YouTube::class,
             default => GitHub::class,
         };
     }

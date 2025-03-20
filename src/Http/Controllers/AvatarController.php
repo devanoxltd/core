@@ -19,7 +19,7 @@ class AvatarController extends Controller
         $provider = AvatarProvider::tryFrom($provider);
 
         if ($provider === null) {
-            $provider = AvatarProvider::github;
+            $provider = AvatarProvider::Github;
         }
 
         $providerClass = $provider->class();
