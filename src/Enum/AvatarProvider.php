@@ -42,7 +42,6 @@ enum AvatarProvider: string
     case X = 'x';
     case YouTube = 'youtube';
 
-    // phpcs:ignore
     public function class(): string
     {
         return match ($this) {
