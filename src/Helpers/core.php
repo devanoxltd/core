@@ -70,3 +70,10 @@ if (! function_exists('modulePrefix')) {
         return Module::prefix($module);
     }
 }
+
+if (! function_exists('isAppInstalled')) {
+    function isAppInstalled(): bool
+    {
+        return file_exists(storage_path('installed'));
+    }
+}
