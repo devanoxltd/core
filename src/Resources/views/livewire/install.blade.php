@@ -119,6 +119,7 @@
                 @case('requirements')
                 @case('permissions')
                 @case('database')
+                @case('migrations')
                 @case('admin')
                 @case('activation')
                     <x-form.button.primary

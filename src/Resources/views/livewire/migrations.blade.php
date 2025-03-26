@@ -1,6 +1,6 @@
 <div class="mx-2">
     @if (! $isMigrationRun)
-        <div class="mt-2 flex items-center justify-center" wire:key="migrations-not-run" wire:poll.visible="runAppDbMigrateInstall">
+        <div class="mt-2 flex items-center justify-center" wire:key="migrations-not-run" wire:init="runAppDbMigrateInstall">
             <div class="flex items-center text-2xl text-yellow dark:text-yellow-400">
                 <x-icon name="outline.info" class="mr-2 size-6" />
                 @lang('core::install.steps.migrations.not_run')

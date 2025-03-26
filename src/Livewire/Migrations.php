@@ -25,6 +25,8 @@ class Migrations extends Component
         }
 
         $this->isMigrationRun = true;
+        $this->isMigrationRunning = true;
+        $this->isMigrationComplete = false;
 
         if (InstallerInfo::getStatus() == 'not_started') {
             defer(
@@ -33,14 +35,12 @@ class Migrations extends Component
                 }
             );
         }
-
-        $this->isMigrationRunning = true;
-        $this->isMigrationComplete = false;
     }
 
     public function checkStatus()
     {
         if ($this->isMigrationComplete) {
+            $this->dispatch('stepReady', step: 'migrations')->to(Install::class);
             return;
         }
 

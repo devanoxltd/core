@@ -102,8 +102,6 @@ class CoreServiceProvider extends ServiceProvider
                 \Devanox\Core\Commands\Module\Disable::class,
                 \Devanox\Core\Commands\Module\Enable::class,
                 \Devanox\Core\Commands\CleanUp::class,
-                \Devanox\Core\Commands\Install::class,
-                \Devanox\Core\Commands\Update::class,
             ]);
         }
     }

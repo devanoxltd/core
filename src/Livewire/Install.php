@@ -6,7 +6,7 @@ use Livewire\Component;
 
 class Install extends Component
 {
-    public $activeStep = 'migrations';
+    public $activeStep = 'home';
 
     public $nextStep = null;
 
@@ -37,6 +37,7 @@ class Install extends Component
 
     public function setNextStep($step)
     {
+        info('stepReady', ['step' => $step]);
         $this->nextStep = $this->avalableNextStep($step);
     }
 
