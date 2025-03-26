@@ -4,4 +4,9 @@ use Devanox\Core\Http\Controllers\AvatarController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('avatar/{provider}/{username?}', [AvatarController::class, 'index'])
-    ->name('devanox.avatar');
+    ->name('avatar');
+if (!isAppInstalled()) {
+    Route::get('install', function () {
+        return view('core::install');
+    })->name('install');
+}

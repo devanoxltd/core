@@ -30,7 +30,7 @@ class RouteServiceProvider extends ServiceProvider
     protected function mapWebRoutes(): void
     {
         if (file_exists($this->getRoutePath() . 'web.php')) {
-            Route::middleware('web')->group($this->getRoutePath() . 'web.php');
+            Route::middleware('web')->name('devanox.')->group($this->getRoutePath() . 'web.php');
         }
     }
 

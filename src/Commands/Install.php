@@ -2,6 +2,8 @@
 
 namespace Devanox\Core\Commands;
 
+use Devanox\Core\Helpers\EnvEditor;
+use Devanox\Core\Helpers\InstallerInfo;
 use Illuminate\Console\Command;
 
 class Install extends Command
@@ -11,7 +13,7 @@ class Install extends Command
      *
      * @var string
      */
-    protected $signature = 'app:install {--force}';
+    protected $signature = 'app:install';
 
     /**
      * The console command description.
@@ -25,34 +27,31 @@ class Install extends Command
      */
     public function handle(): int
     {
-        $installedFile = storage_path('installed');
-
-        if (file_exists($installedFile) && ! $this->option('force')) {
-            $this->warn('Application is already installed.');
-
-            return Command::SUCCESS;
-        }
+        InstallerInfo::create([
+            'status' => 'migrating',
+            'version' => config('app.version'),
+        ]);
 
         $this->info('Installing the application...');
 
-        $this->call('key:generate');
+        // $this->call('key:generate');
 
         $this->call('storage:unlink');
         $this->call('storage:link');
 
         $this->call('migrate:fresh');
 
-        $this->call('cache:clear');
+        // EnvEditor::setMultiple([
+        //     'SESSION_DRIVER' => 'database',
+        //     'CACHE_STORE' => 'database',
+        //     'QUEUE_CONNECTION' => 'database',
+        // ]);
 
-        touch($installedFile);
+        $this->call('cache:clear');
 
         $this->info('Application installed successfully.');
 
-        $this->info('Setup complete. You can now access your application.');
-
-        if ($this->option('force')) {
-            $this->info('Installation forced. All existing data has been overridden.');
-        }
+        InstallerInfo::setData('status', 'migrated');
 
         return Command::SUCCESS;
     }

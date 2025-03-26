@@ -7,7 +7,7 @@ Core package for Laravel projects providing module support, helpers, and license
 To install the package, use composer:
 
 ```bash
-composer require devanox/core-package
+composer require devanox/core
 ```
 
 
@@ -16,14 +16,7 @@ composer require devanox/core-package
 Publish the configuration file using the following command:
 
 ```bash
-php artisan vendor:publish --provider="Devanox\CorePackage\Providers\CorePackageServiceProvider"
+php artisan vendor:publish --provider="Devanox\Core\Providers\CoreServiceProvider"
 ```
 
-## Usage
-### Middleware
-To use the middleware, you can add it to your `bootstrap/app.php` file in the `middleware` array:
-
-```php
-$middleware->append(\Devanox\Core\Http\Middleware\InstallApp::class);
-```
-### License Verification
+This will create a `core.php` configuration file in the `config` directory of your Laravel project.
