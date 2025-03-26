@@ -28,26 +28,7 @@ class Database extends Component
 
     public function submit()
     {
-        $this->form->validate(
-            [
-                'appUrl' => 'required|string',
-                'host' => 'required|string',
-                'port' => 'required|integer',
-                'database' => 'required|string',
-                'dbUsername' => 'required|string',
-                'dbPassword' => 'nullable|string',
-            ],
-            attributes: [
-                'appUrl' => __('core::install.steps.database.form.appUrl'),
-                'host' => __('core::install.steps.database.form.host'),
-                'port' => __('core::install.steps.database.form.port'),
-                'database' => __('core::install.steps.database.form.database'),
-                'dbUsername' => __('core::install.steps.database.form.dbUsername'),
-                'dbPassword' => __('core::install.steps.database.form.dbPassword'),
-            ]
-        );
-
-        // $this->form->dbUsername = '';
+        $this->validate();
         $this->checkDbConnection();
     }
 

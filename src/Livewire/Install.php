@@ -2,6 +2,8 @@
 
 namespace Devanox\Core\Livewire;
 
+use Devanox\Core\Helpers\EnvEditor;
+use Devanox\Core\Helpers\InstallerInfo;
 use Livewire\Component;
 
 class Install extends Component
@@ -37,7 +39,6 @@ class Install extends Component
 
     public function setNextStep($step)
     {
-        info('stepReady', ['step' => $step]);
         $this->nextStep = $this->avalableNextStep($step);
     }
 
@@ -64,13 +65,18 @@ class Install extends Component
         return null;
     }
 
-    public function installApp()
+    public function finish()
     {
-        // Perform installation logic here
-        // For example, create database tables, set up configuration, etc.
+        EnvEditor::setMultiple([
+            'SESSION_DRIVER' => 'database',
+            'CACHE_STORE' => 'database',
+            'QUEUE_CONNECTION' => 'database',
+        ]);
 
-        // After installation, redirect to the finish step
-        $this->activeStep = 'finish';
+        InstallerInfo::remove();
+        touch(storage_path('installed'));
+
+        $this->redirectRoute('login', navigate: true);
     }
 
     public function render()

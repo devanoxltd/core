@@ -65,4 +65,13 @@ class InstallerInfo
     {
         return self::setData('status', $status);
     }
+
+    public static function remove()
+    {
+        $installFile = self::filePath();
+
+        if (file_exists($installFile)) {
+            unlink($installFile);
+        }
+    }
 }

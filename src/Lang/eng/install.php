@@ -70,12 +70,20 @@ return [
         'admin' => [
             'title' => 'Admin Account',
             'description' => 'Please provide your admin account details.',
-            'button' => 'Create Admin Account',
+            'button' => 'Activate Application Licence',
+            'success' => 'Admin account created successfully. Use this :email to log in to your application.',
+            'form' => [
+                'username' => 'Name',
+                'email' => 'Email',
+                'password' => 'Password',
+                'passwordConfirmation' => 'Confirm Password',
+                'submit' => 'Create Admin Account',
+            ],
         ],
         'activation' => [
             'title' => 'Activation',
             'description' => 'Please provide your activation key.',
-            'button' => 'Activate',
+            'button' => 'Complete Installation',
         ],
         'finish' => [
             'title' => 'Finish',

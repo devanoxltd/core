@@ -109,10 +109,16 @@
             @case('migrations')
                 <livewire:core::migrations />
                 @break
+            @case('admin')
+                <livewire:core::admin-account />
+                @break
+            @case('activation')
+                <livewire:core::activation />
+                @break
         @endswitch
     </div>
 
-    @if ($nextStep)
+    @if ($nextStep || $activeStep == 'finish')
         <div class="mt-5 flex justify-center px-5" wire:key="button">
             @switch($activeStep)
                 @case('home')
