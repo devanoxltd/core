@@ -26,6 +26,7 @@ return [
                 'name' => 'Requirement',
                 'status' => 'Status',
             ],
+            'max_execution_time' => 'Max Execution Time',
         ],
         'permissions' => [
             'title' => 'Folder Permissions',
@@ -84,6 +85,12 @@ return [
             'title' => 'Activation',
             'description' => 'Please provide your activation key.',
             'button' => 'Complete Installation',
+            'form' => [
+                'licenseKey' => 'License Key',
+                'getLicenseKey' => 'Get License Key',
+                'submit' => 'Activate Application',
+            ],
+            'success' => 'Application activated successfully.',
         ],
         'finish' => [
             'title' => 'Finish',

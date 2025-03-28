@@ -18,14 +18,33 @@ class Requirements extends Component
         $requirements = collect();
 
         $requirements->push([
-            'name' => 'PHP ' . config('core.minPhpVersion') . ' or higher. (' . config('core.recommendedPhpVersion') . ' recommended)',
-            'status' => version_compare(PHP_VERSION, config('core.minPhpVersion'), '>='),
+            'name' => 'PHP ' . config('core.phpVersion') . ' or higher.',
+            'status' => version_compare(PHP_VERSION, config('core.phpVersion'), '>='),
+        ]);
+
+        $requirements->push([
+            'name' => __('core::install.steps.requirements.max_execution_time'),
+            'status' => ini_get('max_execution_time') >= config('core.requirements.max_execution_time'),
+        ]);
+
+        $allowUrlFopen = ini_get('allow_url_fopen');
+        $allowUrlFopen = $allowUrlFopen === '1' || $allowUrlFopen === 'On' || $allowUrlFopen === 'true' || $allowUrlFopen === true;
+        $requirements->push([
+            'name' => 'allow_url_fopen',
+            'status' => $allowUrlFopen,
         ]);
 
         foreach (config('core.requirements.php', []) as $extension) {
             $requirements->push([
                 'name' => $extension,
                 'status' => extension_loaded($extension),
+            ]);
+        }
+
+        foreach (config('core.requirements.php_function', []) as $function) {
+            $requirements->push([
+                'name' => $function,
+                'status' => function_exists($function),
             ]);
         }
 

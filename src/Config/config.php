@@ -11,8 +11,7 @@ return [
     | by looping through the array and run "extension_loaded" on it.
     |
     */
-    'minPhpVersion' => '8.2.0',
-    'recommendedPhpVersion' => '8.4.0',
+    'phpVersion' => '8.4.0',
 
     'requirements' => [
         'php' => [
@@ -42,9 +41,11 @@ return [
             'intl',
             'gd',
         ],
-        'apache' => [
-            'mod_rewrite',
+        'php_function' => [
+            'proc_open',
+            'proc_close',
         ],
+        'max_execution_time' => 30,
     ],
 
     /*
