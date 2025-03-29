@@ -3,6 +3,7 @@
 namespace Devanox\Core\Providers;
 
 use Devanox\Core\Http\Middleware\InstallApp;
+use Devanox\Core\Http\Middleware\Licence;
 use Devanox\Core\Support\Module;
 use Exception;
 use Illuminate\Contracts\Http\Kernel;
@@ -110,9 +111,10 @@ class CoreServiceProvider extends ServiceProvider
     {
         $middlewares = [
             InstallApp::class,
+            Licence::class,
         ];
 
-        foreach (array_reverse($middlewares) as $middleware) {
+        foreach ($middlewares as $middleware) {
             /** @var \Illuminate\Foundation\Http\Kernel $kernel */
             $kernel = $this->app[Kernel::class];
             $kernel->pushMiddleware($middleware);
@@ -121,7 +123,7 @@ class CoreServiceProvider extends ServiceProvider
 
     private function loads(): void
     {
-        $this->loadMigrationsFrom(__DIR__ . '/../Database/Migrations');
+        $this->loadMigrationsFrom(__DIR__ . '/../Database/migrations');
         $this->mergeConfigFrom(__DIR__ . '/../Config/config.php', $this->moduleNameLower);
         $this->loadViewsFrom(__DIR__ . '/../Resources/views', $this->moduleNameLower);
         $this->loadTranslationsFrom(__DIR__ . '/../Lang', $this->moduleNameLower);
