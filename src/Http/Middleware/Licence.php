@@ -24,6 +24,10 @@ class Licence
                 return response()->json(['message' => 'Licence is not valid.'], 403);
             }
 
+            if ($request->is('licence') || $request->is('livewire/*')) {
+                return $next($request);
+            }
+
             return redirect()->route('devanox.licence');
         }
 
