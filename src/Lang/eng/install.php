@@ -71,7 +71,7 @@ return [
         'admin' => [
             'title' => 'Admin Account',
             'description' => 'Please provide your admin account details.',
-            'button' => 'Activate Application Licence',
+            'button' => 'Complete Installation',
             'success' => 'Admin account created successfully. Use this :email to log in to your application.',
             'form' => [
                 'username' => 'Name',
@@ -84,7 +84,6 @@ return [
         'activation' => [
             'title' => 'Activation',
             'description' => 'Please provide your activation key.',
-            'button' => 'Complete Installation',
             'form' => [
                 'licenseKey' => 'License Key',
                 'getLicenseKey' => 'Get License Key',

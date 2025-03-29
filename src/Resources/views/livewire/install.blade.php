@@ -68,18 +68,6 @@
         <div
             @tailwindClass([
                 'flex size-10 items-center justify-center rounded-full text-white',
-                'bg-secondary-400 dark:bg-secondary-700' => $activeStep == 'activation',
-                'bg-gray-300 dark:bg-gray-600' => $activeStep != 'activation',
-            ])
-            wire:key="activation"
-        >
-            <x-icon name="solid.key" class="size-5" />
-        </div>
-
-        <div class="flex-1 border-t-4 border-gray-300 dark:border-gray-600"></div>
-        <div
-            @tailwindClass([
-                'flex size-10 items-center justify-center rounded-full text-white',
                 'bg-secondary-400 dark:bg-secondary-700' => $activeStep == 'finish',
                 'bg-gray-300 dark:bg-gray-600' => $activeStep != 'finish',
             ])
@@ -112,8 +100,6 @@
             @case('admin')
                 <livewire:core::admin-account />
                 @break
-            @case('activation')
-                <livewire:core::activation />
                 @break
         @endswitch
     </div>
@@ -127,7 +113,6 @@
                 @case('database')
                 @case('migrations')
                 @case('admin')
-                @case('activation')
                     <x-form.button.primary
                         wire:click="goToStep('{{ $nextStep }}')"
                         wire:loading.attr="disabled"

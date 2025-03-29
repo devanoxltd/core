@@ -30,7 +30,6 @@ class Install extends Component
             'database' => __('core::install.steps.database.title'),
             'migrations' => __('core::install.steps.migrations.title'),
             'admin' => __('core::install.steps.admin.title'),
-            'activation' => __('core::install.steps.activation.title'),
             'finish' => __('core::install.steps.finish.title'),
         ];
 
