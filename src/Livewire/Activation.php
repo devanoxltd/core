@@ -40,11 +40,6 @@ class Activation extends Component
                 throw new \Exception($responseData->message ?? __('core::install.steps.activation.error'));
             }
 
-            info([
-                $responseData->message,
-                'data' => $responseData->data->id,
-            ]);
-
             $licecnse = Licence::query()
                 ->where('key', $this->licenseKey)
                 ->first() ?: new Licence();
