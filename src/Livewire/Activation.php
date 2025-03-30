@@ -19,6 +19,7 @@ class Activation extends Component
         ]);
 
         try {
+            // TODO : update this URL to your production URL
             // $verifyUrl = 'https://devanox.com';
             $verifyUrl = 'https://devanox-activate.test';
             $verifyUrl .= '/api/purchase/verify';
