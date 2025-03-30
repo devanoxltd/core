@@ -3,6 +3,7 @@
 namespace Devanox\Core\Livewire;
 
 use Devanox\Core\Models\Licence;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Http;
 use Livewire\Component;
 
@@ -25,6 +26,7 @@ class Activation extends Component
             $verifyUrl .= '/api/purchase/verify';
 
             $response = Http::acceptJson()->post($verifyUrl, [
+                'product_id' => config('app.id'),
                 'licence' => $this->licenseKey,
                 'domain' => request()->getHost(),
                 'ip' => request()->ip(),
@@ -51,6 +53,8 @@ class Activation extends Component
             $licence->purchase_at = $responseData->data->purchase_at;
             $licence->support_until = $responseData->data->support_until;
             $licence->save();
+
+            Cache::forget('licence.valid');
 
             $this->isActivated = true;
         } catch (\Exception $e) {

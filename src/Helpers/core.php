@@ -2,6 +2,7 @@
 
 use Devanox\Core\Models\Licence;
 use Devanox\Core\Support\Module;
+use Illuminate\Support\Facades\Cache;
 
 if (! function_exists('modulePath')) {
     function modulePath(string $module, ?bool $fullPath = false, ?bool $enable = false): string
@@ -82,6 +83,8 @@ if (! function_exists('isAppInstalled')) {
 if (! function_exists('isLicenceValid')) {
     function isLicenceValid(): bool
     {
-        return Licence::isValid();
+        return Cache::remember('licence.valid', 60, function () {
+            return Licence::isValidLicence();
+        });
     }
 }

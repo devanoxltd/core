@@ -24,10 +24,15 @@ class Licence extends Model
         ];
     }
 
-    public static function isValid(): bool
+    public static function isValidLicence(?string $module = null): bool
     {
         $licence = self::query()
-            ->where('is_module', false)
+            ->when(!$module, function ($query) {
+                return $query->where('is_module', false);
+            })
+            ->when($module, function ($query) use ($module) {
+                return $query->where('module_name', $module);
+            })
             ->first();
 
         if ($licence) {
@@ -35,5 +40,10 @@ class Licence extends Model
         }
 
         return false;
+    }
+
+    public function isValid(): bool
+    {
+        return $this->key && $this->purchase_at && $this->support_until;
     }
 }
