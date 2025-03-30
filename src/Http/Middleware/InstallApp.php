@@ -35,7 +35,7 @@ class InstallApp
         }
 
         if ($request->is('api/*')) {
-            return response()->json(['message' => 'Application is not installed yet.'], 403);
+            return response()->json(['message' => __('core::install.notInstalled')], 403);
         }
 
         return redirect()->route('devanox.install');

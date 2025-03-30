@@ -13,6 +13,14 @@ return new class extends Migration
     {
         Schema::create('licences', function (Blueprint $table) {
             $table->id();
+            $table->string('key')->unique();
+            $table->string('purchase_code')->nullable();
+            $table->string('type')->default('standard');
+            $table->dateTime('purchase_at')->nullable();
+            $table->dateTime('support_until')->nullable();
+            $table->boolean('update_notification')->default(true);
+            $table->boolean('is_module')->default(false);
+            $table->string('module_name')->nullable();
             $table->timestamps();
         });
     }

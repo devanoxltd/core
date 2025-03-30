@@ -21,7 +21,7 @@ class Licence
             }
 
             if ($request->is('api/*')) {
-                return response()->json(['message' => 'Licence is not valid.'], 403);
+                return response()->json(['message' => __('core::install.notActivated')], 403);
             }
 
             if ($request->is('licence') || $request->is('livewire/*')) {

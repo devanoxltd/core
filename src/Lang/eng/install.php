@@ -2,12 +2,8 @@
 
 return [
     'title' => 'Devanox Installer',
-    'welcome' => 'Welcome to Devanox Installer',
-    'next' => 'Next',
-    'previous' => 'Previous',
-    'finish' => 'Finish',
-    'installing' => 'Installing Devanox...',
-    'installed' => 'Devanox is installed successfully.',
+    'notInstalled' => 'Application is not installed yet.',
+    'notActivated' => 'Application is not activated yet.',
     'error' => [
         'title' => 'Error',
         'message' => 'Something went wrong. Please try again.',
@@ -90,6 +86,7 @@ return [
                 'submit' => 'Activate Application',
             ],
             'success' => 'Application activated successfully.',
+            'error' => 'Something went wrong. Please try again. If the problem persists, please contact support.',
         ],
         'finish' => [
             'title' => 'Finish',
