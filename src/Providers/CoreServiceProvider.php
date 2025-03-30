@@ -35,15 +35,15 @@ class CoreServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        $this->booted(function () {
-            $this->registerCommandSchedules();
-        });
-
         $this->checkModulesCapabilities();
         $this->registerMiddleware();
         $this->registerCommands();
         $this->loads();
         $this->publishFiles();
+
+        $this->booted(function () {
+            $this->registerCommandSchedules();
+        });
     }
 
     private function publishFiles()
@@ -57,8 +57,13 @@ class CoreServiceProvider extends ServiceProvider
     {
         // declare this method in the service provider
         // following is an example of how to register a schedule
-        // $schedule = $this->app->make(\Illuminate\Console\Scheduling\Schedule::class);
-        // $schedule->command('inspire')->everyMinute();
+        $schedule = $this->app->make(\Illuminate\Console\Scheduling\Schedule::class);
+        $schedule->command('devanox:licence-check')
+        ->dailyAt('08:00')
+        ->timezone('UTC')
+        ->pingBefore('https://devanox-activate.test') // TODO : update this URL to your production URL
+        ->environments(['production'])
+        ->runInBackground();
     }
 
     private function checkModulesCapabilities(): void
@@ -103,6 +108,7 @@ class CoreServiceProvider extends ServiceProvider
                 \Devanox\Core\Commands\Module\Disable::class,
                 \Devanox\Core\Commands\Module\Enable::class,
                 \Devanox\Core\Commands\CleanUp::class,
+                \Devanox\Core\Commands\LicenceCheck::class,
             ]);
         }
     }

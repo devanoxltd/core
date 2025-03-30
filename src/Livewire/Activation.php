@@ -41,16 +41,16 @@ class Activation extends Component
                 throw new \Exception($responseData->message ?? __('core::install.steps.activation.error'));
             }
 
-            $licecnse = Licence::query()
+            $licence = Licence::query()
                 ->where('key', $this->licenseKey)
                 ->first() ?: new Licence();
 
-            $licecnse->key = $responseData->data->id;
-            $licecnse->purchase_code = $responseData->data->purchase_code;
-            $licecnse->type = $responseData->data->type;
-            $licecnse->purchase_at = $responseData->data->purchase_at;
-            $licecnse->support_until = $responseData->data->support_until;
-            $licecnse->save();
+            $licence->key = $responseData->data->id;
+            $licence->purchase_code = $responseData->data->purchase_code;
+            $licence->type = $responseData->data->type;
+            $licence->purchase_at = $responseData->data->purchase_at;
+            $licence->support_until = $responseData->data->support_until;
+            $licence->save();
 
             $this->isActivated = true;
         } catch (\Exception $e) {
