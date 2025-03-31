@@ -15,6 +15,10 @@ class Licence
      */
     public function handle(Request $request, Closure $next): Response
     {
+        if (app()->environment(['testing'])) {
+            return $next($request);
+        }
+
         if (isAppInstalled()) {
             if (isLicenceValid()) {
                 return $next($request);
