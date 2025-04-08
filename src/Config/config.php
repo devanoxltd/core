@@ -68,5 +68,6 @@ return [
         'install',
         'livewire/*',
         'dev/*',
+        'file/*',
     ],
 ];
