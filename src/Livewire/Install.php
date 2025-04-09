@@ -4,17 +4,19 @@ namespace Devanox\Core\Livewire;
 
 use Devanox\Core\Helpers\EnvEditor;
 use Devanox\Core\Helpers\InstallerInfo;
+use Livewire\Attributes\Locked;
 use Livewire\Component;
 
 class Install extends Component
 {
-    public $activeStep = 'home';
+    #[Locked]
+    public string $activeStep = 'home';
 
-    public $nextStep = null;
+    #[Locked]
+    public ?string $nextStep = null;
 
-    public $steps = [];
-
-    public $permissions = [];
+    #[Locked]
+    public array $steps = [];
 
     protected $listeners = [
         'stepReady' => 'setNextStep',

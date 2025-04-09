@@ -2,11 +2,13 @@
 
 namespace Devanox\Core\Livewire;
 
+use Livewire\Attributes\Locked;
 use Livewire\Component;
 
 class Permissions extends Component
 {
-    public $permissions = [];
+    #[Locked]
+    public array $permissions = [];
 
     public function mount()
     {

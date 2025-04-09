@@ -3,16 +3,21 @@
 namespace Devanox\Core\Livewire\Forms;
 
 use App\Models\User;
+use Livewire\Attributes\Locked;
 use Livewire\Form;
 
 class UserAccount extends Form
 {
+    #[Locked]
     public string $username;
 
+    #[Locked]
     public string $email;
 
+    #[Locked]
     public string $password;
 
+    #[Locked]
     public string $passwordConfirmation;
 
     public function rules(): array

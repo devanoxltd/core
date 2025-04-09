@@ -4,13 +4,16 @@ namespace Devanox\Core\Livewire;
 
 use App\Models\User;
 use Devanox\Core\Livewire\Forms\UserAccount;
+use Livewire\Attributes\Locked;
 use Livewire\Component;
 
 class AdminAccount extends Component
 {
+    #[Locked]
     public UserAccount $userAccount;
 
-    public $isCreated = false;
+    #[Locked]
+    public bool $isCreated = false;
 
     public function mount()
     {

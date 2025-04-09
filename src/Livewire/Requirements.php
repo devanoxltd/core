@@ -2,10 +2,12 @@
 
 namespace Devanox\Core\Livewire;
 
+use Livewire\Attributes\Locked;
 use Livewire\Component;
 
 class Requirements extends Component
 {
+    #[Locked]
     public $requirements = [];
 
     public function mount()

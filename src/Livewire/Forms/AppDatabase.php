@@ -2,20 +2,27 @@
 
 namespace Devanox\Core\Livewire\Forms;
 
+use Livewire\Attributes\Locked;
 use Livewire\Form;
 
 class AppDatabase extends Form
 {
+    #[Locked]
     public string $appUrl = '';
 
+    #[Locked]
     public string $host = '';
 
+    #[Locked]
     public string $port = '';
 
+    #[Locked]
     public string $database = '';
 
+    #[Locked]
     public string $dbUsername = '';
 
+    #[Locked]
     public string $dbPassword = '';
 
     public function rules(): array

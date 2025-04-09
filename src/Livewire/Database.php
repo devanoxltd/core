@@ -6,15 +6,18 @@ use App\Trait\Livewire\Toast;
 use Devanox\Core\Helpers\EnvEditor;
 use Devanox\Core\Livewire\Forms\AppDatabase;
 use Illuminate\Support\Facades\DB;
+use Livewire\Attributes\Locked;
 use Livewire\Component;
 
 class Database extends Component
 {
     use Toast;
 
+    #[Locked]
     public AppDatabase $form;
 
-    public $isConfigured = false;
+    #[Locked]
+    public bool $isConfigured = false;
 
     public function mount()
     {

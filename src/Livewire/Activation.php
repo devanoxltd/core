@@ -5,13 +5,16 @@ namespace Devanox\Core\Livewire;
 use Devanox\Core\Models\Licence;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Http;
+use Livewire\Attributes\Locked;
 use Livewire\Component;
 
 class Activation extends Component
 {
-    public $isActivated = false;
+    #[Locked]
+    public bool $isActivated = false;
 
-    public $licenseKey = '';
+    #[Locked]
+    public ?string $licenseKey = null;
 
     public function activate()
     {

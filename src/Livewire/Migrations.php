@@ -4,18 +4,24 @@ namespace Devanox\Core\Livewire;
 
 use Devanox\Core\Helpers\InstallerInfo;
 use Illuminate\Support\Facades\Artisan;
+use Livewire\Attributes\Locked;
 use Livewire\Component;
 
 class Migrations extends Component
 {
+    #[Locked]
     public $isMigrationRun = false;
 
+    #[Locked]
     public $isMigrationComplete = false;
 
+    #[Locked]
     public $isMigrationRunning = false;
 
+    #[Locked]
     public $isMigrationError = false;
 
+    #[Locked]
     public $isMigrationSuccess = false;
 
     public function runAppDbMigrateInstall()
