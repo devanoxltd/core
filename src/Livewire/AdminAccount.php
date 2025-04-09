@@ -9,7 +9,6 @@ use Livewire\Component;
 
 class AdminAccount extends Component
 {
-    #[Locked]
     public UserAccount $userAccount;
 
     #[Locked]

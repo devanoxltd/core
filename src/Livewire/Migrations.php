@@ -18,12 +18,6 @@ class Migrations extends Component
     #[Locked]
     public $isMigrationRunning = false;
 
-    #[Locked]
-    public $isMigrationError = false;
-
-    #[Locked]
-    public $isMigrationSuccess = false;
-
     public function runAppDbMigrateInstall()
     {
         if ($this->isMigrationRun) {

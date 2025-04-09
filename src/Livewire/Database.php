@@ -13,7 +13,6 @@ class Database extends Component
 {
     use Toast;
 
-    #[Locked]
     public AppDatabase $form;
 
     #[Locked]
