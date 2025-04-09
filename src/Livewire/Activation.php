@@ -13,7 +13,6 @@ class Activation extends Component
     #[Locked]
     public bool $isActivated = false;
 
-    #[Locked]
     public ?string $licenseKey = null;
 
     public function activate()
