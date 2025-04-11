@@ -64,6 +64,12 @@ class Activation extends Component
         }
     }
 
+    public function check() {
+        if (isLicenceValid()) {
+            $this->redirectRoute('login', navigate: true);
+        }
+    }
+
     public function openApp()
     {
         $this->redirectRoute('login', navigate: true);

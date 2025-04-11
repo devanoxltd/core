@@ -50,7 +50,7 @@
         </div>
 
         <div class="col-span-12 mt-2 flex justify-center">
-            <x-form.button.primary type="submit" wire:loading.attr="disabled" wire:target="submit">
+            <x-form.button.primary type="submit" wire:loading.attr="disabled" wire:target="submit" class="px-4 py-2 text-base">
                 @lang('core::install.steps.admin.form.submit')
             </x-form.button.primary>
         </div>

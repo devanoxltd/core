@@ -7,7 +7,7 @@
     </div>
     <div class="mt-4" wire:key="activation">
         @if (! $isActivated)
-            <p class="text-center text-sm text-gray-500 dark:text-gray-400" wire:key="description">
+            <p class="text-center text-sm text-gray-500 dark:text-gray-400" wire:key="description" wire:poll.visible="check">
                 @lang('core::install.steps.activation.description')
             </p>
             <form
@@ -31,13 +31,13 @@
                     </x-navigation.link>
                 </div>
                 <div class="col-span-12 mt-2 flex justify-center">
-                    <x-form.button.primary type="submit" wire:loading.attr="disabled" wire:target="activate">
+                    <x-form.button.primary type="submit" wire:loading.attr="disabled" wire:target="activate" class="px-4 py-2 text-base">
                         @lang('core::install.steps.activation.form.submit')
                     </x-form.button.primary>
                 </div>
             </form>
         @else
-            <p class="text-center text-green-600" wire:poll.visible="openApp" wire:key="success">
+            <p class="text-center text-green-600" wire:poll.visible.500ms="openApp" wire:key="success">
                 @lang('core::install.steps.activation.success')
             </p>
         @endif

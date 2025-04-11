@@ -31,14 +31,14 @@
             <x-form.error name="form.dbPassword" class="mt-2" />
         </div>
         <div class="col-span-12 flex justify-center mt-2">
-            <x-form.button.primary type="submit" wire:loading.attr="disabled" wire:target="submit">
+            <x-form.button.primary type="submit" wire:loading.attr="disabled" wire:target="submit" class="px-4 py-2 text-base">
                 @lang('core::install.steps.database.form.submit')
             </x-form.button.primary>
         </div>
     @else
         <div class="col-span-12 flex justify-center items-center text-center flex-col gap-2">
             <p class="text-green-600">@lang('core::install.steps.database.connection.success')</p>
-            <x-form.button.secondary wire:loading.attr="disabled" wire:target="edit" wire:click="edit">
+            <x-form.button.secondary wire:loading.attr="disabled" wire:target="edit" wire:click="edit" class="px-4 py-2 text-base">
                 @lang('core::install.steps.database.form.edit')
             </x-form.button.secondary>
         </div>

@@ -114,6 +114,7 @@
                 @case('migrations')
                 @case('admin')
                     <x-form.button.primary
+                        class="px-4 py-2 text-base"
                         wire:click="goToStep('{{ $nextStep }}')"
                         wire:loading.attr="disabled"
                         wire:target="goToStep"
@@ -126,6 +127,7 @@
                     @break
                 @case('finish')
                     <x-form.button.primary
+                        class="px-4 py-2 text-base"
                         wire:click="finish"
                         wire:loading.attr="disabled"
                         wire:target="finish"
