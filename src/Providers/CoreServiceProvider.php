@@ -107,6 +107,7 @@ class CoreServiceProvider extends ServiceProvider
                 \Devanox\Core\Commands\Module\AllList::class,
                 \Devanox\Core\Commands\Module\Disable::class,
                 \Devanox\Core\Commands\Module\Enable::class,
+                \Devanox\Core\Commands\Module\Migrate::class,
                 \Devanox\Core\Commands\CleanUp::class,
                 \Devanox\Core\Commands\LicenceCheck::class,
             ]);
