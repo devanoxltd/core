@@ -22,7 +22,7 @@ class Permissions extends Component
         foreach (config('core.permissions', []) as $folder => $permission) {
             $permissions->push([
                 'folder' => $folder,
-                'status' => substr(sprintf('%o', fileperms(base_path($folder))), -4) == $permission,
+                'status' => substr(sprintf('%o', fileperms(base_path($folder))), -4) >= $permission,
                 'permission' => $permission,
             ]);
         }
