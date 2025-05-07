@@ -16,10 +16,10 @@
         }
     ],
     "require": {
-        "php": "^8.2",
-        "laravel/framework": "^12.1",
-        "livewire/livewire": "^3.6",
-        "paquettg/php-html-parser": "^2.2"
+        "php": "^8.4",
+        "laravel/framework": "^v12.12.0",
+        "livewire/livewire": "^v3.6.3",
+        "paquettg/php-html-parser": "^3.1.1"
     },
     "autoload": {
         "psr-4": {
