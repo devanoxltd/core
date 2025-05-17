@@ -109,6 +109,7 @@ class CoreServiceProvider extends ServiceProvider
                 \Devanox\Core\Commands\Module\Enable::class,
                 \Devanox\Core\Commands\Module\Migrate::class,
                 \Devanox\Core\Commands\CleanUp::class,
+                \Devanox\Core\Commands\MigrateCheck::class,
                 \Devanox\Core\Commands\LicenceCheck::class,
             ]);
         }
@@ -130,7 +131,10 @@ class CoreServiceProvider extends ServiceProvider
 
     private function loads(): void
     {
-        $this->loadMigrationsFrom(__DIR__ . '/../Database/migrations');
+        if (! function_exists('tenant')) {
+            $this->loadMigrationsFrom(__DIR__ . '/../Database/migrations');
+        }
+
         $this->mergeConfigFrom(__DIR__ . '/../Config/config.php', $this->moduleNameLower);
         $this->loadViewsFrom(__DIR__ . '/../Resources/views', $this->moduleNameLower);
         $this->loadTranslationsFrom(__DIR__ . '/../Lang', $this->moduleNameLower);

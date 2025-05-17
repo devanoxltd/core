@@ -170,7 +170,7 @@ class Module
             'components-view' => self::forPath('views') . DIRECTORY_SEPARATOR . 'components',
             'config' => 'Config',
             'database' => 'Database',
-            'migrations' => self::forPath('database') . DIRECTORY_SEPARATOR . 'Migrations',
+            'migrations' => self::forPath('database') . DIRECTORY_SEPARATOR . (function_exists('tenant') && tenant() ? 'Migrations' . DIRECTORY_SEPARATOR . 'tenant' : 'Migrations'),
             'factories' => self::forPath('database') . DIRECTORY_SEPARATOR . 'Factories',
             'seeders' => self::forPath('database') . DIRECTORY_SEPARATOR . 'Seeders',
             'lang' => 'Lang',
