@@ -131,7 +131,7 @@ class CoreServiceProvider extends ServiceProvider
 
     private function loads(): void
     {
-        if (! function_exists('tenant')) {
+        if (! function_exists('tenant') || (function_exists('tenant') && ! tenant())) {
             $this->loadMigrationsFrom(__DIR__ . '/../Database/migrations');
         }
 
