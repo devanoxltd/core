@@ -4,6 +4,7 @@ namespace Devanox\Core\Support;
 
 use Devanox\Core\Events\ModuleDisabled;
 use Devanox\Core\Events\ModuleEnabled;
+use Illuminate\Support\Collection;
 
 class Module
 {
@@ -179,5 +180,20 @@ class Module
             'views' => self::forPath('resources') . DIRECTORY_SEPARATOR . 'views',
             default => '',
         };
+    }
+
+    public static function get(): Collection
+    {
+        $modules = self::all();
+
+        return collect($modules)->map(function ($module) {
+            return (object) [
+                'name' => $module,
+                'prefix' => self::prefix($module),
+                'enabled' => self::isEnabled($module),
+                'path' => self::path($module, true),
+                'namespace' => self::namespace($module),
+            ];
+        });
     }
 }
