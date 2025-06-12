@@ -64,6 +64,38 @@ class Module
         return $modules;
     }
 
+    public static function config(string $module, ?string $path = null): array
+    {
+        if (! $path) {
+            $path = self::path($module, true);
+        } else {
+            $path = $path . DIRECTORY_SEPARATOR . $module;
+        }
+
+        if (! file_exists($path)) {
+            return [];
+        }
+
+        $configFile = $path . DIRECTORY_SEPARATOR . 'Config' . DIRECTORY_SEPARATOR . 'config.php';
+
+        if (! file_exists($configFile)) {
+            return [];
+        }
+
+        return include $configFile;
+    }
+
+    public static function isValid(string $module, ?string $path = null): bool
+    {
+        $config = self::config($module, $path);
+
+        if (empty($config)) {
+            return false;
+        }
+
+        return isset($config['id']);
+    }
+
     /**
      * @return array<string>
      */
