@@ -255,7 +255,7 @@ class Module
             return null;
         }
 
-        $registeredServerUrl .= '/api/module/is-valid';
+        $registeredServerUrl .= '/api/module/is-registered-for-app';
 
         $response = Http::acceptJson()->post($registeredServerUrl, [
             'id' => $id,
