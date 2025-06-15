@@ -5,6 +5,7 @@ namespace Devanox\Core\Support;
 use Devanox\Core\Events\ModuleDisabled;
 use Devanox\Core\Events\ModuleEnabled;
 use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\Http;
 
 class Module
 {
@@ -219,13 +220,76 @@ class Module
         $modules = self::all();
 
         return collect($modules)->map(function ($module) {
+            $config = (object) self::config($module);
+
             return (object) [
+                'id' => $config->id ?? null,
                 'name' => $module,
                 'prefix' => self::prefix($module),
                 'enabled' => self::isEnabled($module),
                 'path' => self::path($module, true),
                 'namespace' => self::namespace($module),
+                'config' => $config,
+                'is_valid' => self::isValid($module),
             ];
         });
+    }
+
+    public static function isRegisterForApp(string $module, ?string $path = null): ?object
+    {
+        $config = self::config($module, $path);
+
+        if (empty($config)) {
+            return null;
+        }
+
+        $id = $config['id'] ?? null;
+
+        if (empty($id)) {
+            return null;
+        }
+
+        $registeredServerUrl = config('core.url.server');
+
+        if (empty($registeredServerUrl)) {
+            return null;
+        }
+
+        $registeredServerUrl .= '/api/module/is-valid';
+
+        $response = Http::acceptJson()->post($registeredServerUrl, [
+            'id' => $id,
+            'version' => $config['version'] ?? '0.0',
+            'app_id' => config('app.id'),
+            'app_version' => config('app.version'),
+            'domain' => request()->getHost(),
+            'ip' => request()->ip(),
+        ]);
+
+        if ($response->failed()) {
+            return null;
+        }
+
+        return $response->object();
+    }
+
+    public static function isRequirementsFullFill(string $module, ?string $path = null): bool
+    {
+        $requiredModules = self::config($module, $path)['requiredModules'] ?? [];
+
+        if (empty($requiredModules)) {
+            return true;
+        }
+
+        $modules = self::get()->where('enabled', true);
+        $moduleIds = $modules->pluck('id')->toArray();
+
+        foreach ($requiredModules as $requiredModule) {
+            if (! in_array($requiredModule, $moduleIds)) {
+                return false;
+            }
+        }
+
+        return true;
     }
 }

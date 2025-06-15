@@ -68,22 +68,12 @@ class CoreServiceProvider extends ServiceProvider
 
     private function checkModulesCapabilities(): void
     {
-        $modules = Module::getModules();
-        $moduleIds = [];
-
-        foreach ($modules as $module) {
-            $prefix = Module::prefix($module);
-            $id = config("{$prefix}.id", null);
-
-            if ($id !== null) {
-                $moduleIds[$id] = $module;
-            }
-        }
+        $modules = Module::get()->where('enabled', true);
+        $moduleIds = $modules->pluck('id')->toArray();
 
         // Check requirements
         foreach ($modules as $module) {
-            $prefix = Module::prefix($module);
-            $requiredModules = config("{$prefix}.requiredModules", []);
+            $requiredModules = $module->config->requiredModules ?? [];
 
             if (empty($requiredModules)) {
                 continue;
@@ -91,8 +81,8 @@ class CoreServiceProvider extends ServiceProvider
 
             foreach ($requiredModules as $requiredModule) {
                 if (! in_array($requiredModule, array_keys($moduleIds))) {
-                    Module::disable($module);
-                    $message = "Module {$module} requires a module that is not installed. Module {$module} is disabled. Required module ID: {$requiredModule}";
+                    Module::disable($module->name);
+                    $message = "Module {$module->name} requires a module that is not installed. Module {$module->name} is disabled. Required module ID: {$requiredModule}";
                     Log::notice($message);
                     throw new Exception($message);
                 }

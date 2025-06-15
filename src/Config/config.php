@@ -70,4 +70,8 @@ return [
         'dev/*',
         'file/*',
     ],
+
+    'url' => [
+        'server' => 'https://devanox-activate.test', // TODO : update this URL to your production URL https://devanox.com
+    ],
 ];

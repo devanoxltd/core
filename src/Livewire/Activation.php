@@ -22,17 +22,20 @@ class Activation extends Component
         ]);
 
         try {
-            // TODO : update this URL to your production URL
-            // $verifyUrl = 'https://devanox.com';
-            $verifyUrl = 'https://devanox-activate.test';
+            $verifyUrl = config('core.url.server');
+
+            if (empty($verifyUrl)) {
+                throw new \Exception(__('core::install.steps.activation.error'));
+            }
+
             $verifyUrl .= '/api/purchase/verify';
 
             $response = Http::acceptJson()->post($verifyUrl, [
-                'product_id' => config('app.id'),
+                'id' => config('app.id'),
+                'version' => config('app.version'),
                 'licence' => $this->licenseKey,
                 'domain' => request()->getHost(),
                 'ip' => request()->ip(),
-                'version' => config('app.version'),
             ]);
 
             if ($response->failed()) {
