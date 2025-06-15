@@ -94,7 +94,7 @@ class Module
             return false;
         }
 
-        return isset($config['id']);
+        return $config['id'] ?? false;
     }
 
     /**
