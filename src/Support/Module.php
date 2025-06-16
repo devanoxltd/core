@@ -130,6 +130,10 @@ class Module
 
     public static function enable(string $module): void
     {
+        if (! self::isRequirementsFullFill($module)) {
+            throw new \Exception(__('core::module.requirements_not_fulfilled', ['module' => $module]));
+        }
+
         $path = self::path($module, true, true);
 
         if (! file_exists($path)) {
@@ -146,6 +150,19 @@ class Module
         if (file_exists($path)) {
             unlink($path);
         }
+
+        $moduleIds = self::get()->where('enabled', true)
+        ->where('name', '!=', $module);
+
+        $id = self::config($module)['id'];
+
+        $moduleIds->each(function ($module) use ($id) {
+            $requiredModules = $module->config->requiredModules ?? [];
+
+            if (in_array($id, $requiredModules)) {
+                self::disable($module->name);
+            }
+        });
 
         event(new ModuleDisabled($module));
     }
