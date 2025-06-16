@@ -10,4 +10,4 @@ if (!isAppInstalled()) {
 Route::get('avatar/{provider}/{username?}', [AvatarController::class, 'index'])
     ->name('avatar');
 
-Route::view('licence', 'core::licence')->name('licence');
+Route::view('license', 'core::license')->name('license');

@@ -2,43 +2,43 @@
 
 namespace Devanox\Core\Commands;
 
-use Devanox\Core\Models\Licence;
+use Devanox\Core\Models\License;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Http;
 
-class LicenceCheck extends Command
+class LicenseCheck extends Command
 {
     /**
      * The name and signature of the console command.
      *
      * @var string
      */
-    protected $signature = 'devanox:licence-check';
+    protected $signature = 'devanox:license-check';
 
     /**
      * The console command description.
      *
      * @var string
      */
-    protected $description = 'Check application licence status';
+    protected $description = 'Check application license status';
 
     /**
      * Execute the console command.
      */
     public function handle(): int
     {
-        $licences = Licence::get();
+        $licenses = License::get();
 
-        foreach ($licences as $licence) {
-            if ($licence->isValid()) {
-                $this->checkLicenceStatus($licence);
+        foreach ($licenses as $license) {
+            if ($license->isValid()) {
+                $this->checkLicenseStatus($license);
             }
         }
 
         return Command::SUCCESS;
     }
 
-    private function checkLicenceStatus(Licence $licence): void
+    private function checkLicenseStatus(License $license): void
     {
         // TODO : update this URL to your production URL
         // $verifyUrl = 'https://devanox.com';
@@ -46,29 +46,29 @@ class LicenceCheck extends Command
         $verifyUrl .= '/api/purchase/verify';
 
         $response = Http::acceptJson()->post($verifyUrl, [
-            'licence' => $licence->key,
-            'domain' => $licence->domain,
-            'ip' => $licence->ip,
+            'license' => $license->key,
+            'domain' => $license->domain,
+            'ip' => $license->ip,
             'version' => config('app.version'),
         ]);
 
         if ($response->failed()) {
-            $licence->delete();
+            $license->delete();
         }
 
         if ($response->json('status') !== 'success') {
-            $licence->delete();
+            $license->delete();
         }
 
         $responseData = $response->object();
         if ($responseData->status !== 'success') {
-            $licence->delete();
+            $license->delete();
         }
 
-        $licence->purchase_code = $responseData->data->purchase_code;
-        $licence->type = $responseData->data->type;
-        $licence->purchase_at = $responseData->data->purchase_at;
-        $licence->support_until = $responseData->data->support_until;
-        $licence->save();
+        $license->purchase_code = $responseData->data->purchase_code;
+        $license->type = $responseData->data->type;
+        $license->purchase_at = $responseData->data->purchase_at;
+        $license->support_until = $responseData->data->support_until;
+        $license->save();
     }
 }

@@ -5,7 +5,7 @@ namespace Devanox\Core\Models;
 use App\Trait\Models\CentralConnection;
 use Illuminate\Database\Eloquent\Model;
 
-class Licence extends Model
+class License extends Model
 {
     use CentralConnection;
 
@@ -24,9 +24,9 @@ class Licence extends Model
         ];
     }
 
-    public static function isValidLicence(?string $module = null): bool
+    public static function isValidLicense(?string $module = null): bool
     {
-        $licence = self::query()
+        $license = self::query()
             ->when(!$module, function ($query) {
                 return $query->where('is_module', false);
             })
@@ -35,8 +35,8 @@ class Licence extends Model
             })
             ->first();
 
-        if ($licence) {
-            return $licence->key && $licence->purchase_at && $licence->support_until;
+        if ($license) {
+            return $license->key && $license->purchase_at && $license->support_until;
         }
 
         return false;

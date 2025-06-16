@@ -6,7 +6,7 @@ use Closure;
 use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\Response;
 
-class Licence
+class License
 {
     /**
      * Handle an incoming request.
@@ -20,7 +20,7 @@ class Licence
         }
 
         if (isAppInstalled()) {
-            if (isLicenceValid()) {
+            if (isLicenseValid()) {
                 return $next($request);
             }
 
@@ -28,11 +28,11 @@ class Licence
                 return response()->json(['message' => __('core::install.notActivated')], 403);
             }
 
-            if ($request->is('licence') || $request->is('livewire/*')) {
+            if ($request->is('license') || $request->is('livewire/*')) {
                 return $next($request);
             }
 
-            return redirect()->route('devanox.licence');
+            return redirect()->route('devanox.license');
         }
 
         return $next($request);

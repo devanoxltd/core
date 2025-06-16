@@ -1,6 +1,6 @@
 <?php
 
-use Devanox\Core\Models\Licence;
+use Devanox\Core\Models\License;
 use Devanox\Core\Support\Module;
 use Illuminate\Support\Facades\Cache;
 
@@ -80,11 +80,11 @@ if (! function_exists('isAppInstalled')) {
     }
 }
 
-if (! function_exists('isLicenceValid')) {
-    function isLicenceValid(): bool
+if (! function_exists('isLicenseValid')) {
+    function isLicenseValid(): bool
     {
-        return Cache::remember('licence.valid', 60, function () {
-            return Licence::isValidLicence();
+        return Cache::remember('license.valid', 60, function () {
+            return License::isValidLicense();
         });
     }
 }

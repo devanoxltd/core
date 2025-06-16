@@ -3,7 +3,7 @@
 namespace Devanox\Core\Providers;
 
 use Devanox\Core\Http\Middleware\InstallApp;
-use Devanox\Core\Http\Middleware\Licence;
+use Devanox\Core\Http\Middleware\License;
 use Devanox\Core\Support\Module;
 use Exception;
 use Illuminate\Contracts\Http\Kernel;
@@ -58,7 +58,7 @@ class CoreServiceProvider extends ServiceProvider
         // declare this method in the service provider
         // following is an example of how to register a schedule
         $schedule = $this->app->make(\Illuminate\Console\Scheduling\Schedule::class);
-        $schedule->command('devanox:licence-check')
+        $schedule->command('devanox:license-check')
         ->dailyAt('08:00')
         ->timezone('UTC')
         ->pingBefore('https://devanox-activate.test') // TODO : update this URL to your production URL
@@ -100,7 +100,7 @@ class CoreServiceProvider extends ServiceProvider
                 \Devanox\Core\Commands\Module\Migrate::class,
                 \Devanox\Core\Commands\CleanUp::class,
                 \Devanox\Core\Commands\MigrateCheck::class,
-                \Devanox\Core\Commands\LicenceCheck::class,
+                \Devanox\Core\Commands\LicenseCheck::class,
             ]);
         }
     }
@@ -109,7 +109,7 @@ class CoreServiceProvider extends ServiceProvider
     {
         $middlewares = [
             InstallApp::class,
-            Licence::class,
+            License::class,
         ];
 
         foreach ($middlewares as $middleware) {

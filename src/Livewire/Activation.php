@@ -2,7 +2,7 @@
 
 namespace Devanox\Core\Livewire;
 
-use Devanox\Core\Models\Licence;
+use Devanox\Core\Models\License;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Http;
 use Livewire\Attributes\Locked;
@@ -33,7 +33,7 @@ class Activation extends Component
             $response = Http::acceptJson()->post($verifyUrl, [
                 'id' => config('app.id'),
                 'version' => config('app.version'),
-                'licence' => $this->licenseKey,
+                'license' => $this->licenseKey,
                 'domain' => request()->getHost(),
                 'ip' => request()->ip(),
             ]);
@@ -48,18 +48,18 @@ class Activation extends Component
                 throw new \Exception($responseData->message ?? __('core::install.steps.activation.error'));
             }
 
-            $licence = Licence::query()
+            $license = License::query()
                 ->where('key', $this->licenseKey)
-                ->first() ?: new Licence();
+                ->first() ?: new License();
 
-            $licence->key = $responseData->data->id;
-            $licence->purchase_code = $responseData->data->purchase_code;
-            $licence->type = $responseData->data->type;
-            $licence->purchase_at = $responseData->data->purchase_at;
-            $licence->support_until = $responseData->data->support_until;
-            $licence->save();
+            $license->key = $responseData->data->id;
+            $license->purchase_code = $responseData->data->purchase_code;
+            $license->type = $responseData->data->type;
+            $license->purchase_at = $responseData->data->purchase_at;
+            $license->support_until = $responseData->data->support_until;
+            $license->save();
 
-            Cache::forget('licence.valid');
+            Cache::forget('license.valid');
 
             $this->isActivated = true;
         } catch (\Exception $e) {
@@ -68,7 +68,7 @@ class Activation extends Component
     }
 
     public function check() {
-        if (isLicenceValid()) {
+        if (isLicenseValid()) {
             $this->redirectRoute('login', navigate: true);
         }
     }
