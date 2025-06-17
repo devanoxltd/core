@@ -237,6 +237,12 @@ class Module
         $modules = self::all();
 
         return collect($modules)->map(function ($module) {
+            return self::info($module);
+        });
+    }
+
+    public static function info(string $module): ?object
+    {
             $config = (object) self::config($module);
 
             return (object) [
@@ -249,7 +255,6 @@ class Module
                 'config' => $config,
                 'is_valid' => self::isValid($module),
             ];
-        });
     }
 
     public static function isRegisterForApp(string $module, ?string $path = null): ?object
