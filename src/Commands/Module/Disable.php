@@ -29,18 +29,14 @@ class Disable extends Command
         $module = $this->argument('module');
 
         if (! $module) {
-            $modules = Module::all();
-
-            foreach ($modules as $module) {
-                if (Module::isDisabled($module)) {
-                    $this->warn("Module {$module} is already disabled!");
-
-                    continue;
+            Module::get()->each(function ($module) {
+                if ($module->enabled) {
+                    Module::disable($module->name);
+                    $this->info("Module {$module->name} disabled successfully!");
+                } else {
+                    $this->warn("Module {$module->name} is already disabled!");
                 }
-
-                Module::disable($module);
-                $this->info("Module {$module} disabled successfully!");
-            }
+            });
 
             $this->newLine();
             $this->line('---------------------------------');

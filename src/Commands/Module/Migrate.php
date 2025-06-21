@@ -26,9 +26,7 @@ class Migrate extends Command
      */
     public function handle()
     {
-        $modules = collect(Module::getModules())->map(function ($item, $key) {
-            return ['name' => $item];
-        });
+        $modules = Module::get()->where('enabled', true);
 
         $module = $this->argument('module');
 
@@ -42,9 +40,9 @@ class Migrate extends Command
         }
 
         $modules->each(function ($module) {
-            $this->info('Migrating module: ' . $module['name']);
+            $this->info('Migrating module: ' . $module->name);
 
-            $this->runMigrateCommand($module['name']);
+            $this->runMigrateCommand($module->name);
         });
 
         return Command::SUCCESS;

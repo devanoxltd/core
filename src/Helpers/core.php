@@ -2,6 +2,7 @@
 
 use Devanox\Core\Models\License;
 use Devanox\Core\Support\Module;
+use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Cache;
 
 if (! function_exists('modulePath')) {
@@ -12,22 +13,16 @@ if (! function_exists('modulePath')) {
 }
 
 if (! function_exists('module')) {
-    /**
-     * @return array<string>
-     */
-    function module(): array
+    function module(): Collection
     {
-        return Module::all();
+        return Module::get();
     }
 }
 
 if (! function_exists('modules')) {
-    /**
-     * @return array<string>
-     */
-    function modules(?bool $disable = false): array
+    function modules(?bool $disable = false): Collection
     {
-        return Module::getModules($disable);
+        return Module::get()->where('enabled', $disable ? false : true);
     }
 }
 

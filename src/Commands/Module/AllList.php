@@ -26,12 +26,12 @@ class AllList extends Command
      */
     public function handle(): int
     {
-        $modules = Module::all();
+        $modules = Module::get();
 
         $this->info('Modules:');
-        $this->table(['Module', 'Status'], array_map(function (string $module) {
-            return [$module, Module::isEnabled($module) ? 'Enabled' : 'Disabled'];
-        }, $modules));
+        $this->table(['Module', 'Status'], array_map(function (object $module) {
+            return [$module->name, $module->enabled ? 'Enabled' : 'Disabled'];
+        }, $modules->toArray()));
 
         return Command::SUCCESS;
     }

@@ -36,16 +36,16 @@ class Module
     {
         $providers = [];
 
-        $modules = self::getModules();
+        $modules = self::get()->where('enabled', true);
 
         foreach ($modules as $module) {
-            $providerPath = self::path($module, true);
+            $providerPath = self::path($module->name, true);
             $providerPath .= DIRECTORY_SEPARATOR . 'App' . DIRECTORY_SEPARATOR . 'Providers';
             $providerFiles = glob($providerPath . DIRECTORY_SEPARATOR . '*ServiceProvider.php');
 
             foreach ($providerFiles as $providerFile) {
                 $provider = basename($providerFile, '.php');
-                $providers[] = self::namespace($module) . "\\App\\Providers\\{$provider}";
+                $providers[] = self::namespace($module->name) . "\\App\\Providers\\{$provider}";
             }
         }
 
@@ -96,22 +96,6 @@ class Module
         }
 
         return $config['id'] ?? false;
-    }
-
-    /**
-     * @return array<string>
-     */
-    public static function getModules(?bool $disable = false): array
-    {
-        $modules = self::all();
-
-        $modules = array_filter($modules, function (string $module) use ($disable) {
-            $file = file_exists(self::path($module, true, true));
-
-            return $disable ? ! $file : $file;
-        });
-
-        return $modules;
     }
 
     public static function exist(string $module): bool
@@ -176,15 +160,15 @@ class Module
     {
         $seeders = [];
 
-        $modules = self::getModules();
+        $modules = self::get()->where('enabled', true);
 
         foreach ($modules as $module) {
-            $seederPath = self::path($module, true);
+            $seederPath = self::path($module->name, true);
             $seederPath .= DIRECTORY_SEPARATOR . 'Database' . DIRECTORY_SEPARATOR . 'Seeders';
             $seederFile = $seederPath . DIRECTORY_SEPARATOR . 'DatabaseSeeder.php';
 
             if (file_exists($seederFile)) {
-                $seeders[] = self::namespace($module) . '\\Database\\Seeders\\DatabaseSeeder';
+                $seeders[] = self::namespace($module->name) . '\\Database\\Seeders\\DatabaseSeeder';
             }
         }
 

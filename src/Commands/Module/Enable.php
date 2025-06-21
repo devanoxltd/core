@@ -29,18 +29,14 @@ class Enable extends Command
         $module = $this->argument('module');
 
         if (! $module) {
-            $modules = Module::all();
-
-            foreach ($modules as $module) {
-                if (Module::isEnabled($module)) {
-                    $this->warn("Module {$module} is already enabled!");
-
-                    continue;
+            Module::get()->each(function ($module) {
+                if ($module->enabled) {
+                    $this->warn("Module {$module->name} is already enabled!");
+                } else {
+                    Module::enable($module->name);
+                    $this->info("Module {$module->name} enabled successfully!");
                 }
-
-                Module::enable($module);
-                $this->info("Module {$module} enabled successfully!");
-            }
+            });
 
             $this->newLine();
             $this->line('---------------------------------');
