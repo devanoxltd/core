@@ -123,7 +123,10 @@ class Module
 
         if (! file_exists($path)) {
             touch($path);
-            Artisan::call('module:migrate', ['module' => $module]);
+            Artisan::call('migrate', [
+                '--path' => str(self::pathFor($module, 'migrations'))->replace(base_path(DIRECTORY_SEPARATOR), '')->__toString(),
+                '--force' => true,
+            ]);
         }
 
         event(new ModuleEnabled($module));
