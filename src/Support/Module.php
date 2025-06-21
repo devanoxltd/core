@@ -5,6 +5,7 @@ namespace Devanox\Core\Support;
 use Devanox\Core\Events\ModuleDisabled;
 use Devanox\Core\Events\ModuleEnabled;
 use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Http;
 
 class Module
@@ -138,6 +139,7 @@ class Module
 
         if (! file_exists($path)) {
             touch($path);
+            Artisan::call('module:migrate', ['module' => $module]);
         }
 
         event(new ModuleEnabled($module));
