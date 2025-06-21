@@ -86,7 +86,6 @@ return [
                 'submit' => 'Activate Application',
             ],
             'success' => 'Application activated successfully.',
-            'error' => 'Something went wrong. Please try again. If the problem persists, please contact support.',
         ],
         'finish' => [
             'title' => 'Finish',
