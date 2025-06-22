@@ -22,7 +22,7 @@
             <x-data.table.tr>
                 <x-data.table.td class="">@lang('core::app.about.system.laravel_version')</x-data.table.td>
                 <x-data.table.td class="text-right">
-                    {{ Illuminate\Foundation\Application::VERSION }}
+                    {{ app()->version() }}
                 </x-data.table.td>
             </x-data.table.tr>
             <x-data.table.tr>
