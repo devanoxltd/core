@@ -2,6 +2,7 @@
 
 namespace Devanox\Core\Commands\Module;
 
+use Devanox\Core\Models\License;
 use Devanox\Core\Support\Module;
 use Illuminate\Console\Command;
 
@@ -29,12 +30,19 @@ class Enable extends Command
         $module = $this->argument('module');
 
         if (! $module) {
-            Module::get()->each(function ($module) {
+            $licenses = License::where('is_module', true)
+                ->get();
+            Module::get()->each(function ($module) use ($licenses) {
                 if ($module->enabled) {
                     $this->warn("Module {$module->name} is already enabled!");
                 } else {
-                    Module::enable($module->name);
-                    $this->info("Module {$module->name} enabled successfully!");
+                    $license = $licenses->firstWhere('module_name', $module->name);
+                    if (! $license) {
+                        $this->error("Module {$module->name} is not licensed!");
+                    } else {
+                        Module::enable($module->name);
+                        $this->info("Module {$module->name} enabled successfully!");
+                    }
                 }
             });
 
@@ -55,6 +63,16 @@ class Enable extends Command
             $this->warn("Module {$module} is already enabled!");
 
             return Command::SUCCESS;
+        }
+
+        $license = License::where('is_module', true)
+            ->where('module_name', $module)
+            ->first();
+
+        if (! $license) {
+            $this->error("Module {$module} is not licensed!");
+
+            return Command::FAILURE;
         }
 
         Module::enable($module);
