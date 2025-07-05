@@ -53,7 +53,7 @@ class Migrate extends Command
 
         $path = Module::pathFor($module, 'migrations');
 
-        if (getTenant()) {
+        if (tenant()) {
             $path .= DIRECTORY_SEPARATOR . 'tenant';
         }
 
