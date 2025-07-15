@@ -16,6 +16,7 @@ return [
         'license' => [
             'title' => 'License Information',
             'key' => 'License Key',
+            'purchase_code' => 'Purchase Code',
             'purchase_at' => 'Purchase Date',
             'support_until' => 'Support Expire Date',
             'type' => 'License Type',

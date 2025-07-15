@@ -62,7 +62,7 @@
                     </x-data.table.td>
                 </x-data.table.tr>
                 <x-data.table.tr>
-                    <x-data.table.td class="">@lang('core::app.about.license.purchase_at')</x-data.table.td>
+                    <x-data.table.td class="">@lang('core::app.about.license.purchase_code')</x-data.table.td>
                     <x-data.table.td class="flex justify-end text-right">
                         <div class="flex items-center" x-data="{ show: false }">
                             <div :class="{'blur-sm': !show}">
