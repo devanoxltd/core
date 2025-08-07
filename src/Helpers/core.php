@@ -22,7 +22,7 @@ if (! function_exists('isAppInstalled')) {
 if (! function_exists('isLicenseValid')) {
     function isLicenseValid(): bool
     {
-        return Cache::remember('license.valid', 60, function () {
+        return Cache::remember('license.valid', 43200, function () {
             return License::isValidLicense();
         });
     }
