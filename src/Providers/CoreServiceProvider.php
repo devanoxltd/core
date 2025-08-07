@@ -61,7 +61,7 @@ class CoreServiceProvider extends ServiceProvider
         $schedule->command('devanox:license-check')
         ->dailyAt('08:00')
         ->timezone('UTC')
-        ->pingBefore('https://devanox-activate.test') // TODO : update this URL to your production URL
+        ->pingBefore(config('core.url.server'))
         ->environments(['production'])
         ->runInBackground();
     }

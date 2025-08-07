@@ -40,9 +40,13 @@ class LicenseCheck extends Command
 
     private function checkLicenseStatus(License $license): void
     {
-        // TODO : update this URL to your production URL
-        // $verifyUrl = 'https://devanox.com';
-        $verifyUrl = 'https://devanox-activate.test';
+        $verifyUrl = config('core.url.server');
+
+        if (empty($verifyUrl)) {
+            $this->error(__('core::app.exception.server_url'));
+            return;
+        }
+
         $verifyUrl .= '/api/purchase/verify';
 
         $response = Http::acceptJson()->post($verifyUrl, [
