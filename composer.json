@@ -19,7 +19,7 @@
         "php": "^8.4",
         "laravel/framework": "^12.25",
         "livewire/livewire": "^3.6",
-        "devanoxltd/php-html-parser": "^1.0"
+        "devanoxltd/php-html-parser": "^1.1"
     },
     "autoload": {
         "psr-4": {

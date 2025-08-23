@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "bf48e34741c74d711c3153bb03ffaf16",
+    "content-hash": "cab06f0dfbca6d454165ba36504c7c5b",
     "packages": [
         {
             "name": "brick/math",
@@ -137,20 +137,20 @@
         },
         {
             "name": "devanoxltd/php-html-parser",
-            "version": "1.0.0",
+            "version": "1.1.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/devanoxltd/php-html-parser.git",
-                "reference": "c8e0d8390cf859273f17abcb468170ee54d2ce54"
+                "reference": "dab76062c5665837a058aedfc63c2dc733e515e9"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/devanoxltd/php-html-parser/zipball/c8e0d8390cf859273f17abcb468170ee54d2ce54",
-                "reference": "c8e0d8390cf859273f17abcb468170ee54d2ce54",
+                "url": "https://api.github.com/repos/devanoxltd/php-html-parser/zipball/dab76062c5665837a058aedfc63c2dc733e515e9",
+                "reference": "dab76062c5665837a058aedfc63c2dc733e515e9",
                 "shasum": ""
             },
             "require": {
-                "devanoxltd/string-encoder": "^1.0",
+                "devanoxltd/string-encoder": "^1.1",
                 "ext-curl": "*",
                 "ext-mbstring": "*",
                 "ext-zlib": "*",
@@ -190,7 +190,7 @@
                 "parser"
             ],
             "support": {
-                "source": "https://github.com/devanoxltd/php-html-parser/tree/1.0.0"
+                "source": "https://github.com/devanoxltd/php-html-parser/tree/1.1.0"
             },
             "funding": [
                 {
@@ -198,20 +198,20 @@
                     "type": "github"
                 }
             ],
-            "time": "2025-08-22T16:34:48+00:00"
+            "time": "2025-08-23T07:01:48+00:00"
         },
         {
             "name": "devanoxltd/string-encoder",
-            "version": "1.0.0",
+            "version": "1.1.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/devanoxltd/string-encoder.git",
-                "reference": "ab9f21813ce0404f466e251de6b5e506a994b2a9"
+                "reference": "be0598c7d76b86a9fa48b4b4203ceb451fbc6473"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/devanoxltd/string-encoder/zipball/ab9f21813ce0404f466e251de6b5e506a994b2a9",
-                "reference": "ab9f21813ce0404f466e251de6b5e506a994b2a9",
+                "url": "https://api.github.com/repos/devanoxltd/string-encoder/zipball/be0598c7d76b86a9fa48b4b4203ceb451fbc6473",
+                "reference": "be0598c7d76b86a9fa48b4b4203ceb451fbc6473",
                 "shasum": ""
             },
             "require": {
@@ -248,7 +248,7 @@
                 "string"
             ],
             "support": {
-                "source": "https://github.com/devanoxltd/string-encoder/tree/1.0.0"
+                "source": "https://github.com/devanoxltd/string-encoder/tree/1.1.0"
             },
             "funding": [
                 {
@@ -256,7 +256,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2025-08-22T15:01:16+00:00"
+            "time": "2025-08-23T06:58:22+00:00"
         },
         {
             "name": "dflydev/dot-access-data",
