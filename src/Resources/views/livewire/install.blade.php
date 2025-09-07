@@ -15,7 +15,7 @@
             ])
             wire:key="home"
         >
-            <x-icon name="solid.home" class="size-5" />
+            <x-ui.icon name="solid.home" class="size-5" />
         </div>
         <div class="flex-1 border-t-4 border-gray-300 dark:border-gray-600"></div>
         <div
@@ -26,7 +26,7 @@
             ])
             wire:key="requirements"
         >
-            <x-icon name="solid.list-check" class="size-5" />
+            <x-ui.icon name="solid.list-check" class="size-5" />
         </div>
         <div class="flex-1 border-t-4 border-gray-300 dark:border-gray-600"></div>
         <div
@@ -37,7 +37,7 @@
             ])
             wire:key="permissions"
         >
-            <x-icon name="solid.folder" class="size-5" />
+            <x-ui.icon name="solid.folder" class="size-5" />
         </div>
 
         <div class="flex-1 border-t-4 border-gray-300 dark:border-gray-600"></div>
@@ -49,7 +49,7 @@
             ])
             wire:key="database"
         >
-            <x-icon name="solid.database" class="size-5" />
+            <x-ui.icon name="solid.database" class="size-5" />
         </div>
 
         <div class="flex-1 border-t-4 border-gray-300 dark:border-gray-600"></div>
@@ -61,7 +61,7 @@
             ])
             wire:key="admin"
         >
-            <x-icon name="solid.settings" class="size-5" />
+            <x-ui.icon name="solid.settings" class="size-5" />
         </div>
 
         <div class="flex-1 border-t-4 border-gray-300 dark:border-gray-600"></div>
@@ -73,7 +73,7 @@
             ])
             wire:key="finish"
         >
-            <x-icon name="solid.check" class="size-5" />
+            <x-ui.icon name="solid.check" class="size-5" />
         </div>
 
         <div class="flex-1 border-t-4 border-gray-300 dark:border-gray-600"></div>

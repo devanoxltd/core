@@ -51,8 +51,8 @@
                                 {{ $license->key }}
                             </div>
                             <x-form.button.simple class="ml-2 flex items-center px-1" @click="show = !show">
-                                <x-icon name="solid.eye" class="inline size-4" x-show="!show" />
-                                <x-icon name="solid.eye-slash" class="inline size-4" x-show="show" />
+                                <x-ui.icon name="solid.eye" class="inline size-4" x-show="!show" />
+                                <x-ui.icon name="solid.eye-slash" class="inline size-4" x-show="show" />
                             </x-form.button.simple>
                             <x-utilities.copy-to-clipboard
                                 class="ml-2"
@@ -69,8 +69,8 @@
                                 {{ $license->purchase_code }}
                             </div>
                             <x-form.button.simple class="ml-2 flex items-center px-1" @click="show = !show">
-                                <x-icon name="solid.eye" class="inline size-4" x-show="!show" />
-                                <x-icon name="solid.eye-slash" class="inline size-4" x-show="show" />
+                                <x-ui.icon name="solid.eye" class="inline size-4" x-show="!show" />
+                                <x-ui.icon name="solid.eye-slash" class="inline size-4" x-show="show" />
                             </x-form.button.simple>
                             <x-utilities.copy-to-clipboard
                                 class="ml-2"

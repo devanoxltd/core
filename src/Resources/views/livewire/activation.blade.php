@@ -17,7 +17,7 @@
                 wire:target="activate"
                 wire:key="activation-form"
             >
-                {{-- <x-icon name="outline.loading-02" class="size-5 animate-spin" /> --}}
+                {{-- <x-ui.icon name="outline.loading-02" class="size-5 animate-spin" /> --}}
                 <div class="col-span-12">
                     <x-form.label for="licenseKey" :value="__('core::install.steps.activation.form.licenseKey')" />
                     <x-form.text id="licenseKey" class="mt-1 w-full" wire:model="licenseKey" />

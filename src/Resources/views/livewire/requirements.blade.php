@@ -21,7 +21,7 @@
                             </td>
                             <td class="whitespace-nowrap pr-2 py-2 font-medium text-gray-900 dark:text-white text-right flex items-center justify-end">
                                 @if ($requirement['status'])
-                                    <x-icon name="solid.check" class="text-green-500 dark:text-green-400 size-4" />
+                                    <x-ui.icon name="solid.check" class="text-green-500 dark:text-green-400 size-4" />
                                 @else
                                     <x-form.button
                                         wire:click="checkRequirements"
@@ -30,9 +30,9 @@
                                         wire:loading.class="opacity-50 cursor-not-allowed"
                                         class="mr-1 text-xs text-white p-0 size-6 flex items-center"
                                     >
-                                            <x-icon name="solid.refresh" class="size-5" />
+                                            <x-ui.icon name="solid.refresh" class="size-5" />
                                     </x-form.button>
-                                    <x-icon name="solid.x" class="text-red-500 dark:text-red-400 size-4" />
+                                    <x-ui.icon name="solid.x" class="text-red-500 dark:text-red-400 size-4" />
                                 @endif
                             </td>
                         </tr>
