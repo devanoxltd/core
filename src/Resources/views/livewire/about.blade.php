@@ -50,10 +50,12 @@
                             <div :class="{'blur-sm': !show}">
                                 {{ $license->key }}
                             </div>
-                            <x-form.button.simple class="ml-2 flex items-center px-1" @click="show = !show">
-                                <x-ui.icon name="solid.eye" class="inline size-4" x-show="!show" />
-                                <x-ui.icon name="solid.eye-slash" class="inline size-4" x-show="show" />
-                            </x-form.button.simple>
+                            <x-ui.form.button class="ml-2" @click="show = !show" color="gray" size="xs">
+                                <x-slot:before>
+                                    <x-ui.icon name="solid.eye" class="inline size-4" x-show="!show" />
+                                    <x-ui.icon name="solid.eye-slash" class="inline size-4" x-show="show" />
+                                </x-slot>
+                            </x-ui.form.button>
                             <x-utilities.copy-to-clipboard
                                 class="ml-2"
                                 :text="$license->key"
@@ -68,10 +70,12 @@
                             <div :class="{'blur-sm': !show}">
                                 {{ $license->purchase_code }}
                             </div>
-                            <x-form.button.simple class="ml-2 flex items-center px-1" @click="show = !show">
-                                <x-ui.icon name="solid.eye" class="inline size-4" x-show="!show" />
-                                <x-ui.icon name="solid.eye-slash" class="inline size-4" x-show="show" />
-                            </x-form.button.simple>
+                            <x-ui.form.button class="ml-2" @click="show = !show" color="gray" size="xs">
+                                <x-slot:before>
+                                    <x-ui.icon name="solid.eye" class="inline size-4" x-show="!show" />
+                                    <x-ui.icon name="solid.eye-slash" class="inline size-4" x-show="show" />
+                                </x-slot>
+                            </x-ui.form.button>
                             <x-utilities.copy-to-clipboard
                                 class="ml-2"
                                 :text="$license->purchase_code"

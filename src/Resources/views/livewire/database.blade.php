@@ -30,17 +30,17 @@
             <x-form.input id="form.dbPassword" type="password" class="mt-1 w-full" wire:model="form.dbPassword" />
             <x-form.error name="form.dbPassword" class="mt-2" />
         </div>
-        <div class="col-span-12 flex justify-center mt-2">
-            <x-form.button.primary type="submit" wire:loading.attr="disabled" wire:target="submit" class="px-4 py-2 text-base">
+        <div class="col-span-12 mt-2 flex justify-center">
+            <x-ui.form.button type="submit" wire:loading.attr="disabled" wire:target="submit" size="sm">
                 @lang('core::install.steps.database.form.submit')
-            </x-form.button.primary>
+            </x-ui.form.button>
         </div>
     @else
-        <div class="col-span-12 flex justify-center items-center text-center flex-col gap-2">
+        <div class="col-span-12 flex flex-col items-center justify-center gap-2 text-center">
             <p class="text-green-600">@lang('core::install.steps.database.connection.success')</p>
-            <x-form.button.secondary wire:loading.attr="disabled" wire:target="edit" wire:click="edit" class="px-4 py-2 text-base">
+            <x-ui.form.button wire:loading.attr="disabled" wire:target="edit" wire:click="edit" color="gray" size="sm">
                 @lang('core::install.steps.database.form.edit')
-            </x-form.button.secondary>
+            </x-ui.form.button>
         </div>
     @endif
 </form>

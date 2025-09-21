@@ -45,7 +45,7 @@
             @tailwindClass([
                 'flex size-10 items-center justify-center rounded-full text-white',
                 'bg-secondary-400 dark:bg-secondary-700' => in_array($activeStep, ['migrations', 'database']),
-                'bg-gray-300 dark:bg-gray-600' => !in_array($activeStep, ['migrations', 'database']),
+                'bg-gray-300 dark:bg-gray-600' => ! in_array($activeStep, ['migrations', 'database']),
             ])
             wire:key="database"
         >
@@ -87,19 +87,25 @@
         @switch($activeStep)
             @case('requirements')
                 <livewire:core::requirements />
+
                 @break
             @case('permissions')
                 <livewire:core::permissions />
+
                 @break
             @case('database')
                 <livewire:core::database />
+
                 @break
             @case('migrations')
                 <livewire:core::migrations />
+
                 @break
             @case('admin')
                 <livewire:core::admin-account />
+
                 @break
+
                 @break
         @endswitch
     </div>
@@ -113,8 +119,8 @@
                 @case('database')
                 @case('migrations')
                 @case('admin')
-                    <x-form.button.primary
-                        class="px-4 py-2 text-base"
+                    <x-ui.form.button
+                        size="sm"
                         wire:click="goToStep('{{ $nextStep }}')"
                         wire:loading.attr="disabled"
                         wire:target="goToStep"
@@ -122,12 +128,12 @@
                         wire:loading.class.remove="opacity-100 cursor-pointer"
                     >
                         @lang('core::install.steps.' . $activeStep . '.button')
-                    </x-form.button.primary>
+                    </x-ui.form.button>
 
                     @break
                 @case('finish')
-                    <x-form.button.primary
-                        class="px-4 py-2 text-base"
+                    <x-ui.form.button
+                        size="sm"
                         wire:click="finish"
                         wire:loading.attr="disabled"
                         wire:target="finish"
@@ -135,7 +141,7 @@
                         wire:loading.class.remove="opacity-100 cursor-pointer"
                     >
                         @lang('core::install.steps.' . $activeStep . '.button')
-                    </x-form.button.primary>
+                    </x-ui.form.button>
 
                     @break
             @endswitch

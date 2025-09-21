@@ -7,7 +7,11 @@
     </div>
     <div class="mt-4" wire:key="activation">
         @if (! $isActivated)
-            <p class="text-center text-sm text-gray-500 dark:text-gray-400" wire:key="description" wire:poll.visible="check">
+            <p
+                class="text-center text-sm text-gray-500 dark:text-gray-400"
+                wire:key="description"
+                wire:poll.visible="check"
+            >
                 @lang('core::install.steps.activation.description')
             </p>
             <form
@@ -31,9 +35,9 @@
                     </x-navigation.link>
                 </div>
                 <div class="col-span-12 mt-2 flex justify-center">
-                    <x-form.button.primary type="submit" wire:loading.attr="disabled" wire:target="activate" class="px-4 py-2 text-base">
+                    <x-ui.form.button type="submit" wire:loading.attr="disabled" wire:target="activate" size="sm">
                         @lang('core::install.steps.activation.form.submit')
-                    </x-form.button.primary>
+                    </x-ui.form.button>
                 </div>
             </form>
         @else

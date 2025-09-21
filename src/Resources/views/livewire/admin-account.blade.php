@@ -50,13 +50,15 @@
         </div>
 
         <div class="col-span-12 mt-2 flex justify-center">
-            <x-form.button.primary type="submit" wire:loading.attr="disabled" wire:target="submit" class="px-4 py-2 text-base">
+            <x-ui.form.button type="submit" wire:loading.attr="disabled" wire:target="submit" size="sm">
                 @lang('core::install.steps.admin.form.submit')
-            </x-form.button.primary>
+            </x-ui.form.button>
         </div>
     @else
         <div class="col-span-12 flex flex-col items-center justify-center gap-2 text-center">
-            <p class="text-green-600">@lang('core::install.steps.admin.success', ['email' => $userAccount->email])</p>
+            <p class="text-green-600">
+                @lang('core::install.steps.admin.success', ['email' => $userAccount->email])
+            </p>
         </div>
     @endif
 </form>
