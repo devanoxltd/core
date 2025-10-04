@@ -51,7 +51,6 @@
                 this.scrollTimeout = setTimeout(() => {
                     this.scroll();
                     this.throttleScroll();
-                    console.log('throttled scroll');
                 }, 500)
             },
             scrollWithClearTimeout() {
