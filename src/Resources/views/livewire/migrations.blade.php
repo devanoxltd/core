@@ -33,4 +33,39 @@
             </div>
         </div>
     @endif
+
+    <pre
+        wire:key="migration-output"
+        class="mt-2 max-h-60 w-full overflow-y-auto rounded-lg bg-gray-200 px-4 text-left font-mono text-sm whitespace-pre-wrap text-blue-500 dark:bg-gray-900 dark:text-blue-400"
+        wire:stream="output"
+        x-data="{
+            scroll() {
+                this.$el.scrollTop = this.$el.scrollHeight
+            },
+            // synced scroll with timeout
+            scrollTimeout: null,
+            throttleScroll() {
+                if (this.scrollTimeout) {
+                    clearTimeout(this.scrollTimeout);
+                }
+                this.scrollTimeout = setTimeout(() => {
+                    this.scroll();
+                    this.throttleScroll();
+                    console.log('throttled scroll');
+                }, 500)
+            },
+            scrollWithClearTimeout() {
+                if (this.scrollTimeout) {
+                    clearTimeout(this.scrollTimeout);
+                }
+                this.scroll();
+            }
+        }"
+        x-init="
+            throttleScroll();
+            Livewire.hook('morph.updated', () => {
+                requestAnimationFrame(() => scrollWithClearTimeout())
+            })
+        "
+    >{{ $output }}</pre>
 </div>

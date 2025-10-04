@@ -178,9 +178,7 @@ trait Provider
             $this->registerComponents();
 
             // Register commands and schedules
-            if ($this->app->runningInConsole()) {
-                $this->registerCommands();
-            }
+            $this->registerCommands();
 
             $this->registerLivewireComponents();
         });

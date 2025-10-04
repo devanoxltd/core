@@ -3,6 +3,8 @@
 namespace Devanox\Core\Livewire;
 
 use Devanox\Core\Helpers\InstallerInfo;
+use Devanox\Core\Support\StreamingOutput;
+use Exception;
 use Illuminate\Support\Facades\Artisan;
 use Livewire\Attributes\Locked;
 use Livewire\Component;
@@ -18,6 +20,9 @@ class Migrations extends Component
     #[Locked]
     public $isMigrationRunning = false;
 
+    #[Locked]
+    public $output = '';
+
     public function runAppDbMigrateInstall()
     {
         if ($this->isMigrationRun) {
@@ -29,11 +34,8 @@ class Migrations extends Component
         $this->isMigrationComplete = false;
 
         if (InstallerInfo::getStatus() == 'not_started') {
-            defer(
-                function () {
-                    Artisan::call('app:install');
-                }
-            );
+            // Run the installation command and stream output
+            $this->streamInstallation();
         }
     }
 
@@ -41,6 +43,7 @@ class Migrations extends Component
     {
         if ($this->isMigrationComplete) {
             $this->dispatch('stepReady', step: 'migrations')->to(Install::class);
+
             return;
         }
 
@@ -57,5 +60,29 @@ class Migrations extends Component
     public function render()
     {
         return view('core::livewire.migrations');
+    }
+
+    protected function streamInstallation()
+    {
+        try {
+            // Create a streaming output that sends each line immediately
+            $output = new StreamingOutput(function ($line) {
+                $this->stream(
+                    to: 'output',
+                    content: $line,
+                );
+                $this->output .= $line;
+            });
+
+            // Run the command and stream output in real-time
+            Artisan::call('app:install', [], $output);
+        } catch (Exception $e) {
+            $errorMessage = "\n\nError: " . $e->getMessage() . "\n";
+            $this->stream(
+                to: 'output',
+                content: $errorMessage,
+            );
+            $this->output .= $errorMessage;
+        }
     }
 }
