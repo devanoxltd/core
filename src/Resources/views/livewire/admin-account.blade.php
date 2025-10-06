@@ -1,7 +1,7 @@
 <form class="mx-2 grid grid-cols-12 gap-2 px-4" wire:submit="submit" wire:loading.attr="disabled">
     @if (! $isCreated)
         <div class="col-span-12">
-            <x-form.label for="userAccount.username" :value="__('core::install.steps.admin.form.username')" />
+            <x-ui.form.label for="userAccount.username" :value="__('core::install.steps.admin.form.username')" />
             <x-form.text
                 id="userAccount.username"
                 class="mt-1 w-full"
@@ -12,7 +12,7 @@
         </div>
 
         <div class="col-span-12">
-            <x-form.label for="userAccount.email" :value="__('core::install.steps.admin.form.email')" />
+            <x-ui.form.label for="userAccount.email" :value="__('core::install.steps.admin.form.email')" />
             <x-form.input
                 type="email"
                 id="userAccount.email"
@@ -24,7 +24,7 @@
         </div>
 
         <div class="col-span-12">
-            <x-form.label for="userAccount.password" :value="__('core::install.steps.admin.form.password')" />
+            <x-ui.form.label for="userAccount.password" :value="__('core::install.steps.admin.form.password')" />
             <x-form.input
                 type="password"
                 id="userAccount.password"
@@ -35,7 +35,7 @@
             <x-form.error name="userAccount.password" class="mt-2" />
         </div>
         <div class="col-span-12">
-            <x-form.label
+            <x-ui.form.label
                 for="userAccount.passwordConfirmation"
                 :value="__('core::install.steps.admin.form.passwordConfirmation')"
             />
