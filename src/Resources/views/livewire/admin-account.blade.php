@@ -8,7 +8,7 @@
                 wire:model="userAccount.username"
                 autocomplete="name"
             />
-            <x-form.error name="userAccount.username" class="mt-2" />
+            <x-ui.form.error name="userAccount.username" class="mt-2" />
         </div>
 
         <div class="col-span-12">
@@ -20,7 +20,7 @@
                 wire:model="userAccount.email"
                 autocomplete="username"
             />
-            <x-form.error name="userAccount.email" class="mt-2" />
+            <x-ui.form.error name="userAccount.email" class="mt-2" />
         </div>
 
         <div class="col-span-12">
@@ -32,7 +32,7 @@
                 wire:model="userAccount.password"
                 autocomplete="new-password"
             />
-            <x-form.error name="userAccount.password" class="mt-2" />
+            <x-ui.form.error name="userAccount.password" class="mt-2" />
         </div>
         <div class="col-span-12">
             <x-ui.form.label
@@ -46,7 +46,7 @@
                 wire:model="userAccount.passwordConfirmation"
                 autocomplete="new-password"
             />
-            <x-form.error name="userAccount.passwordConfirmation" class="mt-2" />
+            <x-ui.form.error name="userAccount.passwordConfirmation" class="mt-2" />
         </div>
 
         <div class="col-span-12 mt-2 flex justify-center">

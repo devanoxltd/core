@@ -25,7 +25,7 @@
                 <div class="col-span-12">
                     <x-ui.form.label for="licenseKey" :value="__('core::install.steps.activation.form.licenseKey')" />
                     <x-form.text id="licenseKey" class="mt-1 w-full" wire:model="licenseKey" />
-                    <x-form.error name="licenseKey" class="mt-2" />
+                    <x-ui.form.error name="licenseKey" class="mt-2" />
                     <x-navigation.link
                         href="https://devanox.com/get-application-license-key"
                         target="_blank"
