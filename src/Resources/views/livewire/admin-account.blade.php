@@ -1,53 +1,47 @@
 <form class="mx-2 grid grid-cols-12 gap-2 px-4" wire:submit="submit" wire:loading.attr="disabled">
     @if (! $isCreated)
-        <div class="col-span-12">
+        <x-ui.form.field class="col-span-12">
             <x-ui.form.label for="userAccount.username" :value="__('core::install.steps.admin.form.username')" />
-            <x-form.text
-                id="userAccount.username"
-                class="mt-1 w-full"
-                wire:model="userAccount.username"
-                autocomplete="name"
-            />
-            <x-ui.form.error name="userAccount.username" class="mt-2" />
-        </div>
+            <x-ui.form.input id="userAccount.username" wire:model="userAccount.username" autocomplete="name" />
+            <x-ui.form.error name="userAccount.username" />
+        </x-ui.form.field>
 
-        <div class="col-span-12">
+        <x-ui.form.field class="col-span-12">
             <x-ui.form.label for="userAccount.email" :value="__('core::install.steps.admin.form.email')" />
-            <x-form.input
+            <x-ui.form.input
                 type="email"
                 id="userAccount.email"
-                class="mt-1 w-full"
                 wire:model="userAccount.email"
                 autocomplete="username"
             />
-            <x-ui.form.error name="userAccount.email" class="mt-2" />
-        </div>
+            <x-ui.form.error name="userAccount.email" />
+        </x-ui.form.field>
 
-        <div class="col-span-12">
+        <x-ui.form.field class="col-span-12">
             <x-ui.form.label for="userAccount.password" :value="__('core::install.steps.admin.form.password')" />
-            <x-form.input
+            <x-ui.form.input
                 type="password"
+                revealable
                 id="userAccount.password"
-                class="mt-1 w-full"
                 wire:model="userAccount.password"
                 autocomplete="new-password"
             />
-            <x-ui.form.error name="userAccount.password" class="mt-2" />
-        </div>
-        <div class="col-span-12">
+            <x-ui.form.error name="userAccount.password" />
+        </x-ui.form.field>
+        <x-ui.form.field class="col-span-12">
             <x-ui.form.label
                 for="userAccount.passwordConfirmation"
                 :value="__('core::install.steps.admin.form.passwordConfirmation')"
             />
-            <x-form.input
+            <x-ui.form.input
                 type="password"
+                revealable
                 id="userAccount.passwordConfirmation"
-                class="mt-1 w-full"
                 wire:model="userAccount.passwordConfirmation"
                 autocomplete="new-password"
             />
-            <x-ui.form.error name="userAccount.passwordConfirmation" class="mt-2" />
-        </div>
+            <x-ui.form.error name="userAccount.passwordConfirmation" />
+        </x-ui.form.field>
 
         <div class="col-span-12 mt-2 flex justify-center">
             <x-ui.form.button type="submit" wire:loading.attr="disabled" wire:target="submit" size="sm">

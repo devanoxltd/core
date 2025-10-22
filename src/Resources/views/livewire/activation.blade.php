@@ -22,10 +22,10 @@
                 wire:key="activation-form"
             >
                 {{-- <x-ui.icon name="outline.loading-02" class="size-5 animate-spin" /> --}}
-                <div class="col-span-12">
+                <x-ui.form.field class="col-span-12">
                     <x-ui.form.label for="licenseKey" :value="__('core::install.steps.activation.form.licenseKey')" />
-                    <x-form.text id="licenseKey" class="mt-1 w-full" wire:model="licenseKey" />
-                    <x-ui.form.error name="licenseKey" class="mt-2" />
+                    <x-ui.form.input id="licenseKey" wire:model="licenseKey" />
+                    <x-ui.form.error name="licenseKey" />
                     <x-ui.navigation.link
                         href="https://devanox.com/get-application-license-key"
                         target="_blank"
@@ -33,7 +33,7 @@
                     >
                         @lang('core::install.steps.activation.form.getLicenseKey')
                     </x-ui.navigation.link>
-                </div>
+                </x-ui.form.field>
                 <div class="col-span-12 mt-2 flex justify-center">
                     <x-ui.form.button type="submit" wire:loading.attr="disabled" wire:target="activate" size="sm">
                         @lang('core::install.steps.activation.form.submit')
