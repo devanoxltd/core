@@ -17,8 +17,8 @@
     ],
     "require": {
         "php": "^8.4",
-        "laravel/framework": "^12.40",
-        "livewire/livewire": "^3.7",
+        "laravel/framework": "^12.47",
+        "livewire/livewire": "^4.0.1",
         "devanoxltd/php-html-parser": "^1.2"
     },
     "autoload": {
