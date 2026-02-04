@@ -7,14 +7,10 @@ use Devanox\Core\Http\Middleware\License;
 use Devanox\Core\Support\Module;
 use Exception;
 use Illuminate\Contracts\Http\Kernel;
-use Illuminate\Filesystem\Filesystem;
 use Illuminate\Support\Facades\Blade;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\ServiceProvider;
-use Livewire\Component;
 use Livewire\Livewire;
-use ReflectionClass;
-use Symfony\Component\Finder\SplFileInfo;
 
 class CoreServiceProvider extends ServiceProvider
 {
@@ -59,11 +55,11 @@ class CoreServiceProvider extends ServiceProvider
         // following is an example of how to register a schedule
         $schedule = $this->app->make(\Illuminate\Console\Scheduling\Schedule::class);
         $schedule->command('devanox:license-check')
-        ->dailyAt('08:00')
-        ->timezone('UTC')
-        ->pingBefore(config('core.url.server'))
-        ->environments(['production'])
-        ->runInBackground();
+            ->dailyAt('08:00')
+            ->timezone('UTC')
+            ->pingBefore(config('core.url.server'))
+            ->environments(['production'])
+            ->runInBackground();
     }
 
     private function checkModulesCapabilities(): void
@@ -149,56 +145,20 @@ class CoreServiceProvider extends ServiceProvider
 
     private function registerLivewireComponents(): void
     {
-        $directory = __DIR__ . '/../Livewire';
+        $classDirectory = __DIR__ . '/../Livewire';
+        $viewDirectory = __DIR__ . '/../Resources/views/livewire';
 
-        if (file_exists($directory)) {
+        if (file_exists($classDirectory)) {
             $namespace = 'Devanox\\Core\\Livewire';
-            $aliasPrefix = $this->moduleNameLower . '::';
 
-            $this->registerComponentDirectory($directory, $namespace, $aliasPrefix);
+            Livewire::addLocation(classNamespace: $namespace);
+
+            Livewire::addNamespace(
+                namespace: $this->moduleNameLower,
+                classNamespace: $namespace,
+                classPath: $classDirectory,
+                classViewPath: $viewDirectory,
+            );
         }
-    }
-
-    /**
-     * Register component directory.
-     */
-    protected function registerComponentDirectory(string $directory, string $namespace, string $aliasPrefix = ''): void
-    {
-        $filesystem = new Filesystem;
-
-        /**
-         * Directory doesn't existS.
-         */
-        if (! $filesystem->isDirectory($directory)) {
-            return;
-        }
-
-        collect($filesystem->allFiles($directory))
-            ->map(
-                fn(SplFileInfo $file) => str($namespace)
-                    ->append("\\{$file->getRelativePathname()}")
-                    ->replace(['/', '.php'], ['\\', ''])
-                    ->toString()
-            )
-            ->filter(fn($class) => (is_subclass_of($class, Component::class) && ! (new ReflectionClass($class))->isAbstract()))
-            ->each(fn($class) => $this->registerSingleComponent($class, $namespace, $aliasPrefix));
-    }
-
-    /**
-     * Register livewire single component.
-     */
-    private function registerSingleComponent(string $class, string $namespace, string $aliasPrefix): void
-    {
-        $alias = $aliasPrefix . str($class)
-            ->after($namespace . '\\')
-            ->replace(['/', '\\'], '.')
-            ->explode('.')
-            // ->map([Str::class, 'kebab'])
-            ->map(fn($value) => str($value)->kebab())
-            ->implode('.');
-
-        str($class)->endsWith(['\Index', '\index'])
-            ? Livewire::component(str($alias)->beforeLast('.index'), $class)
-            : Livewire::component($alias, $class);
     }
 }

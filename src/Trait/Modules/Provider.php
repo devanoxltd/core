@@ -3,12 +3,9 @@
 namespace Devanox\Core\Trait\Modules;
 
 use Devanox\Core\Support\Module;
-use Illuminate\Filesystem\Filesystem;
 use Illuminate\Support\Facades\Blade;
-use Livewire\Component;
 use Livewire\Livewire;
 use ReflectionClass;
-use Symfony\Component\Finder\SplFileInfo;
 
 /**
  * This trait is used to register all the necessary components of a module.
@@ -33,30 +30,6 @@ trait Provider
         $reflection = new ReflectionClass(get_called_class());
 
         return dirname($reflection->getFileName());
-    }
-
-    /**
-     * Register component directory.
-     */
-    protected function registerComponentDirectory(string $directory, string $namespace, string $aliasPrefix = ''): void
-    {
-        $filesystem = new Filesystem;
-
-        /**
-         * Directory doesn't existS.
-         */
-        if (! $filesystem->isDirectory($directory)) {
-            return;
-        }
-
-        collect($filesystem->allFiles($directory))
-            ->map(fn (SplFileInfo $file) => str($namespace)
-                ->append("\\{$file->getRelativePathname()}")
-                ->replace(['/', '.php'], ['\\', ''])
-                ->toString()
-            )
-            ->filter(fn ($class) => (is_subclass_of($class, Component::class) && ! (new ReflectionClass($class))->isAbstract()))
-            ->each(fn ($class) => $this->registerSingleComponent($class, $namespace, $aliasPrefix));
     }
 
     private function registerDatabase(): void
@@ -140,32 +113,32 @@ trait Provider
 
     private function registerLivewireComponents(): void
     {
-        $directory = Module::pathFor(self::name(), 'livewire');
+        $classDirectory = Module::pathFor(self::name(), 'livewire');
+        $viewDirectory = Module::pathFor(self::name(), 'views') . DIRECTORY_SEPARATOR . 'livewire';
 
-        if (file_exists($directory)) {
+        if (file_exists($classDirectory)) {
             $namespace = 'Modules\\' . self::name() . '\\App\\Livewire';
-            $aliasPrefix = self::nameLower() . '::';
 
-            $this->registerComponentDirectory($directory, $namespace, $aliasPrefix);
+            Livewire::addLocation(
+                classNamespace: $namespace
+            );
+
+            Livewire::addNamespace(
+                namespace: self::nameLower(),
+                classNamespace: $namespace,
+                classPath: $classDirectory,
+                classViewPath: $viewDirectory
+            );
         }
-    }
 
-    /**
-     * Register livewire single component.
-     */
-    private function registerSingleComponent(string $class, string $namespace, string $aliasPrefix): void
-    {
-        $alias = $aliasPrefix . str($class)
-            ->after($namespace . '\\')
-            ->replace(['/', '\\'], '.')
-            ->explode('.')
-            // ->map([Str::class, 'kebab'])
-            ->map(fn ($value) => str($value)->kebab())
-            ->implode('.');
+        Livewire::addLocation(
+            viewPath: $viewDirectory
+        );
 
-        str($class)->endsWith(['\Index', '\index'])
-            ? Livewire::component(str($alias)->beforeLast('.index'), $class)
-            : Livewire::component($alias, $class);
+        Livewire::addNamespace(
+            namespace: self::nameLower(),
+            viewPath: $viewDirectory
+        );
     }
 
     private function registerAll(): void
