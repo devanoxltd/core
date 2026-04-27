@@ -2,7 +2,7 @@
 
 namespace Devanox\Core\Livewire;
 
-use App\Trait\Livewire\Toast;
+use App\Trait\Livewire\HasToast;
 use Devanox\Core\Helpers\EnvEditor;
 use Devanox\Core\Livewire\Forms\AppDatabase;
 use Illuminate\Support\Facades\DB;
@@ -11,7 +11,7 @@ use Livewire\Component;
 
 class Database extends Component
 {
-    use Toast;
+    use HasToast;
 
     public AppDatabase $form;
 
