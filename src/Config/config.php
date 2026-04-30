@@ -66,7 +66,7 @@ return [
 
     'installRoutes' => [
         'install',
-        'livewire/*',
+        'livewire-*/*',
         'dev/*',
         'file/*',
     ],

@@ -28,7 +28,7 @@ class License
                 return response()->json(['message' => __('core::install.notActivated')], 403);
             }
 
-            if ($request->is('license') || $request->is('livewire/*')) {
+            if ($request->is('license') || $request->is('livewire-*/*')) {
                 return $next($request);
             }
 

@@ -24,7 +24,7 @@ class InstallApp
         } else {
             $installRoutes = [
                 'install',
-                'livewire/*',
+                'livewire-*/*',
             ];
         }
 
