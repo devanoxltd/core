@@ -82,4 +82,4 @@ Please review [our security policy](.github/SECURITY.md) on how to report securi
 
 ## License
 
-Core is open-sourced software licensed under the [MIT license](LICENSE.md).
+Core is proprietary software licensed under the [Proprietary License](LICENSE.md).
