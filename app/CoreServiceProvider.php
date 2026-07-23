@@ -7,14 +7,14 @@ namespace Devanox\Core;
 use Devanox\Core\Console\Commands\CoreCommand;
 use Illuminate\Support\ServiceProvider;
 
-class CoreServiceProvider extends ServiceProvider
+final class CoreServiceProvider extends ServiceProvider
 {
     /**
      * Register any application services.
      */
     public function register(): void
     {
-        $this->mergeConfigFrom(__DIR__.'/../config/core.php', 'core');
+        $this->mergeConfigFrom(__DIR__ . '/../config/core.php', 'core');
 
         $this->app->singleton(Core::class);
     }
@@ -24,34 +24,34 @@ class CoreServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        $this->loadRoutesFrom(__DIR__.'/../routes/core.php');
+        $this->loadRoutesFrom(__DIR__ . '/../routes/core.php');
 
-        $this->loadViewsFrom(__DIR__.'/../resources/views', 'core');
+        $this->loadViewsFrom(__DIR__ . '/../resources/views', 'core');
 
-        $this->loadTranslationsFrom(__DIR__.'/../lang', 'core');
+        $this->loadTranslationsFrom(__DIR__ . '/../lang', 'core');
 
         if (! $this->app->runningInConsole()) {
             return;
         }
 
         $this->publishes([
-            __DIR__.'/../config/core.php' => config_path('core.php'),
+            __DIR__ . '/../config/core.php' => config_path('core.php'),
         ], ['core', 'core-config']);
 
         $this->publishes([
-            __DIR__.'/../resources/views' => resource_path('views/vendor/core'),
+            __DIR__ . '/../resources/views' => resource_path('views/vendor/core'),
         ], ['core', 'core-views']);
 
         $this->publishes([
-            __DIR__.'/../lang' => $this->app->langPath('vendor/core'),
+            __DIR__ . '/../lang' => $this->app->langPath('vendor/core'),
         ], ['core', 'core-lang']);
 
         $this->publishes([
-            __DIR__.'/../public' => public_path('vendor/core'),
+            __DIR__ . '/../public' => public_path('vendor/core'),
         ], ['core', 'core-assets']);
 
         $this->publishesMigrations([
-            __DIR__.'/../database/migrations' => database_path('migrations'),
+            __DIR__ . '/../database/migrations' => database_path('migrations'),
         ], ['core', 'core-migrations']);
 
         $this->commands([

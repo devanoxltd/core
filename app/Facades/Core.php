@@ -9,7 +9,7 @@ use Illuminate\Support\Facades\Facade;
 /**
  * @see \Devanox\Core\Core
  */
-class Core extends Facade
+final class Core extends Facade
 {
     protected static function getFacadeAccessor(): string
     {

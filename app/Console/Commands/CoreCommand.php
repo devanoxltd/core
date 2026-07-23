@@ -4,20 +4,14 @@ declare(strict_types=1);
 
 namespace Devanox\Core\Console\Commands;
 
+use Illuminate\Console\Attributes\Description;
+use Illuminate\Console\Attributes\Signature;
 use Illuminate\Console\Command;
 
-class CoreCommand extends Command
+#[Description('Placeholder Artisan command shipped by the package core.')]
+#[Signature('core:placeholder')]
+final class CoreCommand extends Command
 {
-    /**
-     * The command signature.
-     */
-    protected $signature = 'core:placeholder';
-
-    /**
-     * The command description.
-     */
-    protected $description = 'Placeholder Artisan command shipped by the package core.';
-
     /**
      * Execute the console command.
      */
