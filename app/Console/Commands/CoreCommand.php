@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Core\Core\Console\Commands;
+namespace Devanox\Core\Console\Commands;
 
 use Illuminate\Console\Command;
 

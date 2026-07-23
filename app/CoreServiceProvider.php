@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace Core\Core;
+namespace Devanox\Core;
 
-use Core\Core\Console\Commands\CoreCommand;
+use Devanox\Core\Console\Commands\CoreCommand;
 use Illuminate\Support\ServiceProvider;
 
 class CoreServiceProvider extends ServiceProvider

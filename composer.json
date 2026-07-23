@@ -23,6 +23,7 @@
         "devanoxltd/php-html-parser": "^1.2"
     },
     "require-dev": {
+        "driftingly/rector-laravel": "^2.5",
         "larastan/larastan": "^3.10",
         "laravel/pao": "^1.1",
         "laravel/pint": "^1.29",
@@ -36,12 +37,12 @@
     },
     "autoload": {
         "psr-4": {
-            "Core\\Core\\": "src/"
+            "Devanox\\Core\\": "app/"
         }
     },
     "autoload-dev": {
         "psr-4": {
-            "Core\\Core\\Tests\\": "tests/",
+            "Devanox\\Core\\Tests\\": "tests/",
             "Workbench\\App\\": "workbench/app/",
             "Workbench\\Database\\Factories\\": "workbench/database/factories/",
             "Workbench\\Database\\Seeders\\": "workbench/database/seeders/"
@@ -91,10 +92,10 @@
     "extra": {
         "laravel": {
             "providers": [
-                "Core\\Core\\CoreServiceProvider"
+                "Devanox\\Core\\CoreServiceProvider"
             ],
             "aliases": {
-                "Core": "Core\\Core\\Facades\\Core"
+                "Core": "Devanox\\Core\\Facades\\Core"
             }
         }
     },

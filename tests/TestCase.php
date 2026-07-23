@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace Core\Core\Tests;
+namespace Devanox\Core\Tests;
 
-use Core\Core\CoreServiceProvider;
+use Devanox\Core\CoreServiceProvider;
 use Orchestra\Testbench\TestCase as Orchestra;
 
 abstract class TestCase extends Orchestra

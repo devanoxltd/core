@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-use Core\Core\Core;
+use Devanox\Core\Core;
 
 it('resolves the singleton', function () {
     expect(app(Core::class))->toBeInstanceOf(Core::class);

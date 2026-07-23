@@ -2,17 +2,17 @@
 
 declare(strict_types=1);
 
-namespace Core\Core\Facades;
+namespace Devanox\Core\Facades;
 
 use Illuminate\Support\Facades\Facade;
 
 /**
- * @see \Core\Core\Core
+ * @see \Devanox\Core\Core
  */
 class Core extends Facade
 {
     protected static function getFacadeAccessor(): string
     {
-        return \Core\Core\Core::class;
+        return \Devanox\Core\Core::class;
     }
 }
