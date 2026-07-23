@@ -12,6 +12,11 @@
 
 Core package for Laravel projects providing module support, helpers, and license verification. This package is developed for use in Devanox Private Limited projects.
 
+## Requirements
+
+- PHP 8.5 or higher
+- Laravel 13.x
+
 ## Installation
 
 You can install the package via Composer:
