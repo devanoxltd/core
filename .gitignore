@@ -3,10 +3,13 @@
 /.phpunit.cache
 /.phpunit.result.cache
 /coverage
+/tests/Browser/Screenshots
 composer.lock
+package-lock.json
 .phpunit.cache
 .phpunit.result.cache
 .DS_Store
 .idea
 .vscode
 .rector/cache
+/node_modules
