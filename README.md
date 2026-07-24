@@ -58,6 +58,8 @@ php artisan vendor:publish --tag="core-views"
 php artisan vendor:publish --tag="core-lang"
 ```
 
+> **Note on translations:** This package ships its translations under the `eng` locale. To use them in a Laravel project whose default locale is `en`, set `APP_FALLBACK_LOCALE=eng` in your application's `.env` file. You can still publish the language files and create an `en` version under `lang/vendor/core/` to override individual strings.
+
 ### Publishing the Public Assets
 
 ```bash

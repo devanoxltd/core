@@ -127,7 +127,6 @@ it('can create admin account', function (): void {
 final class MockUserWithRole extends User
 {
     use HasFactory;
-    use HasFactory;
 
     public bool $roleAssigned = false;
 
