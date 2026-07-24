@@ -25,14 +25,6 @@ You can install the package via Composer:
 composer require devanoxltd/core
 ```
 
-If you are setting up the repository for development, run the package bootstrap instead:
-
-```bash
-npm run setup
-```
-
-That command installs Composer dependencies, Node dependencies, and the Chromium browser used by Pest Browser.
-
 You may publish all of the package's resources at once:
 
 ```bash
@@ -82,10 +74,7 @@ Run the package test suites with Composer:
 
 ```bash
 composer test
-composer test:browser
 ```
-
-The browser suite uses Pest Browser and expects Playwright browsers to be installed locally or in CI. If you only need the browser runtime, run `npm install`.
 
 ## Changelog
 

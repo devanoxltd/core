@@ -29,6 +29,7 @@ abstract class TestCase extends Orchestra
 
     protected function defineEnvironment($app): void
     {
+        $app->make(Repository::class)->set('app.key', 'base64:6J9a1X6u8W0y5Z4v8T5w7Z9e4Y2z8A3x9C7d8F9g2E0=');
         $app->make(Repository::class)->set('auth.providers.users.model', User::class);
         $app->make(Repository::class)->set('core.module_path', 'modules-' . getmypid());
         $app->make(Repository::class)->set('cache.default', 'array');
