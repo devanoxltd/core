@@ -1,7 +1,8 @@
 <?php
 declare(strict_types=1);
 namespace Devanox\Core\Tests;
-use Devanox\Core\CoreServiceProvider;
+use Devanox\Core\Providers\CoreServiceProvider;
+use Devanox\Core\Providers\RouteServiceProvider;
 use Orchestra\Testbench\Concerns\WithWorkbench;
 use Orchestra\Testbench\TestCase as Orchestra;
 
@@ -13,6 +14,7 @@ abstract class TestCase extends Orchestra
     {
         return [
             CoreServiceProvider::class,
+            RouteServiceProvider::class,
         ];
     }
 }

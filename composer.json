@@ -127,7 +127,7 @@
         },
         "laravel": {
             "providers": [
-                "Devanox\\Core\\CoreServiceProvider"
+                "Devanox\\Core\\Providers\\CoreServiceProvider"
             ],
             "aliases": {
                 "Core": "Devanox\\Core\\Facades\\Core"
