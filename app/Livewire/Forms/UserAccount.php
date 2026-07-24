@@ -4,7 +4,8 @@ declare(strict_types=1);
 
 namespace Devanox\Core\Livewire\Forms;
 
-use App\Models\User;
+use Illuminate\Foundation\Auth\User;
+use Illuminate\Support\Facades\Config;
 use Livewire\Form;
 
 final class UserAccount extends Form
@@ -17,6 +18,9 @@ final class UserAccount extends Form
 
     public string $passwordConfirmation;
 
+    /**
+     * @return array<string, string>
+     */
     public function rules(): array
     {
         return [
@@ -26,6 +30,9 @@ final class UserAccount extends Form
         ];
     }
 
+    /**
+     * @return array<string, string>
+     */
     public function validationAttributes(): array
     {
         return [
@@ -40,11 +47,17 @@ final class UserAccount extends Form
     {
         $this->validate();
 
-        $user = new User;
-        $user->name = $this->username;
-        $user->email = $this->email;
-        $user->password = $this->password;
-        $user->email_verified_at = now();
+        /** @var class-string<User> $userClass */
+        $userClass = Config::get('auth.providers.users.model', User::class);
+
+        /** @var User $user */
+        $user = new $userClass;
+        $user->fill([
+            'name' => $this->username,
+            'email' => $this->email,
+            'password' => $this->password,
+            'email_verified_at' => now(),
+        ]);
         $user->save();
 
         // assignRole method exists on User model the we call it

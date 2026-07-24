@@ -20,6 +20,9 @@ final class AppDatabase extends Form
 
     public string $dbPassword = '';
 
+    /**
+     * @return array<string, string>
+     */
     public function rules(): array
     {
         return [
@@ -32,6 +35,9 @@ final class AppDatabase extends Form
         ];
     }
 
+    /**
+     * @return array<string, string>
+     */
     public function validationAttributes(): array
     {
         return [

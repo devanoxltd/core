@@ -9,6 +9,7 @@ use Devanox\Core\Events\ModuleEnabled;
 use Exception;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Artisan;
+use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\Http;
 use stdClass;
 
@@ -36,7 +37,8 @@ final class Module
 
     public static function path(string $module, bool $fullPath = false, bool $enable = false): string
     {
-        $path = self::MODULES_PATH . DIRECTORY_SEPARATOR . $module;
+        $base = Config::string('core.module_path', self::MODULES_PATH);
+        $path = $base . DIRECTORY_SEPARATOR . $module;
 
         if ($enable) {
             $path .= DIRECTORY_SEPARATOR . self::ENABLE_FILE;
@@ -76,7 +78,7 @@ final class Module
      */
     public static function all(): array
     {
-        $modules = glob(base_path(self::MODULES_PATH . DIRECTORY_SEPARATOR . '*'), GLOB_ONLYDIR) ?: [];
+        $modules = glob(base_path(Config::string('core.module_path', self::MODULES_PATH) . DIRECTORY_SEPARATOR . '*'), GLOB_ONLYDIR) ?: [];
 
         return array_map(basename(...), $modules);
     }

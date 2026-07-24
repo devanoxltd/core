@@ -140,4 +140,14 @@ return [
     'url' => [
         'server' => 'https://devanox-activate.test', // TODO: update this URL to your production URL https://devanox.com
     ],
+    /*
+    |--------------------------------------------------------------------------
+    | Module Path
+    |--------------------------------------------------------------------------
+    |
+    | This is the path where the application's modules are located relative
+    | to the base path.
+    |
+    */
+    'module_path' => 'modules',
 ];

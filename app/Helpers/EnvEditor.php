@@ -65,9 +65,9 @@ final class EnvEditor
     /**
      * Check if a specific key is commented out in the environment file.
      */
-    public static function isKeyCommented(string $key): bool
+    public static function isKeyCommented(string $key, string $filename = '.env'): bool
     {
-        $lines = self::getLines();
+        $lines = self::getLines($filename);
 
         return array_any($lines, fn (string $line): bool => (bool) preg_match('/^\s*#\s*' . preg_quote($key, '/') . '\s*=/', $line));
     }
@@ -91,9 +91,9 @@ final class EnvEditor
      *
      * @return Fluent<string, mixed>
      */
-    public static function insert(string $key, mixed $value): Fluent
+    public static function insert(string $key, mixed $value, string $filename = '.env'): Fluent
     {
-        return self::insertMultiple([$key => $value]);
+        return self::insertMultiple([$key => $value], null, null, $filename);
     }
 
     /**
@@ -101,11 +101,11 @@ final class EnvEditor
      *
      * @return Fluent<string, mixed>
      */
-    public static function insertCommented(string $key, mixed $value, ?string $searchKey = null, ?string $position = null): Fluent
+    public static function insertCommented(string $key, mixed $value, ?string $searchKey = null, ?string $position = null, string $filename = '.env'): Fluent
     {
-        self::insertMultiple([$key => $value], $searchKey, $position);
+        self::insertMultiple([$key => $value], $searchKey, $position, $filename);
 
-        return self::comment($key);
+        return self::comment($key, $filename);
     }
 
     /**
@@ -113,9 +113,9 @@ final class EnvEditor
      *
      * @return Fluent<string, mixed>
      */
-    public static function remove(string $key): Fluent
+    public static function remove(string $key, string $filename = '.env'): Fluent
     {
-        return self::removeMultiple([$key]);
+        return self::removeMultiple([$key], $filename);
     }
 
     /**
@@ -123,13 +123,13 @@ final class EnvEditor
      *
      * @return Fluent<string, mixed>
      */
-    public static function comment(string $key): Fluent
+    public static function comment(string $key, string $filename = '.env'): Fluent
     {
-        if (! self::fileExists()) {
-            return self::data();
+        if (! self::fileExists($filename)) {
+            return self::data(false, $filename);
         }
 
-        $lines = self::getLines();
+        $lines = self::getLines($filename);
         $changed = false;
 
         foreach ($lines as &$line) {
@@ -143,10 +143,10 @@ final class EnvEditor
         }
 
         if ($changed) {
-            self::saveLines($lines);
+            self::saveLines($lines, $filename);
         }
 
-        return self::data();
+        return self::data(false, $filename);
     }
 
     /**
@@ -154,13 +154,13 @@ final class EnvEditor
      *
      * @return Fluent<string, mixed>
      */
-    public static function uncomment(string $key): Fluent
+    public static function uncomment(string $key, string $filename = '.env'): Fluent
     {
-        if (! self::fileExists()) {
-            return self::data();
+        if (! self::fileExists($filename)) {
+            return self::data(false, $filename);
         }
 
-        $lines = self::getLines();
+        $lines = self::getLines($filename);
         $changed = false;
 
         foreach ($lines as &$line) {
@@ -174,10 +174,10 @@ final class EnvEditor
         }
 
         if ($changed) {
-            self::saveLines($lines);
+            self::saveLines($lines, $filename);
         }
 
-        return self::data();
+        return self::data(false, $filename);
     }
 
     /**
@@ -186,25 +186,25 @@ final class EnvEditor
 
     /** @param array<string, mixed> $newData
      * @return Fluent<string, mixed> */
-    public static function insertMultiple(array $newData, ?string $searchKey = null, ?string $position = null): Fluent
+    public static function insertMultiple(array $newData, ?string $searchKey = null, ?string $position = null, string $filename = '.env'): Fluent
     {
         foreach ($newData as $key => $value) {
             $newData[$key] = self::formatValue($value);
         }
 
-        if (! self::fileExists()) {
+        if (! self::fileExists($filename)) {
             $lines = [];
 
             foreach ($newData as $key => $value) {
                 $lines[] = sprintf('%s=%s', $key, $value);
             }
 
-            self::saveLines($lines);
+            self::saveLines($lines, $filename);
 
-            return self::data();
+            return self::data(false, $filename);
         }
 
-        $lines = self::getLines();
+        $lines = self::getLines($filename);
         $newLines = [];
         $processedKeys = [];
         $actionTaken = false;
@@ -260,33 +260,33 @@ final class EnvEditor
             }
         }
 
-        self::saveLines($newLines);
+        self::saveLines($newLines, $filename);
 
-        return self::data();
+        return self::data(false, $filename);
     }
 
     /**
      * Check if a specific key exists in the environment file.
      */
-    public static function has(string $key, bool $includeCommented = false): bool
+    public static function has(string $key, bool $includeCommented = false, string $filename = '.env'): bool
     {
-        return self::data($includeCommented)->has($key);
+        return self::data($includeCommented, $filename)->has($key);
     }
 
     /**
      * Add an empty line to the environment file.
      */
-    public static function addEmptyLine(?string $searchKey = null, ?string $position = null): void
+    public static function addEmptyLine(?string $searchKey = null, ?string $position = null, string $filename = '.env'): void
     {
-        self::insertRawLine('', $searchKey, $position);
+        self::insertRawLine('', $searchKey, $position, $filename);
     }
 
     /**
      * Add a comment line to the environment file.
      */
-    public static function addCommentLine(string $comment, ?string $searchKey = null, ?string $position = null): void
+    public static function addCommentLine(string $comment, ?string $searchKey = null, ?string $position = null, string $filename = '.env'): void
     {
-        self::insertRawLine('# ' . mb_ltrim($comment, '# '), $searchKey, $position);
+        self::insertRawLine('# ' . mb_ltrim($comment, '# '), $searchKey, $position, $filename);
     }
 
     /**
@@ -294,13 +294,13 @@ final class EnvEditor
      *
      * @return Fluent<string, mixed>
      */
-    public static function renameKey(string $oldKey, string $newKey): Fluent
+    public static function renameKey(string $oldKey, string $newKey, string $filename = '.env'): Fluent
     {
-        if (! self::fileExists()) {
-            return self::data();
+        if (! self::fileExists($filename)) {
+            return self::data(false, $filename);
         }
 
-        $lines = self::getLines();
+        $lines = self::getLines($filename);
         $changed = false;
 
         foreach ($lines as &$line) {
@@ -313,10 +313,10 @@ final class EnvEditor
         }
 
         if ($changed) {
-            self::saveLines($lines);
+            self::saveLines($lines, $filename);
         }
 
-        return self::data();
+        return self::data(false, $filename);
     }
 
     /**
@@ -324,9 +324,9 @@ final class EnvEditor
      *
      * @return Fluent<string, mixed>
      */
-    public static function insertAfter(string $searchKey, string $newKey, mixed $newValue): Fluent
+    public static function insertAfter(string $searchKey, string $newKey, mixed $newValue, string $filename = '.env'): Fluent
     {
-        return self::insertMultiple([$newKey => $newValue], $searchKey, 'after');
+        return self::insertMultiple([$newKey => $newValue], $searchKey, 'after', $filename);
     }
 
     /**
@@ -334,9 +334,9 @@ final class EnvEditor
      *
      * @return Fluent<string, mixed>
      */
-    public static function insertBefore(string $searchKey, string $newKey, mixed $newValue): Fluent
+    public static function insertBefore(string $searchKey, string $newKey, mixed $newValue, string $filename = '.env'): Fluent
     {
-        return self::insertMultiple([$newKey => $newValue], $searchKey, 'before');
+        return self::insertMultiple([$newKey => $newValue], $searchKey, 'before', $filename);
     }
 
     /**
@@ -344,22 +344,22 @@ final class EnvEditor
      *
      * @return Fluent<string, mixed>
      */
-    public static function moveAfter(string $searchKey, string $keyToMove): Fluent
+    public static function moveAfter(string $searchKey, string $keyToMove, string $filename = '.env'): Fluent
     {
-        if (! self::has($keyToMove, true)) {
-            return self::data();
+        if (! self::has($keyToMove, true, $filename)) {
+            return self::data(false, $filename);
         }
 
-        $isActive = self::has($keyToMove);
-        $value = self::get($keyToMove, null, true);
+        $isActive = self::has($keyToMove, false, $filename);
+        $value = self::get($keyToMove, null, true, $filename);
 
-        self::insertAfter($searchKey, $keyToMove, $value);
+        self::insertAfter($searchKey, $keyToMove, $value, $filename);
 
         if (! $isActive) {
-            self::comment($keyToMove);
+            self::comment($keyToMove, $filename);
         }
 
-        return self::data();
+        return self::data(false, $filename);
     }
 
     /**
@@ -367,48 +367,48 @@ final class EnvEditor
      *
      * @return Fluent<string, mixed>
      */
-    public static function moveBefore(string $searchKey, string $keyToMove): Fluent
+    public static function moveBefore(string $searchKey, string $keyToMove, string $filename = '.env'): Fluent
     {
-        if (! self::has($keyToMove, true)) {
-            return self::data();
+        if (! self::has($keyToMove, true, $filename)) {
+            return self::data(false, $filename);
         }
 
-        $isActive = self::has($keyToMove);
-        $value = self::get($keyToMove, null, true);
+        $isActive = self::has($keyToMove, false, $filename);
+        $value = self::get($keyToMove, null, true, $filename);
 
-        self::insertBefore($searchKey, $keyToMove, $value);
+        self::insertBefore($searchKey, $keyToMove, $value, $filename);
 
         if (! $isActive) {
-            self::comment($keyToMove);
+            self::comment($keyToMove, $filename);
         }
 
-        return self::data();
+        return self::data(false, $filename);
     }
 
     /**
      * Backup the current environment file.
      */
-    public static function backup(string $filename = '.env.backup'): bool
+    public static function backup(string $backupFilename = '.env.backup', string $envFilename = '.env'): bool
     {
-        if (! self::fileExists()) {
+        if (! self::fileExists($envFilename)) {
             return false;
         }
 
-        return File::copy(self::filePath(), base_path($filename));
+        return File::copy(self::filePath($envFilename), base_path($backupFilename));
     }
 
     /**
      * Restore the environment file from a backup.
      */
-    public static function restore(string $filename = '.env.backup'): bool
+    public static function restore(string $backupFilename = '.env.backup', string $envFilename = '.env'): bool
     {
-        $backupPath = base_path($filename);
+        $backupPath = base_path($backupFilename);
 
         if (! File::exists($backupPath)) {
             return false;
         }
 
-        return File::copy($backupPath, self::filePath());
+        return File::copy($backupPath, self::filePath($envFilename));
     }
 
     /**
@@ -417,13 +417,13 @@ final class EnvEditor
 
     /** @param array<int, string> $keys
      * @return Fluent<string, mixed> */
-    public static function removeMultiple(array $keys): Fluent
+    public static function removeMultiple(array $keys, string $filename = '.env'): Fluent
     {
-        if (! self::fileExists() || $keys === []) {
-            return self::data();
+        if (! self::fileExists($filename) || $keys === []) {
+            return self::data(false, $filename);
         }
 
-        $lines = self::getLines();
+        $lines = self::getLines($filename);
         $newLines = [];
 
         foreach ($lines as $line) {
@@ -434,21 +434,21 @@ final class EnvEditor
             }
         }
 
-        self::saveLines($newLines);
+        self::saveLines($newLines, $filename);
 
-        return self::data();
+        return self::data(false, $filename);
     }
 
     /**
      * Insert a raw line into the environment file.
      */
-    private static function insertRawLine(string $rawLine, ?string $searchKey = null, ?string $position = null): void
+    private static function insertRawLine(string $rawLine, ?string $searchKey = null, ?string $position = null, string $filename = '.env'): void
     {
-        $lines = self::getLines();
+        $lines = self::getLines($filename);
 
         if ($searchKey === null || $position === null) {
             $lines[] = $rawLine;
-            self::saveLines($lines);
+            self::saveLines($lines, $filename);
 
             return;
         }
@@ -478,7 +478,7 @@ final class EnvEditor
             $newLines[] = $rawLine;
         }
 
-        self::saveLines($newLines);
+        self::saveLines($newLines, $filename);
     }
 
     /**

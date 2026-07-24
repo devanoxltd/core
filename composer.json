@@ -21,11 +21,12 @@
     ],
     "require": {
         "php": "^8.5",
+        "devanoxltd/php-html-parser": "^1.2",
         "illuminate/support": "^13.0",
-        "livewire/livewire": "^4.3",
-        "devanoxltd/php-html-parser": "^1.2"
+        "livewire/livewire": "^4.3"
     },
     "require-dev": {
+        "devanoxltd/tailwind-class-merge-laravel": "^6.0",
         "driftingly/rector-laravel": "^2.5",
         "fakerphp/faker": "^1.24",
         "larastan/larastan": "^3.10",
@@ -56,7 +57,8 @@
             "Devanox\\Core\\Tests\\": "tests/",
             "Workbench\\App\\": "workbench/app/",
             "Workbench\\Database\\Factories\\": "workbench/database/factories/",
-            "Workbench\\Database\\Seeders\\": "workbench/database/seeders/"
+            "Workbench\\Database\\Seeders\\": "workbench/database/seeders/",
+            "App\\": "workbench/stub-app/"
         }
     },
     "scripts": {
@@ -116,7 +118,7 @@
             "@php -d memory_limit=-1 vendor/bin/pest tests/Browser"
         ],
         "test:unit": [
-            "XDEBUG_MODE=\"coverage\" @php -d memory_limit=-1 vendor/bin/pest --parallel --coverage --exactly=100.0"
+            "XDEBUG_MODE=\"coverage\" php -d memory_limit=-1 vendor/bin/pest --parallel --coverage --exactly=100.0"
         ]
     },
     "extra": {
@@ -127,7 +129,8 @@
         },
         "laravel": {
             "providers": [
-                "Devanox\\Core\\Providers\\CoreServiceProvider"
+                "Devanox\\Core\\Providers\\CoreServiceProvider",
+                "Devanox\\Core\\Providers\\RouteServiceProvider"
             ],
             "aliases": {
                 "Core": "Devanox\\Core\\Facades\\Core"
