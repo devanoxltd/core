@@ -32,9 +32,9 @@ Keep the package's bundled Boost skill accurate, concise, and focused on helping
 ## References
 
 - `resources/boost/skills/`
-- `src/*ServiceProvider.php`
-- `src/Facades/`
-- `src/Console/Commands/`
+- `app/*ServiceProvider.php`
+- `app/Facades/`
+- `app/Console/Commands/`
 - `config/*.php`
 - `routes/*.php`
 - `database/migrations/`
