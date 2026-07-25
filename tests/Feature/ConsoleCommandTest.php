@@ -38,6 +38,7 @@ afterEach(function (): void {
     cleanModulesDirectory();
 
     Prompt::fallbackWhen(false);
+    app()->detectEnvironment(fn (): string => 'testing');
 });
 
 function assertCommandOutput(string $command, array $options, int $expectedStatus, array $expected, array $notExpected = []): void
