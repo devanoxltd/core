@@ -75,9 +75,6 @@
             "@phpcbf",
             "vendor/bin/pint --parallel --repair -v"
         ],
-        "lint:check": [
-            "vendor/bin/pint --parallel --test"
-        ],
         "phpcbf": [
             "vendor/bin/phpcbf --standard=./vendor/mrchetan/php_standard/ruleset.xml ./app ./config ./database ./lang ./routes ./tests"
         ],
@@ -106,7 +103,8 @@
         "test:lint": [
             "@phpcs",
             "vendor/bin/pint --parallel --test -v",
-            "vendor/bin/rector --dry-run"
+            "vendor/bin/rector --dry-run",
+            "@analyse"
         ],
         "test:types": [
             "@php -d memory_limit=-1 vendor/bin/pest --parallel --type-coverage --min=100"
