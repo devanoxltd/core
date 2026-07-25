@@ -94,12 +94,12 @@
             "@php vendor/bin/testbench serve --ansi"
         ],
         "test": [
-            "@php -v",
             "@test:lint",
             "@test:types",
             "@test:unit"
         ],
         "test:lint": [
+            "@php -v",
             "@phpcs",
             "vendor/bin/pint --parallel --test -v",
             "vendor/bin/rector --dry-run",

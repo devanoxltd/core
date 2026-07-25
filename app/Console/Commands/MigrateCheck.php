@@ -35,7 +35,8 @@ final class MigrateCheck extends Command
         /** @var string $database */
         $database = $this->option('database');
 
-        return (int) $this->migrator->usingConnection($database, function (): int {
+        /** @var int $result */
+        $result = $this->migrator->usingConnection($database, function (): int {
             if (! $this->migrator->repositoryExists()) {
                 error('Migration table not found.');
 
@@ -59,6 +60,8 @@ final class MigrateCheck extends Command
 
             return Command::SUCCESS;
         });
+
+        return $result;
     }
 
     /**
