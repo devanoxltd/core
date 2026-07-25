@@ -50,11 +50,8 @@ jobs:
           composer update --${{ matrix.stability }} --prefer-dist --no-interaction --no-progress --no-scripts
           composer run prepare
 
-      - name: PHPStan
-        run: composer analyse
-
-      - name: Linter
-        run: composer lint:check
+      - name: Linter & PHPStan
+        run: composer test:lint
 
       - name: Type Coverage
         if: runner.os != 'Windows'

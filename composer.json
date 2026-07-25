@@ -95,8 +95,7 @@
         ],
         "test": [
             "@php -v",
-            "@analyse",
-            "@lint:check",
+            "@test:lint",
             "@test:types",
             "@test:unit"
         ],
