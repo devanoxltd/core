@@ -148,7 +148,7 @@ final class CoreServiceProvider extends ServiceProvider
 
         // TODO: Handle tenant migrations after implementing multi-tenancy
         // if (! tenant()) {
-        // $this->loadMigrationsFrom(__DIR__ . '/../../database/migrations');
+        $this->loadMigrationsFrom(__DIR__ . '/../../database/migrations');
         // }
 
         $this->registerComponents();
@@ -178,7 +178,7 @@ final class CoreServiceProvider extends ServiceProvider
         ], [$this->packageNameLower, $this->packageNameLower . '-assets']);
 
         $this->publishesMigrations([
-            __DIR__ . '/../../database/migrations' => database_path('migrations'),
+            __DIR__ . '/../../database/migrations/publishable' => database_path('migrations'),
         ], [$this->packageNameLower, $this->packageNameLower . '-migrations']);
     }
 

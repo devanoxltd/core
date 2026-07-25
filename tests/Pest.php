@@ -6,8 +6,22 @@ use Devanox\Core\Support\Module;
 use Devanox\Core\Tests\TestCase;
 use Illuminate\Filesystem\Filesystem;
 use Illuminate\Support\Facades\File;
+use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\Process;
+use Illuminate\Support\Sleep;
+use Illuminate\Support\Str;
 
-uses(TestCase::class)->in(__DIR__);
+pest()->extend(TestCase::class)
+    ->beforeEach(function (): void {
+        Str::createRandomStringsNormally();
+        Str::createUuidsNormally();
+        Http::preventStrayRequests();
+        Process::preventStrayProcesses();
+        Sleep::fake();
+
+        $this->freezeTime();
+    })
+    ->in(__DIR__);
 
 pest()->project()->github('devanoxltd/core');
 
@@ -16,13 +30,6 @@ if (! isset($_SERVER['TEST_TOKEN'])) {
 
     if (is_dir($tempPath)) {
         (new Filesystem)->cleanDirectory($tempPath);
-    }
-}
-
-if (! function_exists('testTempPath')) {
-    function testTempPath(string $path = ''): string
-    {
-        return __DIR__ . '/temp' . ($path !== '' && $path !== '0' ? DIRECTORY_SEPARATOR . $path : '');
     }
 }
 
