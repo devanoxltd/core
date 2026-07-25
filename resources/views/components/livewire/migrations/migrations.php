@@ -73,7 +73,7 @@ new class extends Component
             }
 
             // Create a streaming output that sends each line immediately
-            $output = new StreamingOutput(function ($line): void {
+            $output = new StreamingOutput(function (string $line): void {
                 $this->stream(
                     content: $line,
                     to: 'output',
