@@ -36,6 +36,8 @@ afterEach(function (): void {
     }
 
     cleanModulesDirectory();
+
+    Prompt::fallbackWhen(false);
 });
 
 function assertCommandOutput(string $command, array $options, int $expectedStatus, array $expected, array $notExpected = []): void
