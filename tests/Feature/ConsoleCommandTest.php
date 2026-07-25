@@ -362,7 +362,6 @@ it('fails to migrate when migrate command fails', function (): void {
 
 it('cancels migration in production without force', function (): void {
     app()->detectEnvironment(fn (): string => 'production');
-    Prompt::fallbackWhen(true);
 
     $this->artisan('module:migrate')
         ->expectsConfirmation('Application is in production! Do you wish to run module migrations?', 'no')
