@@ -35,19 +35,22 @@
                                 @if ($permission['status'])
                                 <x-ui.icon name="solid.check" class="size-4 text-green-500 dark:text-green-400" />
                             @else
-                                <x-ui.form.button
-                                    aria-label="{{__('core::install.steps.permissions.table.fix_permissions', ['folder' => $permission['folder']])}}"
-                                    color="gray"
-                                    size="xs"
-                                    wire:click="fixPermissions('{{ $permission['folder'] }}')"
-                                    wire:loading.attr="disabled"
-                                    wire:target="fixPermissions"
-                                    wire:loading.class="opacity-50 cursor-not-allowed"
-                                >
-                                    <x-slot:before>
-                                        <x-ui.icon name="solid.auto_fix_high" class="size-5" />
-                                    </x-slot>
-                                </x-ui.form.button>
+                                @if (PHP_OS_FAMILY !== 'Windows')
+                                    <x-ui.form.button
+                                        aria-label="{{__('core::install.steps.permissions.table.fix_permissions', ['folder' => $permission['folder']])}}"
+                                        color="gray"
+                                        size="xs"
+                                        wire:click="fixPermissions('{{ $permission['folder'] }}')"
+                                        wire:loading.attr="disabled"
+                                        wire:target="fixPermissions"
+                                        wire:loading.class="opacity-50 cursor-not-allowed"
+                                        wire:key="fix-permissions-{{ md5($permission['folder']) }}"
+                                    >
+                                        <x-slot:before>
+                                            <x-ui.icon name="solid.auto_fix_high" class="size-5" />
+                                        </x-slot>
+                                    </x-ui.form.button>
+                                @endif
 
                                 <x-ui.form.button
                                     aria-label="{{__('core::install.steps.permissions.table.refresh_permissions', ['folder' => $permission['folder']])}}"
@@ -57,6 +60,7 @@
                                     wire:loading.attr="disabled"
                                     wire:target="checkPermissions"
                                     wire:loading.class="opacity-50 cursor-not-allowed"
+                                    wire:key="refresh-permissions-{{ md5($permission['folder']) }}"
                                 >
                                     <x-slot:before>
                                         <x-ui.icon name="solid.refresh" class="size-5" />

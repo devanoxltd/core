@@ -59,7 +59,7 @@ it('checks permissions and allows fix', function (): void {
         ->call('fixPermissions', $tempDir);
 
     expect(is_dir($tempDir))->toBeTrue();
-});
+})->skipOnWindows();
 
 it('can configure database', function (): void {
     Livewire::test('core::database')

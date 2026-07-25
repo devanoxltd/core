@@ -14,7 +14,7 @@ it('streams written messages through the callback', function (): void {
     $output->write('Hello ');
     $output->writeln('World');
 
-    expect($captured)->toBe(['Hello ', "World\n"]);
+    expect($captured)->toBe(['Hello ', 'World' . PHP_EOL]);
 });
 
 it('streams formatted messages through the callback', function (): void {

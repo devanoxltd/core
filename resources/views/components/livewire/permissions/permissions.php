@@ -46,6 +46,10 @@ new class extends Component
 
     public function fixPermissions(string $folder): void
     {
+        if (PHP_OS_FAMILY === 'Windows') {
+            return;
+        }
+
         $path = base_path($folder);
         $required = config('core.permissions.' . $folder);
 

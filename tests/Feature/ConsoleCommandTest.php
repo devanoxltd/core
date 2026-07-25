@@ -232,6 +232,7 @@ it('warns when no modules to disable via prompt', function (): void {
         ->assertSuccessful();
 });
 
+// Unix file permissions are not enforced on Windows, so chmod cannot make the module directory read-only.
 it('handles exception when disabling a module', function (): void {
     createFakeModule('DisableError', ['id' => 'disable-error'], true);
 
@@ -245,7 +246,7 @@ it('handles exception when disabling a module', function (): void {
     } finally {
         chmod(dirname($path), 0755);
     }
-});
+})->skipOnWindows();
 
 it('cancels disabling all modules', function (): void {
     $this->artisan('module:disable', ['--all' => true])
@@ -290,6 +291,7 @@ it('enables all modules with confirmation', function (): void {
         ->assertSuccessful();
 });
 
+// Unix file permissions are not enforced on Windows, so chmod cannot make the module directory read-only.
 it('handles exception when enabling a module', function (): void {
     createFakeModule('EnableError', ['id' => 'enable-error'], false);
     License::query()->create(['key' => 'enable-error', 'status' => 'valid', 'is_module' => true, 'module_name' => 'EnableError', 'purchase_at' => now(), 'support_until' => now()->addYear()]);
@@ -303,7 +305,7 @@ it('handles exception when enabling a module', function (): void {
     } finally {
         chmod(dirname($path), 0755);
     }
-});
+})->skipOnWindows();
 
 it('migrates enabled modules', function (): void {
     createFakeModule('MigrateMe', ['id' => 'migrate-me'], true, [
