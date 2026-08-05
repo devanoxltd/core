@@ -1,5 +1,5 @@
 ---
-name: core-development
+name: devanox-core
 description: >
   Configure and apply the Core package in Laravel applications.
 license: MIT
