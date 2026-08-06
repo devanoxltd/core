@@ -6,6 +6,10 @@ use Devanox\Core\Models\License;
 use Devanox\Core\Support\Module;
 use Illuminate\Support\Facades\Cache;
 
+use function Devanox\Core\Helpers\isAppInstalled;
+use function Devanox\Core\Helpers\isLicenseValid;
+use function Devanox\Core\Helpers\modules;
+
 beforeEach(function (): void {
     cleanModulesDirectory();
     License::query()->delete();
@@ -100,4 +104,12 @@ it('checks module license validity', function (): void {
 
     expect(isLicenseValid('TestModule'))->toBeTrue()
         ->and(isLicenseValid('MissingModule'))->toBeFalse();
+});
+
+it('skips redefining functions if they already exist', function (): void {
+    require dirname(__DIR__, 3) . '/app/Helpers/core.php';
+
+    expect(function_exists('Devanox\Core\Helpers\isAppInstalled'))->toBeTrue()
+        ->and(function_exists('Devanox\Core\Helpers\modules'))->toBeTrue()
+        ->and(function_exists('Devanox\Core\Helpers\isLicenseValid'))->toBeTrue();
 });

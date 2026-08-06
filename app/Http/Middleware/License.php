@@ -8,6 +8,9 @@ use Closure;
 use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\Response;
 
+use function Devanox\Core\Helpers\isAppInstalled;
+use function Devanox\Core\Helpers\isLicenseValid;
+
 final class License
 {
     /**

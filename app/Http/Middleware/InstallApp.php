@@ -9,6 +9,8 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use Symfony\Component\HttpFoundation\Response;
 
+use function Devanox\Core\Helpers\isAppInstalled;
+
 final class InstallApp
 {
     /**

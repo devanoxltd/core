@@ -7,6 +7,8 @@ use Illuminate\Support\Facades\Cache;
 use Livewire\Attributes\Locked;
 use Livewire\Component;
 
+use function Devanox\Core\Helpers\isLicenseValid;
+
 new class extends Component
 {
     #[Locked]

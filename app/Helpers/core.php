@@ -2,12 +2,15 @@
 
 declare(strict_types=1);
 
+namespace Devanox\Core\Helpers;
+
 use Devanox\Core\Models\License;
 use Devanox\Core\Support\Module;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Cache;
+use stdClass;
 
-if (! function_exists('isAppInstalled')) {
+if (! function_exists('Devanox\Core\Helpers\isAppInstalled')) {
     /**
      * Check if the application has been installed.
      */
@@ -17,7 +20,7 @@ if (! function_exists('isAppInstalled')) {
     }
 }
 
-if (! function_exists('modules')) {
+if (! function_exists('Devanox\Core\Helpers\modules')) {
     /**
      * Get a collection of modules.
      *
@@ -36,7 +39,7 @@ if (! function_exists('modules')) {
     }
 }
 
-if (! function_exists('isLicenseValid')) {
+if (! function_exists('Devanox\Core\Helpers\isLicenseValid')) {
     /**
      * Check if a valid license exists for the core application or a specific module.
      *

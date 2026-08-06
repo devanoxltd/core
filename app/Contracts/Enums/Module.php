@@ -11,6 +11,9 @@ interface Module
 {
     public function label(): string;
 
+    /**
+     * @return array<string>
+     */
     public function permissions(): array;
 
     public function parent(): ?self;

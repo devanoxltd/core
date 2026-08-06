@@ -93,11 +93,7 @@ it('can run migrations', function (): void {
     InstallerInfo::setStatus(InstallerInfo::DB_CONFIGURED);
 
     // Register fake app:install command
-    Artisan::command('app:install', function (): int {
-        $this->info('Fake installation running');
-
-        return 0;
-    });
+    Artisan::command('app:install', fn (): int => 0);
 
     Livewire::test('core::migrations')
         ->call('runAppDbMigrateInstall')
