@@ -12,7 +12,7 @@ interface Module
     public function label(): string;
 
     /**
-     * @return array<string>
+     * @return array<string, list<\BackedEnum>>|list<string>
      */
     public function permissions(): array;
 
