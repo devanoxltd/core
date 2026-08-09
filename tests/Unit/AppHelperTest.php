@@ -89,6 +89,7 @@ it('verifies module license successfully', function (): void {
                 'id' => 'lic-module-123',
                 'module' => [
                     'name' => 'AwesomeModule',
+                    'email' => 'test@example.com',
                 ],
                 'status' => 'valid',
             ],

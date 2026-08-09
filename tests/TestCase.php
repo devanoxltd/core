@@ -52,6 +52,9 @@ abstract class TestCase extends Orchestra
 
     protected function getEnvironmentSetUp($app): void
     {
+        $app->make(Repository::class)->set('tenancy.enabled', true);
+        $app->make(Repository::class)->set('tenancy.database.central_connection', 'sqlite');
+        
         Blade::anonymousComponentPath(
             __DIR__ . '/../workbench/resources/views/layouts',
             'layouts'
@@ -67,6 +70,7 @@ abstract class TestCase extends Orchestra
     {
         $this->loadLaravelMigrations();
         $this->loadMigrationsFrom(__DIR__ . '/../database/migrations');
+        $this->loadMigrationsFrom(__DIR__ . '/../database/migrations/tenancy');
     }
 
     protected function defineRoutes($router): void

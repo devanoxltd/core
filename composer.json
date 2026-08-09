@@ -48,7 +48,8 @@
             "Devanox\\Core\\": "app/"
         },
         "files": [
-            "app/Helpers/core.php"
+            "app/Helpers/core.php",
+            "app/Helpers/tenancy.php"
         ]
     },
     "autoload-dev": {

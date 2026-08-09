@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Devanox\Core\Models;
 
-// use App\Trait\Models\CentralConnection;
+use Devanox\Core\Traits\Models\CentralConnection;
 use Illuminate\Database\Eloquent\Attributes\Guarded;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\Factory;
@@ -33,8 +33,8 @@ use Illuminate\Support\Carbon;
 #[Guarded(['id'])]
 final class License extends Model
 {
-    // TODO: Handle tenant migrations after implementing multi-tenancy
-    // use CentralConnection;
+    use CentralConnection;
+
     /** @use HasFactory<Factory<static>> */
     use HasFactory;
 

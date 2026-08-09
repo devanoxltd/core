@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 use Devanox\Core\Console\Commands\MigrateCheck;
 use Devanox\Core\Models\License;
+use Devanox\Core\Models\Tenant;
 use Devanox\Core\Support\Module;
 use Illuminate\Database\ConnectionResolverInterface;
 use Illuminate\Database\Migrations\DatabaseMigrationRepository;
@@ -18,6 +19,8 @@ use Illuminate\Support\Facades\Schema;
 use Laravel\Prompts\Prompt;
 use Symfony\Component\Console\Input\ArrayInput;
 use Symfony\Component\Console\Output\BufferedOutput;
+
+use function Devanox\Core\Helpers\tenancy;
 
 beforeEach(function (): void {
     $this->installedFile = storage_path('installed');
@@ -658,4 +661,36 @@ it('invalidates license when status is not success', function (): void {
     ]);
 
     assertCommandOutput('devanox:license-check', [], 1, ['has been invalidated']);
+});
+
+it('migrates module with tenant migrations', function (): void {
+    createFakeModule('TenantMigrateSpecific', ['id' => 'tenant-migrate-specific'], true, [
+        'Database' . DIRECTORY_SEPARATOR . 'Migrations' . DIRECTORY_SEPARATOR . 'tenant',
+    ]);
+
+    $tenantClass = config('tenancy.models.tenant', Tenant::class);
+    $tenant = new $tenantClass;
+    $tenant->id = 'test_tenant';
+
+    tenancy()->setTenant($tenant);
+
+    $this->artisan('module:migrate', [
+        'module' => 'TenantMigrateSpecific',
+        '--database' => 'testing',
+        '--pretend' => true,
+    ])->assertSuccessful();
+
+    tenancy()->unsetTenant();
+});
+
+it('checks pending migrations for tenant', function (): void {
+    $tenantClass = config('tenancy.models.tenant', Tenant::class);
+    $tenant = new $tenantClass;
+    $tenant->id = 'test_tenant';
+
+    tenancy()->setTenant($tenant);
+
+    assertCommandOutput('migrate:check', [], 0, ['No pending migrations found']);
+
+    tenancy()->unsetTenant();
 });

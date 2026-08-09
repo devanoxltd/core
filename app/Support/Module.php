@@ -13,6 +13,8 @@ use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\Http;
 use stdClass;
 
+use function Devanox\Core\Helpers\tenant;
+
 final class Module
 {
     public const string MODULES_PATH = 'modules';
@@ -239,9 +241,7 @@ final class Module
             'components-view' => self::forPath('views') . DIRECTORY_SEPARATOR . 'components',
             'config' => 'Config',
             'database' => 'Database',
-            // TODO: Handle tenant migrations after implementing multi-tenancy
-            // 'migrations' => self::forPath('database') . DIRECTORY_SEPARATOR . (tenant() ? 'Migrations' . DIRECTORY_SEPARATOR . 'tenant' : 'Migrations'),
-            'migrations' => self::forPath('database') . DIRECTORY_SEPARATOR . 'Migrations',
+            'migrations' => self::forPath('database') . DIRECTORY_SEPARATOR . (tenant() ? 'Migrations' . DIRECTORY_SEPARATOR . 'tenant' : 'Migrations'),
             'factories' => self::forPath('database') . DIRECTORY_SEPARATOR . 'Factories',
             'seeders' => self::forPath('database') . DIRECTORY_SEPARATOR . 'Seeders',
             'lang' => 'Lang',

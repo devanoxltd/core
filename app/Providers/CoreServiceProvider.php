@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Devanox\Core\Providers;
 
+use Composer\InstalledVersions;
 use Devanox\Core\Console\Commands\CleanUp;
 use Devanox\Core\Console\Commands\LicenseCheck;
 use Devanox\Core\Console\Commands\MigrateCheck;
@@ -11,17 +12,31 @@ use Devanox\Core\Console\Commands\Module\AllList;
 use Devanox\Core\Console\Commands\Module\Disable;
 use Devanox\Core\Console\Commands\Module\Enable;
 use Devanox\Core\Console\Commands\Module\Migrate;
+use Devanox\Core\Console\Commands\TenantCommand;
+use Devanox\Core\Console\Commands\TenantCreateDatabaseCommand;
 use Devanox\Core\Core;
+use Devanox\Core\Events\Tenant\Created as TenantCreatedEvent;
+use Devanox\Core\Events\Tenant\DatabaseCreated as TenantDatabaseCreatedEvent;
 use Devanox\Core\Http\Middleware\InstallApp;
 use Devanox\Core\Http\Middleware\License;
+use Devanox\Core\Http\Middleware\PreventAccessFromCentralDomains;
+use Devanox\Core\Listeners\Tenant\Created as TenantCreatedListener;
+use Devanox\Core\Listeners\Tenant\DatabaseCreated as TenantDatabaseCreatedListener;
 use Devanox\Core\Support\Module;
+use Devanox\Core\Support\Tenancy;
 use Illuminate\Console\Scheduling\Schedule;
+use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Contracts\Http\Kernel;
+use Illuminate\Foundation\Console\AboutCommand;
+use Illuminate\Foundation\Http\Kernel as HttpKernel;
 use Illuminate\Support\Facades\Blade;
+use Illuminate\Support\Facades\Event;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\ServiceProvider;
 use Livewire\Livewire;
 use RuntimeException;
+
+use function Devanox\Core\Helpers\tenant;
 
 final class CoreServiceProvider extends ServiceProvider
 {
@@ -35,6 +50,20 @@ final class CoreServiceProvider extends ServiceProvider
         $this->checkModulesCapabilities();
 
         $this->mergeConfigFrom(__DIR__ . '/../../config/core.php', $this->packageNameLower);
+        $this->mergeConfigFrom(__DIR__ . '/../../config/tenancy.php', 'tenancy');
+
+        AboutCommand::add('Core', function (): array {
+            /** @var array<int, string> $domains */
+            $domains = config('tenancy.central_domains', []);
+
+            return [
+                'Version' => InstalledVersions::getPrettyVersion('devanoxltd/core'),
+                'Tenant' => $this->isTenancyEnabled() ? 'Enabled' : 'Disabled',
+                'Central Domains' => $this->isTenancyEnabled() ? implode(', ', $domains) ?: 'None' : 'N/A',
+            ];
+        });
+
+        $this->app->singleton(Tenancy::class, fn (Application $app): Tenancy => new Tenancy);
 
         $providers = Module::providers();
 
@@ -53,6 +82,7 @@ final class CoreServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
+        $this->setupTenancy();
         $this->registerMiddleware();
         $this->loads();
         $this->publishFiles();
@@ -62,6 +92,8 @@ final class CoreServiceProvider extends ServiceProvider
         $this->booted(function (): void {
             $this->registerCommandSchedules();
         });
+
+        $this->registerEventListeners();
     }
 
     private function checkModulesCapabilities(): void
@@ -93,12 +125,14 @@ final class CoreServiceProvider extends ServiceProvider
             License::class,
         ];
 
-        /** @var \Illuminate\Foundation\Http\Kernel $kernel */
-        $kernel = $this->app->make(Kernel::class);
+        $this->callAfterResolving(Kernel::class, function (Kernel $kernel) use ($middlewares): void {
+            /** @var HttpKernel $httpKernel */
+            $httpKernel = $kernel;
 
-        foreach ($middlewares as $middleware) {
-            $kernel->pushMiddleware($middleware);
-        }
+            foreach ($middlewares as $middleware) {
+                $httpKernel->pushMiddleware($middleware);
+            }
+        });
     }
 
     private function registerCommands(): void
@@ -113,6 +147,13 @@ final class CoreServiceProvider extends ServiceProvider
                 MigrateCheck::class,
                 LicenseCheck::class,
             ]);
+
+            if ($this->isTenancyEnabled()) {
+                $this->commands([
+                    TenantCommand::class,
+                    TenantCreateDatabaseCommand::class,
+                ]);
+            }
         }
     }
 
@@ -138,7 +179,6 @@ final class CoreServiceProvider extends ServiceProvider
 
     private function loads(): void
     {
-        $this->mergeConfigFrom(__DIR__ . '/../../config/core.php', $this->packageNameLower);
         $this->loadRoutesFrom(__DIR__ . '/../../routes/core.php');
 
         $this->loadViewsFrom(__DIR__ . '/../../resources/views', $this->packageNameLower);
@@ -146,10 +186,9 @@ final class CoreServiceProvider extends ServiceProvider
         $this->loadTranslationsFrom(__DIR__ . '/../../lang', $this->packageNameLower);
         $this->loadJsonTranslationsFrom(__DIR__ . '/../../lang');
 
-        // TODO: Handle tenant migrations after implementing multi-tenancy
-        // if (! tenant()) {
-        $this->loadMigrationsFrom(__DIR__ . '/../../database/migrations');
-        // }
+        if (! tenant()) {
+            $this->loadMigrationsFrom(__DIR__ . '/../../database/migrations');
+        }
 
         $this->registerComponents();
         $this->registerLivewireComponents();
@@ -180,6 +219,15 @@ final class CoreServiceProvider extends ServiceProvider
         $this->publishesMigrations([
             __DIR__ . '/../../database/migrations/publishable' => database_path('migrations'),
         ], [$this->packageNameLower, $this->packageNameLower . '-migrations']);
+
+        // Publish the tenancy configuration and migrations
+        $this->publishes([
+            __DIR__ . '/../../config/tenancy.php' => config_path('tenancy.php'),
+        ], [$this->packageNameLower, 'tenancy-config']);
+
+        $this->publishesMigrations([
+            __DIR__ . '/../../database/migrations/tenancy' => database_path('migrations'),
+        ], [$this->packageNameLower, 'tenancy-migrations']);
     }
 
     private function registerComponents(): void
@@ -227,5 +275,49 @@ final class CoreServiceProvider extends ServiceProvider
                 viewPath: $viewDirectory,
             );
         }
+    }
+
+    private function registerEventListeners(): void
+    {
+        if (! $this->isTenancyEnabled()) {
+            return;
+        }
+
+        Event::listen(
+            TenantCreatedEvent::class,
+            TenantCreatedListener::class,
+        );
+
+        Event::listen(
+            TenantDatabaseCreatedEvent::class,
+            TenantDatabaseCreatedListener::class,
+        );
+    }
+
+    private function isTenancyEnabled(): bool
+    {
+        return config('tenancy.enabled', false) === true;
+    }
+
+    private function setupTenancy(): void
+    {
+        if (! $this->isTenancyEnabled()) {
+            return;
+        }
+
+        $this->app->make(Tenancy::class)->initializeTenant();
+        $tenancyMiddleware = [
+            // Even higher priority than the initialization middleware
+            PreventAccessFromCentralDomains::class,
+        ];
+
+        $this->callAfterResolving(Kernel::class, function (Kernel $kernel) use ($tenancyMiddleware): void {
+            /** @var HttpKernel $httpKernel */
+            $httpKernel = $kernel;
+
+            foreach (array_reverse($tenancyMiddleware) as $middleware) {
+                $httpKernel->prependToMiddlewarePriority($middleware);
+            }
+        });
     }
 }

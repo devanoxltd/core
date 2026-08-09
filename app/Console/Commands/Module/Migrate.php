@@ -11,6 +11,7 @@ use Illuminate\Console\Command;
 use Illuminate\Support\Str;
 use Symfony\Component\Console\Attribute\AsCommand;
 
+use function Devanox\Core\Helpers\tenant;
 use function Laravel\Prompts\confirm;
 use function Laravel\Prompts\error;
 use function Laravel\Prompts\info;
@@ -82,10 +83,9 @@ final class Migrate extends Command
     {
         $path = Module::pathFor($module, 'migrations');
 
-        // TODO: Handle tenant migrations after implementing multi-tenancy
-        // if (tenant()) {
-        //     $path .= DIRECTORY_SEPARATOR . 'tenant';
-        // }
+        if (tenant()) {
+            $path .= DIRECTORY_SEPARATOR . 'tenant';
+        }
 
         $path = str($path)->replace(base_path(DIRECTORY_SEPARATOR), '')->__toString();
 

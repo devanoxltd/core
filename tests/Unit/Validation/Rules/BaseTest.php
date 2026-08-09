@@ -20,6 +20,7 @@ final class TestRules extends Base
     {
         return [
             'name' => 'full name',
+            'email' => 'test@example.com',
         ];
     }
 }

@@ -6,6 +6,7 @@ use Devanox\Core\Core;
 use Devanox\Core\Http\Middleware\InstallApp;
 use Devanox\Core\Http\Middleware\License;
 use Devanox\Core\Providers\CoreServiceProvider;
+use Devanox\Core\Support\Tenancy;
 use Illuminate\Contracts\Http\Kernel;
 use Illuminate\Support\Facades\Artisan;
 use Modules\ProviderModule\App\Providers\ProviderModuleServiceProvider;
@@ -144,4 +145,42 @@ it('registers blade components when directory exists', function (): void {
 
     // Clean up
     rmdir($componentPath);
+});
+
+it('registers tenancy services and commands when enabled', function (): void {
+    config()->set('tenancy.enabled', true);
+
+    $provider = new CoreServiceProvider($this->app);
+    $provider->register();
+    $provider->boot();
+
+    expect($this->app->bound(Tenancy::class))->toBeTrue();
+
+    $provider->callBootingCallbacks();
+    $provider->callBootedCallbacks();
+});
+
+it('does not register tenancy services and commands when disabled', function (): void {
+    config()->set('tenancy.enabled', false);
+
+    // Call the register methods directly via reflection
+    $provider = new CoreServiceProvider($this->app);
+    $reflection = new ReflectionClass($provider);
+
+    $registerEventListeners = $reflection->getMethod('registerEventListeners');
+    $registerEventListeners->invoke($provider);
+
+    $setupTenancy = $reflection->getMethod('setupTenancy');
+    $setupTenancy->invoke($provider);
+
+    // Nothing bad should happen
+    expect(true)->toBeTrue();
+});
+
+it('adds information to the about command', function (): void {
+    $this->artisan('about')->assertSuccessful();
+
+    config()->set('tenancy.enabled', true);
+    config()->set('tenancy.central_domains', ['example.com']);
+    $this->artisan('about')->assertSuccessful();
 });

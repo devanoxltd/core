@@ -11,6 +11,7 @@ use Illuminate\Database\Migrations\Migrator;
 use Illuminate\Support\Collection;
 use Symfony\Component\Console\Attribute\AsCommand;
 
+use function Devanox\Core\Helpers\tenant;
 use function Laravel\Prompts\error;
 use function Laravel\Prompts\info;
 use function Laravel\Prompts\table;
@@ -88,14 +89,13 @@ final class MigrateCheck extends Command
     {
         $paths = $this->getMigrationPaths();
 
-        // TODO: Handle tenant migrations after implementing multi-tenancy
-        // if (tenant()) {
-        //     $path = database_path('migrations');
+        if (tenant()) {
+            $path = database_path('migrations');
 
-        //     // remove $path from $paths if exists
-        //     $paths = array_filter($paths, fn($p) => $p !== $path);
-        //     $paths[] = database_path('migrations/tenant');
-        // }
+            // remove $path from $paths if exists
+            $paths = array_filter($paths, fn (string $p): bool => $p !== $path);
+            $paths[] = database_path('migrations/tenant');
+        }
 
         return $this->migrator->getMigrationFiles($paths);
     }
