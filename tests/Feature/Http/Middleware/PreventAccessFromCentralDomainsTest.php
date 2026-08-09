@@ -26,14 +26,14 @@ it('aborts when accessed from central domain', function (): void {
 it('proceeds when tenant is present', function (): void {
     Config::set('tenancy.enabled', true);
 
-    $tenant = Tenant::query()->forceCreate([
+    $tenant = Tenant::withoutEvents(fn () => Tenant::query()->forceCreate([
         'id' => 1,
         'user_id' => 1,
         'name' => 'Tenant 1',
         'email' => 'test@example.com',
         'status' => 'active',
         'config' => ['database' => ['database' => 'tenant_1', 'driver' => 'mysql']],
-    ]);
+    ]));
     tenancy()->setTenant($tenant);
 
     $middleware = new PreventAccessFromCentralDomains;

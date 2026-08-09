@@ -17,23 +17,23 @@ beforeEach(function (): void {
     // Create some fake tenants for testing
     Tenant::query()->forceDelete();
 
-    $this->tenant1 = Tenant::query()->forceCreate([
+    $this->tenant1 = Tenant::withoutEvents(fn () => Tenant::query()->forceCreate([
         'id' => 1,
         'user_id' => 1,
         'name' => 'Tenant 1',
         'email' => 'test@example.com',
         'status' => 'active',
         'config' => ['database' => ['database' => 'tenant_1', 'driver' => 'mysql']],
-    ]);
+    ]));
 
-    $this->tenant2 = Tenant::query()->forceCreate([
+    $this->tenant2 = Tenant::withoutEvents(fn () => Tenant::query()->forceCreate([
         'id' => 2,
         'user_id' => 1,
         'name' => 'Tenant 2',
         'email' => 'test@example.com',
         'status' => 'active',
         'config' => ['database' => ['database' => 'tenant_2', 'driver' => 'mysql']],
-    ]);
+    ]));
 });
 
 it('executes command for all tenants when no specific tenant is provided', function (): void {
@@ -94,13 +94,13 @@ it('fails when artisan command argument is invalid', function (): void {
     $command = $this->app->make(TenantCommand::class);
     $reflection = new ReflectionMethod($command, 'runArtisanCommand');
 
-    $tenant = Tenant::query()->forceCreate([
+    $tenant = Tenant::withoutEvents(fn () => Tenant::query()->forceCreate([
         'id' => 99,
         'user_id' => 1,
         'name' => 'Tenant 99',
         'email' => 'test99@example.com',
         'status' => 'active',
-    ]);
+    ]));
 
     tenancy()->setTenant($tenant);
 

@@ -11,13 +11,13 @@ use Illuminate\Support\Facades\Config;
 beforeEach(function (): void {
     Tenant::query()->forceDelete();
 
-    $this->tenant = Tenant::query()->forceCreate([
+    $this->tenant = Tenant::withoutEvents(fn () => Tenant::query()->forceCreate([
         'id' => 1,
         'user_id' => 1,
         'name' => 'Tenant 1',
         'email' => 'test@example.com',
         'status' => 'active',
-    ]);
+    ]));
 });
 
 it('tests tenant relationship', function (): void {
