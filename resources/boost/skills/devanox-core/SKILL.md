@@ -33,8 +33,8 @@ Use this skill when a Laravel application needs to integrate the Core package.
 #### Commands
 The package provides several artisan commands for module and tenancy management:
 - **Module Commands:** `module:list`, `module:enable {module?}`, `module:disable {module?}`, `module:migrate`
-- **Core Utilities:** `devanox:cleanup`, `devanox:migrate-check`
-- **Tenancy Commands:** `tenancy:install`, `tenancy:run`, `tenancy:db:create` (available when tenancy is enabled)
+- **Core Utilities:** `app:clean-up`, `migrate:check`, `devanox:license-check`
+- **Tenancy Commands:** `tenancy:install`, `tenant:create-database {id}`, `tenant {artisanCommand}` (available when tenancy is enabled)
 
 #### Helpers & Facades
 - **Helpers:** `isAppInstalled()`, `modules()`, `tenancy()`, `tenant()`
@@ -68,6 +68,7 @@ Read before executing:
 
 - **Publishing specific assets:** `php artisan vendor:publish --tag="core-config"`
 - **Enabling a module:** `php artisan module:enable MyModule`
+- **Running code in a tenant context:** `tenancy()->run($tenant, fn($tenant) => /* your code */)`
 
 ## Anti-patterns
 

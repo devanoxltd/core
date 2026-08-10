@@ -145,13 +145,29 @@ The `devanoxltd/core` package provides a rich set of tools to manage modules and
 - `php artisan module:migrate {module?}`: Run migrations for a specific module or all modules.
 
 #### Core Utilities
-- `php artisan devanox:cleanup`: Clean up system data, caches, or logs.
-- `php artisan devanox:migrate-check`: Check for any pending database migrations.
+- `php artisan app:clean-up`: Clean up system data, caches, or logs.
+- `php artisan migrate:check`: Check for any pending database migrations.
+- `php artisan devanox:license-check`: Check licenses for the package.
 
 #### Tenancy Management (when enabled)
 - `php artisan tenancy:install`: Generate tenancy base models and prepare configuration.
-- `php artisan tenancy:db:create`: Create databases for all existing tenants.
-- `php artisan tenancy:run {command}`: Run a specific Artisan command across all tenant environments.
+- `php artisan tenant:create-database {id}`: Create a database for a specific tenant.
+- `php artisan tenant {artisanCommand}`: Run a specific Artisan command for a specific tenant or all tenants.
+
+### Running Code in a Tenant's Context
+
+You can safely execute code under a specific tenant's context using the `tenancy()->run()` method. This will temporarily set the tenant, switch the database connections and other configured services, run your callback, and then completely restore the original configuration and tenant state.
+
+```php
+use App\Models\Tenant;
+
+$tenant = Tenant::find(1);
+
+tenancy()->run($tenant, function ($tenant) {
+    // This code will run within the context of the tenant
+    // e.g., using the tenant's database connection
+});
+```
 
 ### Helper Functions
 

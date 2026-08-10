@@ -49,18 +49,14 @@ final class TenantCommand extends Command
         $exitCode = Command::SUCCESS;
 
         foreach ($tenants->cursor() as $tenant) {
-            try {
-                /** @var TenantContract&Model $tenant */
-                tenancy()->setTenant($tenant);
-
+            /** @var TenantContract&Model $tenant */
+            tenancy()->run($tenant, function () use (&$exitCode): void {
                 $code = $this->runArtisanCommand();
 
                 if ($code !== Command::SUCCESS) {
                     $exitCode = $code;
                 }
-            } finally {
-                tenancy()->unsetTenant();
-            }
+            });
         }
 
         return $exitCode;

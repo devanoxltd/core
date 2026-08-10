@@ -214,9 +214,10 @@ final class CoreServiceProvider extends ServiceProvider
             __DIR__ . '/../../lang' => $this->app->langPath('vendor/' . $this->packageNameLower),
         ], [$this->packageNameLower, $this->packageNameLower . '-lang']);
 
-        $this->publishes([
-            __DIR__ . '/../../public' => public_path('vendor/' . $this->packageNameLower),
-        ], [$this->packageNameLower, $this->packageNameLower . '-assets']);
+        // If any assets are present in the package's public directory, publish them to the application's public directory
+        // $this->publishes([
+        //     __DIR__ . '/../../public' => public_path('vendor/' . $this->packageNameLower),
+        // ], [$this->packageNameLower, $this->packageNameLower . '-assets']);
 
         $this->publishesMigrations(
             $this->getMigrationsToPublish(__DIR__ . '/../../database/migrations/publishable'),

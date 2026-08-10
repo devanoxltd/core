@@ -271,4 +271,29 @@ final class Tenancy
 
         Configuration::apply($config);
     }
+
+    /**
+     * Run a callback under a specific tenant context.
+     *
+     * @template T
+     *
+     * @param  callable(TenantContract): T  $callback
+     * @return T
+     */
+    public function run(TenantContract $tenant, callable $callback): mixed
+    {
+        $originalTenant = $this->tenant;
+
+        /** @var array<string, mixed> $originalConfig */
+        $originalConfig = config()->all();
+
+        try {
+            $this->setTenant($tenant);
+
+            return $callback($tenant);
+        } finally {
+            $this->tenant = $originalTenant;
+            config($originalConfig);
+        }
+    }
 }
