@@ -102,6 +102,36 @@ use Illuminate\Support\Facades\Route;
 )
 ```
 
+### Extending Tenancy Models
+
+If your host application needs to add custom relationships or logic to the `Tenant` or `Domain` models, you can create your own models extending the package's base models.
+
+First, create your custom model extending the base model:
+
+```php
+namespace App\Models;
+
+use Devanox\Core\Models\Tenant as BaseTenant;
+
+class Tenant extends BaseTenant
+{
+    // Add custom relationships or logic here
+    public function users()
+    {
+        return $this->hasMany(User::class);
+    }
+}
+```
+
+Then, update the `config/tenancy.php` configuration file to use your new model:
+
+```php
+    'models' => [
+        'tenant' => App\Models\Tenant::class,
+        'domain' => Devanox\Core\Models\Domain::class,
+    ],
+```
+
 ## Usage
 
 The `devanoxltd/core` package provides a rich set of tools to manage modules and multi-tenancy in your Laravel application.
