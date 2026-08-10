@@ -147,13 +147,13 @@ final class CoreServiceProvider extends ServiceProvider
                 CleanUp::class,
                 MigrateCheck::class,
                 LicenseCheck::class,
+                TenantInstallCommand::class,
             ]);
 
             if ($this->isTenancyEnabled()) {
                 $this->commands([
                     TenantCommand::class,
                     TenantCreateDatabaseCommand::class,
-                    TenantInstallCommand::class,
                 ]);
             }
         }

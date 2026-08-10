@@ -26,6 +26,7 @@ final class TenantInstallCommand extends Command
 
         // 2. Generate the Custom Tenant Model for the app
         $this->createAppModel('Tenant');
+        $this->createAppModel('Domain');
 
         $this->info('Tenancy installed successfully! Update config/tenancy.php to use your new App\Models\Tenant.');
 
