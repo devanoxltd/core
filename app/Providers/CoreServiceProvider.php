@@ -14,6 +14,7 @@ use Devanox\Core\Console\Commands\Module\Enable;
 use Devanox\Core\Console\Commands\Module\Migrate;
 use Devanox\Core\Console\Commands\TenantCommand;
 use Devanox\Core\Console\Commands\TenantCreateDatabaseCommand;
+use Devanox\Core\Console\Commands\TenantInstallCommand;
 use Devanox\Core\Core;
 use Devanox\Core\Events\Tenant\Created as TenantCreatedEvent;
 use Devanox\Core\Events\Tenant\DatabaseCreated as TenantDatabaseCreatedEvent;
@@ -152,6 +153,7 @@ final class CoreServiceProvider extends ServiceProvider
                 $this->commands([
                     TenantCommand::class,
                     TenantCreateDatabaseCommand::class,
+                    TenantInstallCommand::class,
                 ]);
             }
         }
