@@ -218,18 +218,48 @@ final class CoreServiceProvider extends ServiceProvider
             __DIR__ . '/../../public' => public_path('vendor/' . $this->packageNameLower),
         ], [$this->packageNameLower, $this->packageNameLower . '-assets']);
 
-        $this->publishesMigrations([
-            __DIR__ . '/../../database/migrations/publishable' => database_path('migrations'),
-        ], [$this->packageNameLower, $this->packageNameLower . '-migrations']);
+        $this->publishesMigrations(
+            $this->getMigrationsToPublish(__DIR__ . '/../../database/migrations/publishable'),
+            [$this->packageNameLower, $this->packageNameLower . '-migrations'],
+        );
 
         // Publish the tenancy configuration and migrations
         $this->publishes([
             __DIR__ . '/../../config/tenancy.php' => config_path('tenancy.php'),
         ], [$this->packageNameLower, 'tenancy-config']);
 
-        $this->publishesMigrations([
-            __DIR__ . '/../../database/migrations/tenancy' => database_path('migrations'),
-        ], [$this->packageNameLower, 'tenancy-migrations']);
+        $this->publishesMigrations(
+            $this->getMigrationsToPublish(__DIR__ . '/../../database/migrations/tenancy'),
+            [$this->packageNameLower, 'tenancy-migrations'],
+        );
+    }
+
+    /**
+     * Get the migrations that have not yet been published.
+     *
+     * @return array<string, string>
+     */
+    private function getMigrationsToPublish(string $directory): array
+    {
+        $paths = [];
+
+        $files = glob($directory . '/*.php');
+
+        foreach ($files ?: [] as $file) {
+            $filename = basename($file);
+
+            // Strip the timestamp to get the base migration name
+            $migrationName = preg_replace('/^\d{4}_\d{2}_\d{2}_\d{6}_/', '', $filename);
+
+            // Check if any file in the migrations directory ends with this name
+            $existing = glob(database_path('migrations/*_' . $migrationName));
+
+            if ($existing === [] || $existing === false) {
+                $paths[$file] = database_path('migrations/' . $filename);
+            }
+        }
+
+        return $paths;
     }
 
     private function registerComponents(): void
