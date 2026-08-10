@@ -52,6 +52,7 @@ jobs:
           composer run build
 
       - name: Linter & PHPStan
+        if: runner.os != 'Windows'
         run: composer test:lint
 
       - name: Type Coverage
