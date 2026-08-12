@@ -56,6 +56,25 @@ The package provides the following events when tenancy is enabled:
 - **Blade:** Components are registered under the `core::` namespace.
 - **Livewire:** Livewire components are natively registered and can be used directly.
 
+#### Developing Modules
+Modules are placed in the application's `modules/` directory (or the path defined in `core.module_path`).
+- **Module Configuration:** A module must include a `Config/config.php` file containing at least an `id`.
+  - You can specify dependencies by adding `'requiredModules' => ['other-module-id']` to the config. The package will enforce these requirements when enabling the module.
+- **Service Provider:** A module must define a service provider (e.g., `Modules\MyModule\App\Providers\MyModuleServiceProvider`).
+  - Use the `Devanox\Core\Traits\Modules\Provider` trait.
+  - Call `$this->registerAll()` in the provider's `register()` method. This will automatically wire up migrations, configuration, views, translations, components, and Livewire.
+  - *Note: Routes are not automatically loaded by `registerAll()`. You must manually load them in your provider (e.g., `$this->loadRoutesFrom(__DIR__.'/../../Routes/web.php');`).*
+- **Commands & Schedules:**
+  - Define an array property `$commands` in the provider to register artisan commands.
+  - Implement `protected function registerCommandSchedules(): void` in the provider to register command schedules.
+- **Standard Structure:**
+  - `App/` -> `Modules\MyModule\App` namespace
+  - `Database/Migrations/` (or `Database/Migrations/tenant/` for tenancy)
+  - `Database/Seeders/DatabaseSeeder.php` (Automatically detected by `Module::seeders()`)
+  - `Resources/views/`
+  - `Lang/`
+  - `Routes/`
+
 ## Rules, References, and Templates
 
 Read before executing:
