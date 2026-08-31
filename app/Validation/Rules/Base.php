@@ -15,7 +15,7 @@ abstract class Base
      *
      * @return array<string, Rule|array<mixed>|string>
      */
-    abstract public static function rules(): array;
+    abstract public static function rules(?int $id = null): array;
 
     /**
      * Get the error messages for the defined validation rules.

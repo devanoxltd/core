@@ -161,8 +161,6 @@ trait Provider
             );
         }
 
-        $viewDirectory = Module::pathFor(self::name(), 'components-view') . DIRECTORY_SEPARATOR . 'livewire';
-
         if (is_dir($viewDirectory)) {
             Livewire::addLocation(
                 viewPath: $viewDirectory,

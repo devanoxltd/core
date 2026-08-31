@@ -15,6 +15,7 @@ use Devanox\Core\Console\Commands\Module\Migrate;
 use Devanox\Core\Console\Commands\TenantCommand;
 use Devanox\Core\Console\Commands\TenantCreateDatabaseCommand;
 use Devanox\Core\Console\Commands\TenantInstallCommand;
+use Devanox\Core\Contracts\Models\Tenant;
 use Devanox\Core\Core;
 use Devanox\Core\Events\Tenant\Created as TenantCreatedEvent;
 use Devanox\Core\Events\Tenant\DatabaseCreated as TenantDatabaseCreatedEvent;
@@ -188,7 +189,7 @@ final class CoreServiceProvider extends ServiceProvider
         $this->loadTranslationsFrom(__DIR__ . '/../../lang', $this->packageNameLower);
         $this->loadJsonTranslationsFrom(__DIR__ . '/../../lang');
 
-        if (! tenant()) {
+        if (! tenant() instanceof Tenant) {
             $this->loadMigrationsFrom(__DIR__ . '/../../database/migrations');
         }
 
@@ -295,8 +296,6 @@ final class CoreServiceProvider extends ServiceProvider
                 classViewPath: $viewDirectory,
             );
         }
-
-        $viewDirectory = __DIR__ . '/../../resources/views/components/livewire';
 
         if (is_dir($viewDirectory)) {
             Livewire::addLocation(

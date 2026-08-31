@@ -7,7 +7,7 @@ use Illuminate\Validation\ValidationException;
 
 final class TestRules extends Base
 {
-    public static function rules(): array
+    public static function rules(?int $id = null): array
     {
         return [
             'name' => 'required|string|max:255',
@@ -59,7 +59,7 @@ it('validates with named error bag', function (): void {
 
 final class TestRulesWithoutAttributes extends Base
 {
-    public static function rules(): array
+    public static function rules(?int $id = null): array
     {
         return ['name' => 'required'];
     }

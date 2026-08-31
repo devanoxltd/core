@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Devanox\Core\Console\Commands;
 
+use Devanox\Core\Contracts\Models\Tenant;
 use Illuminate\Console\Attributes\Description;
 use Illuminate\Console\Attributes\Signature;
 use Illuminate\Database\Console\Migrations\BaseCommand as Command;
@@ -89,7 +90,7 @@ final class MigrateCheck extends Command
     {
         $paths = $this->getMigrationPaths();
 
-        if (tenant()) {
+        if (tenant() instanceof Tenant) {
             $path = database_path('migrations');
 
             // remove $path from $paths if exists

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Devanox\Core\Support;
 
+use Devanox\Core\Contracts\Models\Tenant;
 use Devanox\Core\Events\ModuleDisabled;
 use Devanox\Core\Events\ModuleEnabled;
 use Exception;
@@ -241,7 +242,7 @@ final class Module
             'components-view' => self::forPath('views') . DIRECTORY_SEPARATOR . 'components',
             'config' => 'Config',
             'database' => 'Database',
-            'migrations' => self::forPath('database') . DIRECTORY_SEPARATOR . (tenant() ? 'Migrations' . DIRECTORY_SEPARATOR . 'tenant' : 'Migrations'),
+            'migrations' => self::forPath('database') . DIRECTORY_SEPARATOR . (tenant() instanceof Tenant ? 'Migrations' . DIRECTORY_SEPARATOR . 'tenant' : 'Migrations'),
             'factories' => self::forPath('database') . DIRECTORY_SEPARATOR . 'Factories',
             'seeders' => self::forPath('database') . DIRECTORY_SEPARATOR . 'Seeders',
             'lang' => 'Lang',

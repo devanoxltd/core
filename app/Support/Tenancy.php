@@ -34,7 +34,7 @@ final class Tenancy
      */
     public function get(string $key, mixed $default = null): mixed
     {
-        return $this->tenant ? ($this->tenant->{$key} ?? $default) : $default;
+        return $this->tenant instanceof TenantContract ? ($this->tenant->{$key} ?? $default) : $default;
     }
 
     public function requestDomain(): string
@@ -156,7 +156,7 @@ final class Tenancy
 
     public function setTenantConfig(): ?string
     {
-        if (! $this->tenant) {
+        if (! $this->tenant instanceof TenantContract) {
             return null;
         }
 
@@ -234,7 +234,7 @@ final class Tenancy
 
     public function initializeTenant(): void
     {
-        if ($this->tenant) {
+        if ($this->tenant instanceof TenantContract) {
             $tenantConnectionName = $this->setTenantConfig();
 
             if (! $tenantConnectionName) {

@@ -133,9 +133,14 @@ it('returns early when not running in console', function (): void {
 
 it('registers blade components when directory exists', function (): void {
     $componentPath = __DIR__ . '/../../app/View/Components';
+    $anonymousComponentPath = __DIR__ . '/../../resources/views/components';
 
     if (! is_dir($componentPath)) {
         mkdir($componentPath, 0o755, true);
+    }
+
+    if (! is_dir($anonymousComponentPath)) {
+        mkdir($anonymousComponentPath, 0o755, true);
     }
 
     $provider = new CoreServiceProvider($this->app);
@@ -144,7 +149,13 @@ it('registers blade components when directory exists', function (): void {
     expect(true)->toBeTrue();
 
     // Clean up
-    rmdir($componentPath);
+    if (is_dir($componentPath)) {
+        @rmdir($componentPath);
+    }
+
+    if (is_dir($anonymousComponentPath)) {
+        @rmdir($anonymousComponentPath);
+    }
 });
 
 it('registers tenancy services and commands when enabled', function (): void {

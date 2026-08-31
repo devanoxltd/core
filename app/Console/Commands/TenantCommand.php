@@ -66,7 +66,7 @@ final class TenantCommand extends Command
     {
         $tenant = tenancy()->tenant;
 
-        if (! $tenant) {
+        if (! $tenant instanceof TenantContract) {
             $this->error('No tenant is set.');
 
             return Command::FAILURE;

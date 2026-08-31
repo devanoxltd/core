@@ -50,9 +50,7 @@ final class EnvEditor
                 $key = mb_trim($key);
 
                 if ($isCommented) {
-                    if (! isset($data[$key])) {
-                        $data[$key] = self::stripQuotes(mb_trim($value));
-                    }
+                    $data[$key] ??= self::stripQuotes(mb_trim($value));
                 } else {
                     $data[$key] = self::stripQuotes(mb_trim($value));
                 }

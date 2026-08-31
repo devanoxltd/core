@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 use Devanox\Core\Helpers\InstallerInfo;
 use Illuminate\Database\Eloquent\Attributes\Table;
+use Illuminate\Database\Eloquent\Attributes\Unguarded;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User;
 use Illuminate\Support\Facades\Artisan;
@@ -120,13 +121,12 @@ it('can create admin account', function (): void {
 });
 
 #[Table(name: 'users')]
+#[Unguarded]
 final class MockUserWithRole extends User
 {
     use HasFactory;
 
     public bool $roleAssigned = false;
-
-    protected $guarded = [];
 
     public function assignRole(string $role): void
     {

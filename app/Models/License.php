@@ -6,6 +6,7 @@ namespace Devanox\Core\Models;
 
 use Devanox\Core\Traits\Models\CentralConnection;
 use Illuminate\Database\Eloquent\Attributes\Guarded;
+use Illuminate\Database\Eloquent\Attributes\Scope;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -98,7 +99,8 @@ final class License extends Model
      *
      * @param  Builder<self>  $query
      */
-    protected function scopeIsModule(Builder $query, string $module): void
+    #[Scope]
+    protected function isModule(Builder $query, string $module): void
     {
         $query->where('is_module', true)->where('module_name', $module);
     }
@@ -108,7 +110,8 @@ final class License extends Model
      *
      * @param  Builder<self>  $query
      */
-    protected function scopeIsCore(Builder $query): void
+    #[Scope]
+    protected function isCore(Builder $query): void
     {
         $query->where('is_module', false);
     }

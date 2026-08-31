@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Devanox\Core\Console\Commands\Module;
 
+use Devanox\Core\Contracts\Models\Tenant;
 use Devanox\Core\Support\Module;
 use Illuminate\Console\Attributes\Description;
 use Illuminate\Console\Attributes\Signature;
@@ -83,7 +84,7 @@ final class Migrate extends Command
     {
         $path = Module::pathFor($module, 'migrations');
 
-        if (tenant()) {
+        if (tenant() instanceof Tenant) {
             $path .= DIRECTORY_SEPARATOR . 'tenant';
         }
 
