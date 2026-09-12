@@ -285,23 +285,15 @@ final class CoreServiceProvider extends ServiceProvider
         $viewDirectory = __DIR__ . '/../../resources/views/livewire';
 
         if (is_dir($classDirectory)) {
-            $namespace = 'Devanox\\Core\\Livewire';
-
-            Livewire::addLocation(classNamespace: $namespace);
-
             Livewire::addNamespace(
                 namespace: $this->packageNameLower,
-                classNamespace: $namespace,
+                classNamespace: 'Devanox\\Core\\Livewire',
                 classPath: $classDirectory,
                 classViewPath: $viewDirectory,
             );
         }
 
         if (is_dir($viewDirectory)) {
-            Livewire::addLocation(
-                viewPath: $viewDirectory,
-            );
-
             Livewire::addNamespace(
                 namespace: $this->packageNameLower,
                 viewPath: $viewDirectory,

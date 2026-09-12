@@ -5,27 +5,25 @@ declare(strict_types=1);
 use Illuminate\Support\Facades\File;
 
 beforeEach(function (): void {
-    if (File::exists(app_path('Models/Tenant.php'))) {
-        File::delete(app_path('Models/Tenant.php'));
-    }
+    $pid = getmypid();
+    $configPath = __DIR__ . '/temp/config-' . $pid;
+    $appPath = __DIR__ . '/temp/app-' . $pid;
+    $databasePath = __DIR__ . '/temp/database-' . $pid;
 
-    if (File::exists(config_path('tenancy.php'))) {
-        File::delete(config_path('tenancy.php'));
-    }
+    File::ensureDirectoryExists($configPath);
+    File::ensureDirectoryExists($appPath . '/Models');
+    File::ensureDirectoryExists($databasePath . '/migrations');
 
-    File::cleanDirectory(database_path('migrations'));
+    app()->useConfigPath($configPath);
+    app()->useAppPath($appPath);
+    app()->useDatabasePath($databasePath);
 });
 
 afterEach(function (): void {
-    if (File::exists(app_path('Models/Tenant.php'))) {
-        File::delete(app_path('Models/Tenant.php'));
-    }
-
-    if (File::exists(config_path('tenancy.php'))) {
-        File::delete(config_path('tenancy.php'));
-    }
-
-    File::cleanDirectory(database_path('migrations'));
+    $pid = getmypid();
+    File::deleteDirectory(__DIR__ . '/temp/config-' . $pid);
+    File::deleteDirectory(__DIR__ . '/temp/app-' . $pid);
+    File::deleteDirectory(__DIR__ . '/temp/database-' . $pid);
 });
 
 it('installs tenancy and creates the tenant model', function (): void {

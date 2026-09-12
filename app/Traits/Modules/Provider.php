@@ -147,25 +147,15 @@ trait Provider
         $viewDirectory = Module::pathFor(self::name(), 'views') . DIRECTORY_SEPARATOR . 'livewire';
 
         if (is_dir($classDirectory)) {
-            $namespace = 'Modules\\' . self::name() . '\\App\\Livewire';
-
-            Livewire::addLocation(
-                classNamespace: $namespace,
-            );
-
             Livewire::addNamespace(
                 namespace: self::nameLower(),
-                classNamespace: $namespace,
+                classNamespace: 'Modules\\' . self::name() . '\\App\\Livewire',
                 classPath: $classDirectory,
                 classViewPath: $viewDirectory,
             );
         }
 
         if (is_dir($viewDirectory)) {
-            Livewire::addLocation(
-                viewPath: $viewDirectory,
-            );
-
             Livewire::addNamespace(
                 namespace: self::nameLower(),
                 viewPath: $viewDirectory,

@@ -94,6 +94,13 @@ abstract class TestCase extends Orchestra
             File::deleteDirectory(__DIR__ . '/../database/migrations/publishable');
         }
 
+        $migrationFiles = glob(database_path('migrations/*'));
+        foreach ($migrationFiles as $file) {
+            if (is_file($file)) {
+                @unlink($file);
+            }
+        }
+
         parent::tearDown();
     }
 }
