@@ -5,9 +5,9 @@
             const input = $el
                 .closest('[data-slot=input-actions]')
                 .parentElement.querySelector('input[data-control-id=input]');
-            if (!input) return;
+            if (! input) return;
 
-            this.revealed = !this.revealed;
+            this.revealed = ! this.revealed;
             input.type = this.revealed ? 'text' : 'password';
         },
     }"

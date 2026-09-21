@@ -1,5 +1,7 @@
+@blaze(unsafe: ['type', 'size', 'color', 'colorInvert', 'loading', 'variant', 'before', 'after', 'as', 'squared'])
+
 {{-- When using this button in another component that supports icons, this button will automatically inherit the icon-related props without needing to pass them explicitly each time. --}}
-@aware ([
+@aware([
     'type',
     'size',
     'color',
@@ -12,7 +14,7 @@
     'squared',
 ])
 
-@props ([
+@props([
     'type' => 'button',
     'size' => 'md',
     'color' => null,
@@ -108,7 +110,7 @@
             'text-white', // Text colors
         ],
         'none' => [],
-        default => []
+        default => [],
     };
 
     // Assemble base button classes, including layout, disabled states, and conditional styles
@@ -117,7 +119,6 @@
         'cursor-pointer disabled:pointer-events-none disabled:cursor-default disabled:opacity-75 dark:disabled:opacity-75',
         '[&_a]:decoration-none [&_a]:no-underline [&_a:hover]:no-underline' => $variant !== 'none', // Handle anchor tags inside the button
         'rounded-sm' => $variant !== 'none', // Apply rounding unless variant is 'none'
-
         // Handling loading logic via CSS: Show loading indicator as flex and set opacity-0 on its siblings
         '[&>[data-loading=true]:first-child]:flex', // Override 'hidden' to display the loading div during loading
         '[&>[data-loading=true]:first-child~*]:opacity-0', // Apply opacity-0 to all subsequent children (e.g., icons, text)
@@ -162,7 +163,7 @@
 >
     @if ($loading)
         <div
-            @class ([
+            @class([
                 'absolute inset-0 hidden items-center justify-center ',
             ])
             {{-- the is just adding here data-loading="true" to shows loading icon,  you can add it manually, using php, js ... --}}

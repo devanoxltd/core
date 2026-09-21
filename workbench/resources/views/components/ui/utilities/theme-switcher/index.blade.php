@@ -1,4 +1,4 @@
-@props ([
+@props([
     'icon' => new Illuminate\View\ComponentSlot,
     'variant' => 'default',
     'darkIcon' => 'solid.moon-star',

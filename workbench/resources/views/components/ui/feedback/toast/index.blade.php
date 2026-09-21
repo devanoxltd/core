@@ -1,4 +1,4 @@
-@props ([
+@props([
     'layout' => 'default', // default, expanded
     'position' => 'bottom-right', // top-left, top-center, top-right, bottom-left, bottom-center, bottom-right
     'timeout' => 5000,
@@ -8,7 +8,7 @@
     'toast' => new Illuminate\View\ComponentSlot,
     'close' => new Illuminate\View\ComponentSlot,
     'progressBarVariant' => 'full',
-    'progressBarAlignment' => 'bottom'
+    'progressBarAlignment' => 'bottom',
 ])
 <div
     x-data
@@ -49,7 +49,7 @@
                 audio: new Audio(@js(asset('sounds/notification.mp3'))),
                 paddingBetweenToasts: 15,
                 addToast(toast) {
-                    if (!toast?.message && !toast?.html) return
+                    if (! toast?.message && ! toast?.html) return
 
                     if (toast?.position) {
                         this.position = toast.position
@@ -222,7 +222,7 @@
                     // In expanded mode every queued toast is fully positioned and visible.
                     for (let i = 3; i < this.toasts.length; i++) {
                         let extraToast = document.getElementById(this.toasts[i].id)
-                        if (!extraToast) continue
+                        if (! extraToast) continue
 
                         extraToast.style.zIndex = Math.max(10, 70 - ((i - 3) * 10))
 
@@ -336,7 +336,7 @@
                     // use for toasts used after redirects, any backend toast can be set in the session with the key 'toast' and it will be shown on the next page load, after being pulled from the session. The session toast should be an object with at least a 'message' property, and optionally 'description', 'type', 'position', and 'html' properties.
                     let session = {!! \Illuminate\Support\Js::from(session()->pull('toast')) !!}
 
-                    if (!session || (!session?.message)) {
+                    if (! session || (! session?.message)) {
                         return
                     }
 

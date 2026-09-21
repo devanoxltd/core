@@ -6,7 +6,7 @@
                 const input = $el
                     .closest('[data-slot=input-actions]')
                     .parentElement.querySelector('input[data-control-id=input]');
-                if (!input?.value) return;
+                if (! input?.value) return;
 
                 await navigator.clipboard.writeText(input.value);
                 this.copied = true;

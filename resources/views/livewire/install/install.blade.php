@@ -1,4 +1,4 @@
-<div class="min-h-64 w-2xl rounded-lg bg-gray-100 pb-6 shadow-md dark:bg-gray-800">
+<div class="min-h-64 w-2xl overflow-hidden rounded-lg border border-gray-200 bg-white pb-6 shadow-sm dark:border-gray-700/50 dark:bg-gray-900/50">
     <div class="bg-primary-500 dark:bg-primary-700 rounded-t-lg pt-10 pb-16 text-center">
         {{-- TODO: Add Company LOGO --}}
         <h1 class="text-2xl font-bold text-white">
@@ -10,8 +10,8 @@
         <div
             @tailwindClass([
                 'flex size-10 items-center justify-center rounded-full text-white',
-                'bg-secondary-400 dark:bg-secondary-700' => $activeStep == 'home',
-                'bg-gray-300 dark:bg-gray-600' => $activeStep != 'home',
+                'bg-secondary-400 dark:bg-secondary-700' => $activeStep === 'home',
+                'bg-gray-300 dark:bg-gray-600' => $activeStep !== 'home',
             ])
             wire:key="home"
         >
@@ -21,8 +21,8 @@
         <div
             @tailwindClass([
                 'flex size-10 items-center justify-center rounded-full text-white',
-                'bg-secondary-400 dark:bg-secondary-700' => $activeStep == 'requirements',
-                'bg-gray-300 dark:bg-gray-600' => $activeStep != 'requirements',
+                'bg-secondary-400 dark:bg-secondary-700' => $activeStep === 'requirements',
+                'bg-gray-300 dark:bg-gray-600' => $activeStep !== 'requirements',
             ])
             wire:key="requirements"
         >
@@ -32,8 +32,8 @@
         <div
             @tailwindClass([
                 'flex size-10 items-center justify-center rounded-full text-white',
-                'bg-secondary-400 dark:bg-secondary-700' => $activeStep == 'permissions',
-                'bg-gray-300 dark:bg-gray-600' => $activeStep != 'permissions',
+                'bg-secondary-400 dark:bg-secondary-700' => $activeStep === 'permissions',
+                'bg-gray-300 dark:bg-gray-600' => $activeStep !== 'permissions',
             ])
             wire:key="permissions"
         >
@@ -56,8 +56,8 @@
         <div
             @tailwindClass([
                 'flex size-10 items-center justify-center rounded-full text-white',
-                'bg-secondary-400 dark:bg-secondary-700' => $activeStep == 'admin',
-                'bg-gray-300 dark:bg-gray-600' => $activeStep != 'admin',
+                'bg-secondary-400 dark:bg-secondary-700' => $activeStep === 'admin',
+                'bg-gray-300 dark:bg-gray-600' => $activeStep !== 'admin',
             ])
             wire:key="admin"
         >
@@ -68,8 +68,8 @@
         <div
             @tailwindClass([
                 'flex size-10 items-center justify-center rounded-full text-white',
-                'bg-secondary-400 dark:bg-secondary-700' => $activeStep == 'finish',
-                'bg-gray-300 dark:bg-gray-600' => $activeStep != 'finish',
+                'bg-secondary-400 dark:bg-secondary-700' => $activeStep === 'finish',
+                'bg-gray-300 dark:bg-gray-600' => $activeStep !== 'finish',
             ])
             wire:key="finish"
         >
@@ -84,34 +84,34 @@
             @lang('core::install.steps.' . $activeStep . '.description')
         </p>
 
-        @switch($activeStep)
-            @case('requirements')
+        @switch ($activeStep)
+            @case ('requirements')
                 <livewire:core::requirements />
                 @break
-            @case('permissions')
+            @case ('permissions')
                 <livewire:core::permissions />
                 @break
-            @case('database')
+            @case ('database')
                 <livewire:core::database />
                 @break
-            @case('migrations')
+            @case ('migrations')
                 <livewire:core::migrations />
                 @break
-            @case('admin')
+            @case ('admin')
                 <livewire:core::admin-account />
                 @break
         @endswitch
     </div>
 
-    @if ($nextStep || $activeStep == 'finish')
+    @if ($nextStep || $activeStep === 'finish')
         <div class="mt-5 flex justify-center px-5" wire:key="button">
-            @switch($activeStep)
-                @case('home')
-                @case('requirements')
-                @case('permissions')
-                @case('database')
-                @case('migrations')
-                @case('admin')
+            @switch ($activeStep)
+                @case ('home')
+                @case ('requirements')
+                @case ('permissions')
+                @case ('database')
+                @case ('migrations')
+                @case ('admin')
                     <x-ui.form.button
                         size="sm"
                         wire:click="goToStep('{{ $nextStep }}')"
@@ -122,9 +122,8 @@
                     >
                         @lang('core::install.steps.' . $activeStep . '.button')
                     </x-ui.form.button>
-
                     @break
-                @case('finish')
+                @case ('finish')
                     <x-ui.form.button
                         size="sm"
                         wire:click="finish"
@@ -135,8 +134,8 @@
                     >
                         @lang('core::install.steps.' . $activeStep . '.button')
                     </x-ui.form.button>
-
                     @break
+
             @endswitch
         </div>
     @endif

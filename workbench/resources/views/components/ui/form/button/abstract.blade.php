@@ -1,23 +1,25 @@
-@props ([
+@blaze(unsafe: ['href', 'as'])
+
+@props([
     'href' => null,
     'as' => null,
 ])
 
 @php
-    $type = match (true) {
+    $tagType = match (true) {
         $as === 'div' && ! $href => 'div',
         $as === 'a' || $href => 'a',
-        default => 'button'
+        default => 'button',
     };
 @endphp
 
-@switch ($type)
+@switch ($tagType)
     @case ('div')
         <div {{ $attributes }}>{{ $slot }}</div>
         @break
     @case ('a')
-        <a href="{{ $href }}" {{ $attributes }}> {{ $slot }} </a>
+        <a href="{{ $href }}" wire:navigate {{ $attributes }}> {{ $slot }} </a>
         @break
     @default
-        <button {{ $attributes->merge(['type' => $type]) }}>{{ $slot }}</button>
+        <button {{ $attributes->merge(['type' => 'button']) }}>{{ $slot }}</button>
 @endswitch

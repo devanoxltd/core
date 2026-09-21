@@ -1,6 +1,6 @@
-@aware (['required' => false])
+@aware(['required' => false])
 
-@props ([
+@props([
     'value' => null,
     'required' => false,
 ])

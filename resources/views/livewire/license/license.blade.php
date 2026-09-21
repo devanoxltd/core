@@ -1,4 +1,4 @@
-<div class="min-h-40 w-2xl rounded-lg bg-gray-100 pb-6 shadow-md dark:bg-gray-800">
+<div class="min-h-40 w-2xl overflow-hidden rounded-lg border border-gray-200 bg-white pb-6 shadow-sm dark:border-gray-700/50 dark:bg-gray-900/50">
     <div class="bg-primary-500 dark:bg-primary-700 rounded-t-lg py-10 text-center">
         {{-- TODO: Add Company LOGO --}}
         <h1 class="text-2xl font-bold text-white">
@@ -7,23 +7,26 @@
     </div>
     <div class="mt-4" wire:key="activation">
         @if (! $isActivated)
-            <p
-                class="text-center text-sm text-gray-500 dark:text-gray-400"
-                wire:key="description"
-            >
+            <p class="text-center text-sm text-gray-500 dark:text-gray-400" wire:key="description">
                 @lang('core::install.steps.activation.description')
             </p>
 
             <form
-                class="mx-2 grid grid-cols-12 gap-2 px-4"
+                class="grid grid-cols-1 gap-x-6 gap-y-6 px-6 pb-2 sm:grid-cols-12"
                 wire:submit="activate"
                 wire:loading.attr="disabled"
                 wire:target="activate"
                 wire:key="activation-form"
             >
-                <x-ui.icon name="outline.loading-02" class="size-5 animate-spin mx-auto col-span-12"  wire:target="activate" wire:loading wire:key="loading-icon" />
+                <x-ui.icon
+                    name="outline.loading-02"
+                    class="mx-auto size-5 animate-spin sm:col-span-12"
+                    wire:target="activate"
+                    wire:loading
+                    wire:key="loading-icon"
+                />
 
-                <x-ui.form.field class="col-span-12">
+                <x-ui.form.field class="sm:col-span-12">
                     <x-ui.form.label for="licenseKey" :value="__('core::install.steps.activation.form.license_key')" />
                     <x-ui.form.input id="licenseKey" wire:model="licenseKey" />
                     <x-ui.form.error name="licenseKey" />
@@ -35,7 +38,7 @@
                         @lang('core::install.steps.activation.form.get_license_key')
                     </x-ui.navigation.link>
                 </x-ui.form.field>
-                <div class="col-span-12 mt-2 flex justify-center">
+                <div class="mt-2 flex justify-center sm:col-span-12">
                     <x-ui.form.button type="submit" wire:loading.attr="disabled" wire:target="activate" size="sm">
                         @lang('core::install.steps.activation.form.submit')
                     </x-ui.form.button>

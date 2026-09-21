@@ -1,4 +1,4 @@
-@aware ([
+@aware([
     'icon' => new Illuminate\View\ComponentSlot,
     'visibleIcon' => new Illuminate\View\ComponentSlot,
     'variant' => 'default',
@@ -47,7 +47,7 @@
                     data-slot="right-icon"
                 />
             </x-slot:before>
-            @lang ('component.utilities.theme-switcher.light')
+            @lang('component.utilities.theme-switcher.light')
         </x-ui.navigation.dropdown.item>
 
         <x-ui.navigation.dropdown.item
@@ -64,7 +64,7 @@
                     data-slot="right-icon"
                 />
             </x-slot:before>
-            @lang ('component.utilities.theme-switcher.dark')
+            @lang('component.utilities.theme-switcher.dark')
         </x-ui.navigation.dropdown.item>
 
         <x-ui.navigation.dropdown.item
@@ -81,7 +81,7 @@
                     data-slot="right-icon"
                 />
             </x-slot:before>
-            @lang ('component.utilities.theme-switcher.system')
+            @lang('component.utilities.theme-switcher.system')
         </x-ui.navigation.dropdown.item>
     </x-slot:menu>
 </x-ui.navigation.dropdown>

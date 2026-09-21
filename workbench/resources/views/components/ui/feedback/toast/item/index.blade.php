@@ -1,4 +1,4 @@
-@aware ([
+@aware([
     'timeout' => 5000,
     'toast' => new Illuminate\View\ComponentSlot,
     'close' => new Illuminate\View\ComponentSlot,
@@ -38,9 +38,9 @@
         const now = performance.now();
         const isPaused = $data.isToastPaused(this.toastId);
 
-        if (isPaused && !this.pauseStartTime) {
+        if (isPaused && ! this.pauseStartTime) {
             this.pauseStartTime = now;
-        } else if (!isPaused && this.pauseStartTime) {
+        } else if (! isPaused && this.pauseStartTime) {
             this.totalPausedTime += now - this.pauseStartTime;
             this.pauseStartTime = null;
         }
@@ -130,9 +130,9 @@
 >
     <span
         {{ $attributes->sanitize()->tailwindClass('group relative flex w-full flex-col items-start overflow-hidden border border-gray-100 bg-white shadow-md transition-all duration-300 ease-out dark:border-gray-700 dark:bg-gray-800 sm:max-w-xs sm:rounded-md') }}
-        :class="{ 'p-4': !toast.html, 'p-0': toast.html }"
+        :class="{ 'p-4': ! toast.html, 'p-0': toast.html }"
     >
-        <template x-if="!toast.html">
+        <template x-if="! toast.html">
             <div class="relative">
                 <div
                     class="flex items-center"
@@ -172,10 +172,10 @@
             @click="burnToast(toast.id)"
             {{ $close->attributes->sanitize()->tailwindClass('absolute z-10 right-0 mr-2.5 cursor-pointer rounded-full p-1.5 text-gray-400 opacity-0 duration-100 ease-in-out hover:bg-gray-50 hover:text-gray-500 dark:text-gray-200 dark:hover:bg-gray-700 dark:hover:text-gray-300') }}
             :class="{
-                'top-1/2 -translate-y-1/2': !toast.description && !toast.html,
+                'top-1/2 -translate-y-1/2': ! toast.description && ! toast.html,
                 'top-0 mt-2.5': toast.description || toast.html,
                 'opacity-100': toastHovered,
-                'opacity-0': !toastHovered,
+                'opacity-0': ! toastHovered,
             }"
         >
             <x-ui.icon name="outline.x-close" class="h-3 w-3" />
@@ -184,7 +184,7 @@
         {{-- Progress bar: visually indicates remaining time before the toast auto-dismisses --}}
         <template x-if="toast.showProgress !== false && timeout > 0">
             <div
-                @class ([
+                @class([
                     'absolute left-0 right-0 overflow-hidden',
                     'bottom-0' => $progressBarAlignment === 'bottom',
                     'top-0' => $progressBarAlignment === 'top',
@@ -199,7 +199,7 @@
                 }"
             >
                 <div
-                    @class ([
+                    @class([
                         $progressBarVariant === 'full' ? 'h-full bg-current/10' : 'h-0.5 bg-current',
                     ])
                     :style="'width: ' + progress + '%'"
