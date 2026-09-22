@@ -49,6 +49,8 @@ final class CoreServiceProvider extends ServiceProvider
      */
     public function register(): void
     {
+        $this->app->register(RouteServiceProvider::class);
+
         $this->checkModulesCapabilities();
 
         $this->mergeConfigFrom(__DIR__ . '/../../config/core.php', $this->packageNameLower);

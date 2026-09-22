@@ -120,8 +120,7 @@
     "extra": {
         "laravel": {
             "providers": [
-                "Devanox\\Core\\Providers\\CoreServiceProvider",
-                "Devanox\\Core\\Providers\\RouteServiceProvider"
+                "Devanox\\Core\\Providers\\CoreServiceProvider"
             ],
             "aliases": {
                 "Core": "Devanox\\Core\\Facades\\Core"
