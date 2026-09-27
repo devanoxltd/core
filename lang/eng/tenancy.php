@@ -40,6 +40,7 @@ return [
     ],
     'commands' => [
         'error' => [
+            'invalid_id' => 'Invalid tenant ID provided.',
             'tenant_not_found' => 'Tenant `:id` not found',
         ],
         'database' => [

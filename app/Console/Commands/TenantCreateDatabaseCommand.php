@@ -25,7 +25,7 @@ final class TenantCreateDatabaseCommand extends Command
         $id = $this->argument('id');
 
         if (is_array($id) || $id === null) {
-            $this->error('Invalid tenant ID provided.');
+            $this->error(__('core::tenancy.commands.error.invalid_id'));
 
             return Command::FAILURE;
         }
