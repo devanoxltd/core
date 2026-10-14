@@ -66,14 +66,14 @@ class Tenant extends Model implements TenantContract
     /**
      * Get all domains for the tenant.
      *
-     * @return HasMany<\Devanox\Core\Contracts\Models\Domain&Model, $this>
+     * @return HasMany<Model&\Devanox\Core\Contracts\Models\Domain, $this>
      */
     public function domains(): HasMany
     {
-        /** @var class-string<\Devanox\Core\Contracts\Models\Domain&Model> $domainClass */
+        /** @var class-string<Model&\Devanox\Core\Contracts\Models\Domain> $domainClass */
         $domainClass = config('tenancy.models.domain', Domain::class);
 
-        /** @var HasMany<\Devanox\Core\Contracts\Models\Domain&Model, $this> $relation */
+        /** @var HasMany<Model&\Devanox\Core\Contracts\Models\Domain, $this> $relation */
         $relation = $this->hasMany($domainClass);
 
         return $relation;
@@ -82,12 +82,12 @@ class Tenant extends Model implements TenantContract
     /**
      * Get the approved (active) domains for the tenant.
      *
-     * @return HasMany<\Devanox\Core\Contracts\Models\Domain&Model, $this>
+     * @return HasMany<Model&\Devanox\Core\Contracts\Models\Domain, $this>
      */
     public function approvedDomains(): HasMany
     {
-        /** @var HasMany<\Devanox\Core\Contracts\Models\Domain&Model, $this> $relation */
-        $relation = $this->domains()->where('status', DomainStatus::Active); // @phpstan-ignore method.private
+        /** @var HasMany<Model&\Devanox\Core\Contracts\Models\Domain, $this> $relation */
+        $relation = $this->domains()->where('status', DomainStatus::Active);
 
         return $relation;
     }

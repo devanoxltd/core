@@ -3,11 +3,12 @@
 declare(strict_types=1);
 
 use Devanox\Core\Validation\Rules\Base;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Validation\ValidationException;
 
 final class TestRules extends Base
 {
-    public static function rules(?int $id = null): array
+    public static function rules(Model|string|int|null $id = null): array
     {
         return [
             'name' => 'required|string|max:255',
@@ -59,7 +60,7 @@ it('validates with named error bag', function (): void {
 
 final class TestRulesWithoutAttributes extends Base
 {
-    public static function rules(?int $id = null): array
+    public static function rules(Model|string|int|null $id = null): array
     {
         return ['name' => 'required'];
     }

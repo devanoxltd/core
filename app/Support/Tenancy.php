@@ -14,7 +14,7 @@ use Exception;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\Relation;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\QueryException;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
@@ -39,16 +39,13 @@ final class Tenancy
 
     public function requestDomain(): string
     {
-        $domain = '';
-
         try {
-            $domain = request()->getHost();
+            return request()->getHost();
         } catch (Exception) {
             $appDomain = config('app.domain', 'localhost');
-            $domain = is_string($appDomain) ? $appDomain : 'localhost';
-        }
 
-        return $domain;
+            return is_string($appDomain) ? $appDomain : 'localhost';
+        }
     }
 
     /**
@@ -112,31 +109,28 @@ final class Tenancy
         }
 
         $domain = $this->tenantDomain($domain);
-        $tenant = null;
 
-        /** @var class-string<TenantContract&Model> $tenantClass */
+        /** @var class-string<Model&TenantContract> $tenantClass */
         $tenantClass = config('tenancy.models.tenant', Tenant::class);
 
-        /** @var Builder<TenantContract&Model> $query */
+        /** @var Builder<Model&TenantContract> $query */
         $query = $tenantClass::query();
 
-        /** @var TenantContract|null $tenant */
         try {
+            /** @var (Model&TenantContract)|null $tenant */
             $tenant = $query
                 ->whereHas('domains', function (Builder $query) use ($domain): void {
                     $query->where('domain', $domain)
                         ->where('status', DomainStatus::Active);
                 })
                 ->with([
-                    'domains' => function (Relation $query) use ($domain): void {
+                    'domains' => function (HasMany $query) use ($domain): void {
                         $query->where('domain', $domain)
                             ->where('status', DomainStatus::Active);
                     },
                 ])
-                ->where('status', Status::Active);
-
-            /** @var TenantContract|null $tenant */
-            $tenant = $query->first();
+                ->where('status', Status::Active)
+                ->first();
         } catch (QueryException) {
             $tenant = null;
         } catch (Exception $e) {

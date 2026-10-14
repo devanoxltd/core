@@ -22,7 +22,7 @@ interface Domain
     /**
      * A domain belongs to a single tenant.
      *
-     * @return BelongsTo<Tenant&Model, covariant Domain&Model>
+     * @return BelongsTo<Model&Tenant, covariant Model&Domain>
      */
     public function tenant(): BelongsTo;
 }

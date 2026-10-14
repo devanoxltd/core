@@ -17,7 +17,7 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
  * @property int|string $id
  * @property string $name
  * @property array<string, mixed>|null $config
- * @property-read Collection<int, Domain&Model> $domains
+ * @property-read Collection<int, Model&Domain> $domains
  *
  * @phpstan-require-extends Model
  */
@@ -26,21 +26,21 @@ interface Tenant
     /**
      * Get all domains for the tenant.
      *
-     * @return HasMany<Domain&Model, covariant Tenant&Model>
+     * @return HasMany<Model&Domain, covariant Model&Tenant>
      */
     public function domains(): HasMany;
 
     /**
      * Get the approved (active) domains for the tenant.
      *
-     * @return HasMany<Domain&Model, covariant Tenant&Model>
+     * @return HasMany<Model&Domain, covariant Model&Tenant>
      */
     public function approvedDomains(): HasMany;
 
     /**
      * The user that owns this tenant.
      *
-     * @return BelongsTo<Model, covariant Tenant&Model>
+     * @return BelongsTo<Model, covariant Model&Tenant>
      */
     public function user(): BelongsTo;
 }
