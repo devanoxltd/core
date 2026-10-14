@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Devanox\Core\Validation\Rules;
 
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\Rule;
 use Illuminate\Validation\ValidationException;
@@ -15,7 +16,7 @@ abstract class Base
      *
      * @return array<string, Rule|array<mixed>|string>
      */
-    abstract public static function rules(?int $id = null): array;
+    abstract public static function rules(Model|string|int|null $id = null): array;
 
     /**
      * Get the error messages for the defined validation rules.
@@ -45,11 +46,11 @@ abstract class Base
      *
      * @throws ValidationException
      */
-    public static function validate(array $data, ?string $errorBag = null): array
+    public static function validate(array $data, ?string $errorBag = null, Model|string|int|null $id = null): array
     {
         $validator = Validator::make(
             $data,
-            static::rules(),
+            static::rules($id),
             static::messages(),
             static::attributes(),
         );
