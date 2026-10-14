@@ -10,7 +10,7 @@
     x-data="{}"
     @click="$theme.toggle()"
     aria-label="@lang('component.utilities.theme-switcher.label')"
-    {{ $attributes->sanitize()->tailwindClass('cursor-pointer px-2 py-1.5 text-sm text-gray-800 transition-colors duration-200 focus:outline-none focus:ring-gray-500 disabled:pointer-events-none disabled:opacity-60 dark:text-gray-200') }}
+    {{ $attributes->sanitize()->tailwindClass('cursor-pointer px-2 py-1.5 text-sm text-gray-800 transition-colors duration-200 focus:outline-hidden focus:ring-gray-500 disabled:pointer-events-none disabled:opacity-60 dark:text-gray-200') }}
 >
     <x-ui.icon
         :name="$lightIcon"

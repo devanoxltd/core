@@ -175,7 +175,7 @@
                     'bg-white dark:bg-gray-900 dark:disabled:bg-gray-800',
                     'transition-colors duration-200 disabled:cursor-not-allowed',
                     'rounded-md shadow-none disabled:shadow-none dark:shadow-sm',
-                    'focus:ring-2 focus:ring-offset-0 focus:outline-none',
+                    'focus:ring-2 focus:ring-offset-0 focus:outline-hidden',
                     'border-primary-500/10 focus:border-primary-500/15 focus:ring-primary-500 dark:border-white/15 dark:focus:border-primary-500/20 dark:focus:ring-primary-500' => ! $invalid,
                     'border-2 border-red-600/30 focus:border-red-600/30 focus:ring-red-600/20 dark:border-red-400/30 dark:focus:border-red-400/30 dark:focus:ring-red-400/20' => $invalid,
                 ])
