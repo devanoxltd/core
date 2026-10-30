@@ -3,11 +3,10 @@
 declare(strict_types=1);
 
 use Devanox\Core\Helpers\InstallerInfo;
-use Devanox\Core\Support\StreamingOutput;
-use Illuminate\Support\Facades\Artisan;
-use Laravel\Prompts\Prompt;
 use Livewire\Attributes\Locked;
 use Livewire\Component;
+use Symfony\Component\Process\PhpExecutableFinder;
+use Symfony\Component\Process\Process;
 
 new class extends Component
 {
@@ -43,13 +42,14 @@ new class extends Component
         $this->isMigrationComplete = false;
 
         if (InstallerInfo::getStatus() === InstallerInfo::DB_CONFIGURED) {
-            // Run the installation command and stream output
-            $this->streamInstallation();
+            $this->startInstallation();
         }
     }
 
     public function checkStatus(): void
     {
+        $this->readOutput();
+
         if ($this->isMigrationComplete) {
             $this->dispatch('stepReady', step: 'migrations')->to('core::install');
 
@@ -63,43 +63,45 @@ new class extends Component
             $this->isMigrationRunning = false;
             $this->isMigrationComplete = true;
             $this->dispatch('stepReady', step: 'migrations')->to('core::install');
+        } elseif (InstallerInfo::getStatus() === InstallerInfo::DB_CONFIGURED) {
+            // The installation command failed and reset the status.
+            $this->isMigrationRunning = false;
         }
     }
 
-    protected function streamInstallation(): void
+    protected function startInstallation(): void
     {
         try {
-            if (! array_key_exists('app:install', Artisan::all())) {
-                throw new Exception(__('core::install.error.app_install_missing'));
-            }
+            $logFile = storage_path('install-output.log');
+            file_put_contents($logFile, '');
 
-            Prompt::interactive(false);
+            InstallerInfo::setStatus(InstallerInfo::MIGRATING);
 
-            // Create a streaming output that sends each line immediately
-            $output = new StreamingOutput(function (string $line): void {
-                $this->stream(
-                    content: $line,
-                    to: 'output',
-                );
-                $this->output .= $line;
-            });
+            $php = (new PhpExecutableFinder)->find() ?: 'php';
 
-            // Run the command and stream output in real-time
-            $exitCode = Artisan::call('app:install', [], $output);
-
-            if ($exitCode !== 0) {
-                throw new Exception(__('core::install.error.migration_failed', ['code' => $exitCode]));
-            }
+            // Run detached so web server timeouts or dropped requests cannot interrupt the installation.
+            Process::fromShellCommandline(
+                sprintf(
+                    '%s %s app:install --no-interaction --no-ansi > %s 2>&1 < /dev/null &',
+                    escapeshellarg($php),
+                    escapeshellarg(base_path('artisan')),
+                    escapeshellarg($logFile),
+                ),
+                base_path(),
+            )->run();
         } catch (Exception $exception) {
-            $errorMessage = "\n\nError: " . $exception->getMessage() . "\n";
-            $this->stream(
-                content: $errorMessage,
-                to: 'output',
-            );
-            $this->output .= $errorMessage;
-
+            $this->output = "\n\nError: " . $exception->getMessage() . "\n";
             $this->isMigrationRunning = false;
             InstallerInfo::setStatus(InstallerInfo::DB_CONFIGURED);
+        }
+    }
+
+    protected function readOutput(): void
+    {
+        $logFile = storage_path('install-output.log');
+
+        if (is_file($logFile)) {
+            $this->output = (string) file_get_contents($logFile);
         }
     }
 };
