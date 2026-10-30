@@ -5,6 +5,7 @@ declare(strict_types=1);
 use Devanox\Core\Helpers\InstallerInfo;
 use Devanox\Core\Support\StreamingOutput;
 use Illuminate\Support\Facades\Artisan;
+use Laravel\Prompts\Prompt;
 use Livewire\Attributes\Locked;
 use Livewire\Component;
 
@@ -71,6 +72,8 @@ new class extends Component
             if (! array_key_exists('app:install', Artisan::all())) {
                 throw new Exception(__('core::install.error.app_install_missing'));
             }
+
+            Prompt::interactive(false);
 
             // Create a streaming output that sends each line immediately
             $output = new StreamingOutput(function (string $line): void {
