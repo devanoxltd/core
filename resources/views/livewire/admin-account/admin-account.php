@@ -18,6 +18,8 @@ new class extends Component
 
     public function mount(): void
     {
+        $isAlreadyCreated = InstallerInfo::getStatus() === InstallerInfo::ADMIN_CREATED;
+
         InstallerInfo::setStatus(InstallerInfo::ADMIN_CREATING);
 
         $this->userAccount->username = 'admin';
@@ -27,10 +29,19 @@ new class extends Component
         $userClass = Config::get('auth.providers.users.model', User::class);
 
         if ($user = $userClass::query()->first()) {
-            $this->isCreated = true;
-            $this->dispatch('stepReady', step: 'admin')->to('core::install');
             $this->userAccount->email = $user->email;
-            InstallerInfo::setStatus(InstallerInfo::ADMIN_CREATED);
+
+            if ($isAlreadyCreated) {
+                $this->isCreated = true;
+                $this->dispatch('stepReady', step: 'admin')->to('core::install');
+                InstallerInfo::setStatus(InstallerInfo::ADMIN_CREATED);
+
+                return;
+            }
+
+            // A seeded user (e.g. test@example.com) can be edited and used as the admin account.
+            $this->userAccount->userId = $user->getKey();
+            $this->userAccount->username = (string) $user->getAttribute('name');
         }
     }
 

@@ -6,6 +6,8 @@ namespace Devanox\Core\Livewire\Forms;
 
 use Illuminate\Foundation\Auth\User;
 use Illuminate\Support\Facades\Config;
+use Illuminate\Validation\Rule;
+use Livewire\Attributes\Locked;
 use Livewire\Form;
 
 final class UserAccount extends Form
@@ -14,18 +16,21 @@ final class UserAccount extends Form
 
     public string $email;
 
+    #[Locked]
+    public ?int $userId = null;
+
     public string $password;
 
     public string $passwordConfirmation;
 
     /**
-     * @return array<string, string>
+     * @return array<string, mixed>
      */
     public function rules(): array
     {
         return [
             'username' => 'required|string|max:255',
-            'email' => 'required|email|max:255|unique:users,email',
+            'email' => ['required', 'email', 'max:255', Rule::unique('users', 'email')->ignore($this->userId)],
             'password' => 'required|string|min:8|confirmed:passwordConfirmation',
         ];
     }
@@ -51,7 +56,7 @@ final class UserAccount extends Form
         $userClass = Config::get('auth.providers.users.model', User::class);
 
         /** @var User $user */
-        $user = new $userClass;
+        $user = $this->userId !== null ? $userClass::query()->findOrFail($this->userId) : new $userClass;
         $user->fill([
             'name' => $this->username,
             'email' => $this->email,
