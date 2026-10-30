@@ -13,7 +13,7 @@ beforeEach(function (): void {
     $this->installedFile = storage_path('installed');
 
     if (file_exists($this->installedFile)) {
-        unlink($this->installedFile);
+        File::delete($this->installedFile);
     }
 
     $this->installFile = InstallerInfo::filePath();
@@ -28,7 +28,7 @@ beforeEach(function (): void {
 
 afterEach(function (): void {
     if (file_exists($this->installedFile)) {
-        unlink($this->installedFile);
+        File::delete($this->installedFile);
     }
 
     if (File::exists($this->installFile)) {

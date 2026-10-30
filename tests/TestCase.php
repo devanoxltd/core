@@ -97,7 +97,7 @@ abstract class TestCase extends Orchestra
         $migrationFiles = glob(database_path('migrations/*'));
         foreach ($migrationFiles as $file) {
             if (is_file($file)) {
-                @unlink($file);
+                File::delete($file);
             }
         }
 

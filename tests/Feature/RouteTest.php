@@ -2,19 +2,20 @@
 
 declare(strict_types=1);
 
+use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Route;
 
 beforeEach(function (): void {
     $this->installedFile = storage_path('installed');
 
     if (file_exists($this->installedFile)) {
-        unlink($this->installedFile);
+        File::delete($this->installedFile);
     }
 });
 
 afterEach(function (): void {
     if (file_exists($this->installedFile)) {
-        unlink($this->installedFile);
+        File::delete($this->installedFile);
     }
 });
 

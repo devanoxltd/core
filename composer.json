@@ -26,26 +26,26 @@
     "require": {
         "php": "^8.5",
         "devanoxltd/php-html-parser": "^1.2",
-        "illuminate/support": "^13.29",
+        "illuminate/support": "^13.39",
         "livewire/livewire": "^4.4"
     },
     "require-dev": {
         "devanoxltd/tailwind-class-merge-laravel": "^v1.4",
-        "driftingly/rector-laravel": "^2.6",
+        "driftingly/rector-laravel": "^2.7",
         "fakerphp/faker": "^1.24",
-        "larastan/larastan": "^3.10",
+        "larastan/larastan": "^3.13",
         "laravel/pao": "^1.1",
-        "laravel/pint": "^1.30",
+        "laravel/pint": "^1.32",
         "mockery/mockery": "^1.6",
         "mrchetan/php_standard": "^5.3",
         "nunomaduro/collision": "^8.9",
-        "orchestra/testbench": "^11.2",
-        "pestphp/pest": "^5.1",
+        "orchestra/testbench": "^11.3",
+        "pestphp/pest": "^5.3",
         "pestphp/pest-plugin-faker": "^5.0",
         "pestphp/pest-plugin-laravel": "^5.0",
         "pestphp/pest-plugin-type-coverage": "^5.0",
         "phpstan/extension-installer": "^1.4",
-        "rector/rector": "^2.6"
+        "rector/rector": "^2.8"
     },
     "autoload": {
         "psr-4": {

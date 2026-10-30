@@ -11,6 +11,7 @@ use Exception;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Config;
+use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Http;
 use stdClass;
 
@@ -166,7 +167,7 @@ final class Module
         $path = self::path($module, true, true);
 
         if (is_file($path)) {
-            unlink($path);
+            File::delete($path);
         }
 
         $moduleIds = self::get()->where('enabled', true)

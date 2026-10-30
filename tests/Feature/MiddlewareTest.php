@@ -7,6 +7,7 @@ use Devanox\Core\Http\Middleware\License as LicenseMiddleware;
 use Devanox\Core\Models\License;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
+use Illuminate\Support\Facades\File;
 
 function withNonTestingEnvironment(callable $callback): void
 {
@@ -41,7 +42,7 @@ function markAppNotInstalled(): void
     $path = installedFilePath();
 
     if (is_file($path)) {
-        unlink($path);
+        File::delete($path);
     }
 }
 

@@ -6,6 +6,7 @@ use Devanox\Core\Events\ModuleDisabled;
 use Devanox\Core\Events\ModuleEnabled;
 use Devanox\Core\Support\Module;
 use Illuminate\Support\Facades\Event;
+use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Http;
 
 beforeEach(function (): void {
@@ -57,7 +58,7 @@ it('returns empty array when module config does not exist', function (): void {
     $configFile = $modulePath . DIRECTORY_SEPARATOR . 'Config' . DIRECTORY_SEPARATOR . 'config.php';
 
     if (file_exists($configFile)) {
-        unlink($configFile);
+        File::delete($configFile);
     }
 
     expect(Module::config('NoConfigModule'))->toBe([]);

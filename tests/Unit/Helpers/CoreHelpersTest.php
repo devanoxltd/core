@@ -5,6 +5,7 @@ declare(strict_types=1);
 use Devanox\Core\Models\License;
 use Devanox\Core\Support\Module;
 use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Facades\File;
 
 use function Devanox\Core\Helpers\isAppInstalled;
 use function Devanox\Core\Helpers\isLicenseValid;
@@ -23,7 +24,7 @@ afterEach(function (): void {
     $installedFile = storage_path('installed');
 
     if (is_file($installedFile)) {
-        unlink($installedFile);
+        File::delete($installedFile);
     }
 });
 

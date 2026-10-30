@@ -26,7 +26,7 @@ beforeEach(function (): void {
     $this->installedFile = storage_path('installed');
 
     if (file_exists($this->installedFile)) {
-        unlink($this->installedFile);
+        File::delete($this->installedFile);
     }
 
     License::query()->delete();
@@ -35,7 +35,7 @@ beforeEach(function (): void {
 
 afterEach(function (): void {
     if (file_exists($this->installedFile)) {
-        unlink($this->installedFile);
+        File::delete($this->installedFile);
     }
 
     cleanModulesDirectory();
@@ -483,7 +483,7 @@ it('cleans up log files and handles failures', function (): void {
 
     if ($files) {
         foreach ($files as $f) {
-            unlink($f);
+            File::delete($f);
         }
     }
 
@@ -528,7 +528,7 @@ it('runs clean up in dry run mode and deletes old logs', function (): void {
     expect(File::get($logPath . '/laravel.log'))->toBe('content')
         ->and(File::exists($oldLogFile))->toBeTrue();
 
-    unlink($oldLogFile);
+    File::delete($oldLogFile);
 });
 
 it('deletes old logs successfully', function (): void {
@@ -568,7 +568,7 @@ it('does not delete logs if none are older than threshold', function (): void {
 
     expect(File::exists($recentLogFile))->toBeTrue();
 
-    unlink($recentLogFile);
+    File::delete($recentLogFile);
 });
 
 it('fails to delete old logs when error occurs', function (): void {
@@ -605,7 +605,7 @@ it('does not delete logs that are recent', function (): void {
 
     expect(File::exists($recentLogFile))->toBeTrue();
 
-    unlink($recentLogFile);
+    File::delete($recentLogFile);
 });
 
 it('deletes garbage licenses', function (): void {
