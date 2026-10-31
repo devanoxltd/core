@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 use Devanox\Core\Models\Domain;
 use Devanox\Core\Models\Tenant;
+use Devanox\Core\Support\Secret;
 use Devanox\Core\Support\Tenancy;
 use Illuminate\Database\QueryException;
 use Illuminate\Http\Request;
@@ -314,4 +315,19 @@ it('tests tenancy helper file can be required multiple times', function (): void
 
     expect(function_exists('Devanox\Core\Helpers\tenancy'))->toBeTrue()
         ->and(function_exists('Devanox\Core\Helpers\tenant'))->toBeTrue();
+});
+
+it('decrypts the tenant database password when building the connection', function (): void {
+    $this->tenant->config = collect([
+        'database' => [
+            'database' => ':memory:',
+            'driver' => 'sqlite',
+            'password' => Secret::encrypt('s3cret'),
+        ],
+    ]);
+    $this->tenant->save();
+
+    (new Tenancy)->setTenant($this->tenant->fresh());
+
+    expect(config('database.connections.mysql_tenant_1.password'))->toBe('s3cret');
 });

@@ -186,6 +186,10 @@ final class Tenancy
             return null;
         }
 
+        if (isset($tenantDbConfigs['password']) && is_string($tenantDbConfigs['password'])) {
+            $tenantDbConfigs['password'] = Secret::decrypt($tenantDbConfigs['password']);
+        }
+
         // unset database from tenantConfigs to avoid overwriting the database connection settings
         unset($tenantConfigs['database']);
 
