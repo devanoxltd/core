@@ -48,7 +48,7 @@ final class TenantCommand extends Command
             ->when($tenant, fn (Builder $query) => $query->where($tenantKeyName, $tenant));
 
         if ($tenants->count() === 0) {
-            $this->error('No tenants found.');
+            $this->error(__('core::tenancy.commands.run.no_tenants'));
 
             return Command::FAILURE;
         }
@@ -80,30 +80,29 @@ final class TenantCommand extends Command
         $tenant = tenancy()->tenant;
 
         if (! $tenant instanceof TenantContract) {
-            $this->error('No tenant is set.');
+            $this->error(__('core::tenancy.commands.run.no_tenant_set'));
 
             return Command::FAILURE;
         }
 
         $tenantKey = $tenant->getKey();
 
-        $this->info(sprintf(
-            'Running command for tenant `%s` (id: %s)...',
-            (string) $tenant->name,
-            is_scalar($tenantKey) ? (string) $tenantKey : '',
-        ));
+        $this->info(__('core::tenancy.commands.run.running_for_tenant', [
+            'name' => (string) $tenant->name,
+            'id' => is_scalar($tenantKey) ? (string) $tenantKey : '',
+        ]));
 
         $artisanCommand = $this->argument('artisanCommand');
 
         if (! is_string($artisanCommand)) {
-            $this->error('Invalid artisan command argument.');
+            $this->error(__('core::tenancy.commands.run.invalid_command'));
 
             return Command::FAILURE;
         }
 
         $artisanCommand = addslashes($artisanCommand);
 
-        $this->info("Executing command: `php artisan {$artisanCommand}`");
+        $this->info(__('core::tenancy.commands.run.executing', ['command' => $artisanCommand]));
         $this->info('----------------------------------------');
 
         $result = Artisan::call($artisanCommand, outputBuffer: $this->output);

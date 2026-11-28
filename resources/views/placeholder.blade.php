@@ -1,1 +1,1 @@
-<div>Core placeholder view.</div>
+<div>@lang ('core::app.placeholder')</div>

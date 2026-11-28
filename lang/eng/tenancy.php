@@ -76,5 +76,18 @@ return [
             'database_queue_required' => 'Tenant queue is not a database queue.',
             'worker_failed' => 'Unable to start or run the tenant queue worker.',
         ],
+        'run' => [
+            'no_tenants' => 'No tenants found.',
+            'no_tenant_set' => 'No tenant is set.',
+            'running_for_tenant' => 'Running command for tenant `:name` (id: :id)...',
+            'invalid_command' => 'Invalid artisan command argument.',
+            'executing' => 'Executing command: `php artisan :command`',
+        ],
+        'install' => [
+            'installing' => 'Installing Tenancy Package...',
+            'success' => 'Tenancy installed successfully! Update config/tenancy.php to use your new App\\Models\\Tenant.',
+            'created_model' => 'Created: app/Models/:model.php',
+            'model_exists' => 'Model app/Models/:model.php already exists. Skipping.',
+        ],
     ],
 ];

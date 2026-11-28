@@ -18,7 +18,7 @@ final class TenantInstallCommand extends Command
      */
     public function handle(): int
     {
-        $this->info('Installing Tenancy Package...');
+        $this->info(__('core::tenancy.commands.install.installing'));
 
         // 1. Publish Config and Migrations
         $this->call('vendor:publish', ['--tag' => 'tenancy-config']);
@@ -28,7 +28,7 @@ final class TenantInstallCommand extends Command
         $this->createAppModel('Tenant');
         $this->createAppModel('Domain');
 
-        $this->info('Tenancy installed successfully! Update config/tenancy.php to use your new App\Models\Tenant.');
+        $this->info(__('core::tenancy.commands.install.success'));
 
         return self::SUCCESS;
     }
@@ -56,9 +56,9 @@ EOT;
             File::ensureDirectoryExists(app_path('Models'));
 
             File::put($appModelPath, $stub);
-            $this->line("Created: app/Models/{$modelName}.php");
+            $this->line(__('core::tenancy.commands.install.created_model', ['model' => $modelName]));
         } else {
-            $this->comment("Model app/Models/{$modelName}.php already exists. Skipping.");
+            $this->comment(__('core::tenancy.commands.install.model_exists', ['model' => $modelName]));
         }
     }
 }
