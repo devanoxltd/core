@@ -52,6 +52,17 @@ it('instantiates empty tenancy when request domain is app domain', function (): 
     expect($tenancy->tenant)->toBeNull();
 });
 
+it('does not resolve tenant domains when tenancy is disabled', function (): void {
+    Config::set('tenancy.enabled', false);
+    Config::set('tenancy.central_domains', ['myapp.com']);
+    request()->headers->set('HOST', 't1.myapp.com');
+
+    $tenancy = new Tenancy;
+
+    expect($tenancy->tenant)->toBeNull()
+        ->and($tenancy->getTenantByDomain('t1.myapp.com'))->toBeNull();
+});
+
 it('returns setting value from tenant', function (): void {
     $tenancy = new Tenancy;
     $tenancy->tenant = $this->tenant;
@@ -157,12 +168,14 @@ it('sets tenant and configuration', function (): void {
     $tenancy->unsetTenant();
 });
 
-it('returns null config when tenant has no database config', function (): void {
+it('rejects a tenant with no database config and restores the previous context', function (): void {
     $tenantWithoutDb = Tenant::query()->forceCreate(['id' => 2, 'user_id' => 1, 'name' => 'T2', 'email' => 'test@example.com', 'status' => 'active']);
     $tenancy = new Tenancy;
-    $connectionName = $tenancy->setTenant($tenantWithoutDb);
+    $central = config('database.default');
 
-    expect($connectionName)->toBeNull();
+    expect(fn (): string => $tenancy->setTenant($tenantWithoutDb))->toThrow(RuntimeException::class)
+        ->and($tenancy->tenant)->toBeNull()
+        ->and(config('database.default'))->toBe($central);
 });
 
 it('sets config with fallback domain url', function (): void {

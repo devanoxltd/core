@@ -7,6 +7,7 @@ use Devanox\Core\Models\License;
 use Devanox\Core\Models\Tenant;
 use Devanox\Core\Support\Module;
 use Illuminate\Database\ConnectionResolverInterface;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Migrations\DatabaseMigrationRepository;
 use Illuminate\Database\Migrations\Migrator;
 use Illuminate\Filesystem\Filesystem;
@@ -671,6 +672,8 @@ it('migrates module with tenant migrations', function (): void {
     $tenantClass = config('tenancy.models.tenant', Tenant::class);
     $tenant = new $tenantClass;
     $tenant->id = 'test_tenant';
+    $tenant->config = ['database' => ['driver' => 'sqlite', 'database' => ':memory:']];
+    $tenant->setRelation('domains', new Collection);
 
     tenancy()->setTenant($tenant);
 
@@ -684,11 +687,20 @@ it('migrates module with tenant migrations', function (): void {
 });
 
 it('checks pending migrations for tenant', function (): void {
+    $centralMigrations = DB::table('migrations')->get()->map(fn (object $migration): array => (array) $migration)->all();
     $tenantClass = config('tenancy.models.tenant', Tenant::class);
     $tenant = new $tenantClass;
     $tenant->id = 'test_tenant';
+    $tenant->config = ['database' => ['driver' => 'sqlite', 'database' => ':memory:']];
+    $tenant->setRelation('domains', new Collection);
 
     tenancy()->setTenant($tenant);
+    Schema::create('migrations', function ($table): void {
+        $table->increments('id');
+        $table->string('migration');
+        $table->integer('batch');
+    });
+    DB::table('migrations')->insert($centralMigrations);
 
     assertCommandOutput('migrate:check', [], 0, ['No pending migrations found']);
 

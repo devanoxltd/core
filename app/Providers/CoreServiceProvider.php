@@ -15,6 +15,8 @@ use Devanox\Core\Console\Commands\Module\Migrate;
 use Devanox\Core\Console\Commands\TenantCommand;
 use Devanox\Core\Console\Commands\TenantCreateDatabaseCommand;
 use Devanox\Core\Console\Commands\TenantInstallCommand;
+use Devanox\Core\Console\Commands\TenantQueueManageCommand;
+use Devanox\Core\Console\Commands\TenantQueueWorkCommand;
 use Devanox\Core\Contracts\Models\Tenant;
 use Devanox\Core\Core;
 use Devanox\Core\Events\Tenant\Created as TenantCreatedEvent;
@@ -55,6 +57,8 @@ final class CoreServiceProvider extends ServiceProvider
 
         $this->mergeConfigFrom(__DIR__ . '/../../config/core.php', $this->packageNameLower);
         $this->mergeConfigFrom(__DIR__ . '/../../config/tenancy.php', 'tenancy');
+
+        $this->app->register(TenantQueueServiceProvider::class);
 
         AboutCommand::add('Core', function (): array {
             /** @var array<int, string> $domains */
@@ -151,6 +155,8 @@ final class CoreServiceProvider extends ServiceProvider
                 MigrateCheck::class,
                 LicenseCheck::class,
                 TenantInstallCommand::class,
+                TenantQueueManageCommand::class,
+                TenantQueueWorkCommand::class,
             ]);
 
             if ($this->isTenancyEnabled()) {

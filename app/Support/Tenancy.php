@@ -8,6 +8,7 @@ use Devanox\Core\Contracts\Models\Domain as DomainContract;
 use Devanox\Core\Contracts\Models\Tenant as TenantContract;
 use Devanox\Core\Enums\Domain\Status as DomainStatus;
 use Devanox\Core\Enums\Tenant\Status;
+use Devanox\Core\Exceptions\TenantContextException;
 use Devanox\Core\Helpers\Configuration;
 use Devanox\Core\Models\Tenant;
 use Exception;
@@ -19,6 +20,7 @@ use Illuminate\Database\QueryException;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Str;
+use RuntimeException;
 
 final class Tenancy
 {
@@ -26,7 +28,9 @@ final class Tenancy
 
     public function __construct()
     {
-        $this->tenant = $this->getTenantByDomain($this->requestDomain());
+        $this->tenant = config('tenancy.enabled', false) === true
+            ? $this->getTenantByDomain($this->requestDomain())
+            : null;
     }
 
     /**
@@ -104,6 +108,10 @@ final class Tenancy
 
     public function getTenantByDomain(string $domain): ?TenantContract
     {
+        if (config('tenancy.enabled', false) !== true) {
+            return null;
+        }
+
         if ($this->isAppDomain($domain)) {
             return null;
         }
@@ -141,15 +149,48 @@ final class Tenancy
         return $tenant;
     }
 
-    public function setTenant(TenantContract $tenant): ?string
+    public function setTenant(TenantContract $tenant): string
     {
-        $this->tenant = $tenant;
+        if (config('tenancy.enabled', false) !== true) {
+            throw new TenantContextException(__('core::tenancy.exceptions.context_unavailable'));
+        }
 
-        return $this->setTenantConfig();
+        $originalTenant = $this->tenant;
+        $originalConfig = config()->all();
+        $initialized = false;
+
+        try {
+            $this->tenant = $tenant;
+            $connectionName = $this->setTenantConfig();
+
+            if ($connectionName === null) {
+                throw new TenantContextException(__('core::tenancy.exceptions.context_initialization_failed'));
+            }
+
+            $context = resolve(TenantDatabaseContext::class);
+            $context->connection($context->activeTenantId($this), $this);
+
+            $initialized = true;
+
+            return $connectionName;
+        } catch (RuntimeException $runtimeException) {
+            throw_if($runtimeException instanceof TenantContextException, $runtimeException);
+
+            throw new TenantContextException($runtimeException->getMessage(), $runtimeException->getCode(), previous: $runtimeException);
+        } finally {
+            if (! $initialized) {
+                $this->tenant = $originalTenant;
+                config($originalConfig);
+            }
+        }
     }
 
     public function setTenantConfig(): ?string
     {
+        if (config('tenancy.enabled', false) !== true) {
+            throw new TenantContextException(__('core::tenancy.exceptions.context_unavailable'));
+        }
+
         if (! $this->tenant instanceof TenantContract) {
             return null;
         }
@@ -232,7 +273,15 @@ final class Tenancy
 
     public function initializeTenant(): void
     {
-        if ($this->tenant instanceof TenantContract) {
+        if (! $this->tenant instanceof TenantContract) {
+            return;
+        }
+
+        $originalTenant = $this->tenant;
+        $originalConfig = config()->all();
+        $initialized = false;
+
+        try {
             $tenantConnectionName = $this->setTenantConfig();
 
             if (! $tenantConnectionName) {
@@ -241,6 +290,16 @@ final class Tenancy
 
             if (! DB::connection($tenantConnectionName)->getDatabaseName()) {
                 throw new Exception(__('core::tenancy.exceptions.database_configurations_not_found', ['name' => (string) $this->tenant->name]));
+            }
+
+            $context = resolve(TenantDatabaseContext::class);
+            $context->connection($context->activeTenantId($this), $this);
+
+            $initialized = true;
+        } finally {
+            if (! $initialized) {
+                $this->tenant = $originalTenant;
+                config($originalConfig);
             }
         }
     }

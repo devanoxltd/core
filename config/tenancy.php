@@ -9,8 +9,9 @@ return [
     /**
      * Enable or disable the tenancy system.
      *
-     * When disabled, the package behaves as a single-tenant application.
-     * Set to true in your published config to opt in to multi-tenancy.
+     * When enabled, tenants use their own database, including database-backed
+     * queues, batches, and failed jobs. When disabled, the app is central only.
+     * Tenant and central queue workers still need to be run separately.
      */
     'enabled' => false,
     /**

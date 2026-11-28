@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Devanox\Core\Console\Commands;
 
 use Devanox\Core\Contracts\Models\Tenant as TenantContract;
+use Devanox\Core\Exceptions\TenantContextException;
 use Illuminate\Console\Attributes\Description;
 use Illuminate\Console\Attributes\Signature;
 use Illuminate\Console\Command;
@@ -23,6 +24,12 @@ final class TenantCommand extends Command
      */
     public function handle(): int
     {
+        if (config('tenancy.enabled', false) !== true) {
+            $this->error(__('core::tenancy.commands.queue.tenancy_required'));
+
+            return Command::FAILURE;
+        }
+
         $tenant = $this->option('tenant');
 
         /** @var class-string<TenantContract&Model> $tenantClass */
@@ -50,13 +57,19 @@ final class TenantCommand extends Command
 
         foreach ($tenants->cursor() as $tenant) {
             /** @var TenantContract&Model $tenant */
-            tenancy()->run($tenant, function () use (&$exitCode): void {
-                $code = $this->runArtisanCommand();
+            try {
+                tenancy()->run($tenant, function () use (&$exitCode): void {
+                    $code = $this->runArtisanCommand();
 
-                if ($code !== Command::SUCCESS) {
-                    $exitCode = $code;
-                }
-            });
+                    if ($code !== Command::SUCCESS) {
+                        $exitCode = $code;
+                    }
+                });
+            } catch (TenantContextException $exception) {
+                report($exception);
+                $this->error($exception->getMessage());
+                $exitCode = Command::FAILURE;
+            }
         }
 
         return $exitCode;

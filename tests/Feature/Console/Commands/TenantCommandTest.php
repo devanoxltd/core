@@ -76,6 +76,17 @@ it('fails when no tenants are found', function (): void {
         ->and($output)->toContain('No tenants found.');
 });
 
+it('does not execute tenant commands when tenancy is disabled', function (): void {
+    config(['tenancy.enabled' => false]);
+    $executed = false;
+    Artisan::command('tenant-disabled-test', function () use (&$executed): void {
+        $executed = true;
+    });
+
+    expect(Artisan::call('tenant', ['artisanCommand' => 'tenant-disabled-test']))->toBe(1)
+        ->and($executed)->toBeFalse();
+});
+
 it('fails when tenant is not set in tenancy', function (): void {
     // This is hard to reach normally, but we can call runArtisanCommand via reflection
     $command = $this->app->make(TenantCommand::class);
@@ -100,6 +111,7 @@ it('fails when artisan command argument is invalid', function (): void {
         'name' => 'Tenant 99',
         'email' => 'test99@example.com',
         'status' => 'active',
+        'config' => ['database' => ['database' => ':memory:', 'driver' => 'sqlite']],
     ]));
 
     tenancy()->setTenant($tenant);
@@ -127,6 +139,26 @@ it('fails when artisan command fails', function (): void {
     ], $outputBuffer);
 
     expect($status)->toBe(1);
+});
+
+it('reports a failure when a tenant database context cannot be initialized', function (): void {
+    $invalidTenant = Tenant::withoutEvents(fn (): Tenant => Tenant::query()->forceCreate([
+        'id' => 3,
+        'user_id' => 1,
+        'name' => 'Tenant 3',
+        'email' => 'test3@example.com',
+        'status' => 'active',
+        'config' => [],
+    ]));
+
+    $outputBuffer = new BufferedOutput;
+    $status = Artisan::call('tenant', [
+        'artisanCommand' => 'env',
+        '--tenant' => $invalidTenant->id,
+    ], $outputBuffer);
+
+    expect($status)->toBe(1)
+        ->and($outputBuffer->fetch())->toContain('Tenant database context could not be initialized.');
 });
 
 it('fails when no tenant is set internally', function (): void {
